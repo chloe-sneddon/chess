@@ -10,7 +10,17 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
+    private ChessBoard board;
+    private ChessPosition myPosition;
+    private final ChessGame.TeamColor TeamColor;
+    private final PieceType PieceType;
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+//       TODO: set chessBoard and ChessPosition using an override function?
+//             *note: board and position are changeable throughout the game
+//                    and are called in pieceMoves method below
+        this.TeamColor = pieceColor;
+        this.PieceType = type;
     }
 
     /**
@@ -29,14 +39,14 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+        return TeamColor;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+        return PieceType;
     }
 
     /**
@@ -47,6 +57,13 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        this.board = board;
+        this.myPosition = myPosition;
+//        throw new RuntimeException("Not implemented");
+        return new ArrayList<chessMove>();
     }
+
+//    private
+
+
 }
