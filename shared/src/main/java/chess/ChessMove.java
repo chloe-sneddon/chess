@@ -16,9 +16,9 @@ public class ChessMove {
     /**
      * @return ChessPosition of starting location
      */
-    public ChessPosition getStartPosition() {
-//        ChessPosition.chess
-    }
+//    public ChessPosition getStartPosition() {
+////        ChessPosition.chess
+//    }
 
     /**
      * @return ChessPosition of ending location
