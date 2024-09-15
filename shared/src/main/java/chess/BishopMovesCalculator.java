@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class BishopMovesCalculator implements PieceMovesCalculator {
-    private Collection <ChessMove> chessMoveCollection;
+    private Collection<ChessMove> chessMoveCollection;
     private ChessPosition permStart;
     private ChessBoard chessBoard;
 
@@ -21,29 +21,30 @@ public class BishopMovesCalculator implements PieceMovesCalculator {
         chessBoard = board;
         chessMoveCollection = new ArrayList<>();
 
-        doublePositiveDiagonal();
-
+//        doublePositiveDiagonal();
+//      positive row and col
+        calcDiagonals(1, 1);
+//      neg row and col
+        calcDiagonals(-1, -1);
+//      pos row neg col
+        calcDiagonals(1, -1);
+//      neg row pos col
+        calcDiagonals(-1, 1);
         return chessMoveCollection;
     }
-//    private doublePositiveDiagonal(){
-    //    for/until cannot move forward:
-    //       tmp position = first then previous position
-    //       row + 1 , col + 1
-    //       new ChessPosition newChessPosition= row,col
-    //       new ChessMove newChessMove = start,newChessPosition
-    //       Collection <ChessMove> pushback newChessMove
-//    }
-    private void doublePositiveDiagonal(){
-//        update universal variable chessMoveCollection
-        //    for/until cannot move forward:
+
+    private void calcDiagonals(int rowInc, int columnInc) {
         System.out.println("\n---double positive diagonal()---");
         ChessPosition tmpPosition = permStart;
-        for (int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++) {
             //       tmp position = first then next position after iter
             //       row + 1 , col + 1
-            int row = tmpPosition.getRow() + 1;
-            int column = tmpPosition.getColumn() + 1;
-            if (row > 8 | column > 8){
+            int row = tmpPosition.getRow() + rowInc;
+            int column = tmpPosition.getColumn() + columnInc;
+            if (row > 8 | column > 8) {
+                break;
+            }
+            if(row < 1 | column < 1) {
                 break;
             }
             //       new ChessPosition newChessPosition= row,col
@@ -58,7 +59,4 @@ public class BishopMovesCalculator implements PieceMovesCalculator {
             System.out.print("chessMoveCollection: " + chessMoveCollection.toString());
         }
     }
-//    private void calcDiagonals(int rowInc,int columnInc){
-//
-//    }
 }
