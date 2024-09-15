@@ -70,7 +70,7 @@ public class ChessPiece {
 //       TODO: Figure out which pieceType it is and which class to call
 
         BishopMovesCalculator bishop = new BishopMovesCalculator();
-        bishop.pieceMoves(this.board, this.myPosition);
+        moves = bishop.pieceMoves(this.board, this.myPosition);
 
         return moves;
 //        throw new RuntimeException("Not implemented");
