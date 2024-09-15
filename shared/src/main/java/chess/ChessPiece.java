@@ -2,6 +2,8 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
+import java.io.*;
 
 /**
  * Represents a single chess piece
@@ -62,11 +64,41 @@ public class ChessPiece {
         this.myPosition = myPosition;
         Collection<ChessMove> moves = new ArrayList<>();
 //        TODO: fix this collection so it returns something
+
+        System.out.println("--- in pieceMoves() ");
+
+//       TODO: Figure out which pieceType it is and which class to call
+
+        BishopMovesCalculator bishop = new BishopMovesCalculator();
+        bishop.pieceMoves(this.board, this.myPosition);
+
         return moves;
 //        throw new RuntimeException("Not implemented");
 //        return new ArrayList<ChessMove>();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessPiece that = (ChessPiece) o;
+        return TeamColor == that.TeamColor && PieceType == that.PieceType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(TeamColor, PieceType);
+    }
+
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "board=" + board +
+                ", myPosition=" + myPosition +
+                ", TeamColor=" + TeamColor +
+                ", PieceType=" + PieceType +
+                '}';
+    }
 //    private
 
 
