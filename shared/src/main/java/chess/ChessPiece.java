@@ -67,10 +67,39 @@ public class ChessPiece {
 
         System.out.println("--- in pieceMoves() ");
 
-//       TODO: Figure out which pieceType it is and which class to call
+//       TODO: Figure out which pieceType it is and which class to use
 
-        BishopMovesCalculator bishop = new BishopMovesCalculator();
-        moves = bishop.pieceMoves(this.board, this.myPosition);
+
+        switch (PieceType) {
+            case KING:
+                BishopMovesCalculator king = new BishopMovesCalculator();
+                moves = king.pieceMoves(this.board, this.myPosition);
+                break;
+            case QUEEN:
+                BishopMovesCalculator queen = new BishopMovesCalculator();
+                moves = queen.pieceMoves(this.board, this.myPosition);
+                break;
+            case BISHOP:
+                BishopMovesCalculator bishop = new BishopMovesCalculator();
+                moves = bishop.pieceMoves(this.board, this.myPosition);
+                break;
+            case KNIGHT:
+                BishopMovesCalculator knight = new BishopMovesCalculator();
+                moves = knight.pieceMoves(this.board, this.myPosition);
+                break;
+            case ROOK:
+                BishopMovesCalculator rook = new BishopMovesCalculator();
+                moves = rook.pieceMoves(this.board, this.myPosition);
+                break;
+            case PAWN:
+                BishopMovesCalculator pawn = new BishopMovesCalculator();
+                moves = pawn.pieceMoves(this.board, this.myPosition);
+                break;
+            default:
+                break;
+        }
+//        BishopMovesCalculator bishop = new BishopMovesCalculator();
+//        moves = bishop.pieceMoves(this.board, this.myPosition);
 
         return moves;
 //        throw new RuntimeException("Not implemented");
