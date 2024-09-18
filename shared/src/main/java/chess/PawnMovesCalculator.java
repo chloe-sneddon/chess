@@ -46,7 +46,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
 
 //      check to see if there is a piece directly in front
         if (chessBoard.getPiece(newPosition) == null) {
-            ChessMove tmpMove = new ChessMove(permStart, newPosition, ChessPiece.PieceType.PAWN);
+            ChessMove tmpMove = new ChessMove(permStart, newPosition, null);
             chessMoveCollection.add(tmpMove);
 
 //          if () color is white and in start (row 2) then check for double
@@ -56,7 +56,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
                 ChessPosition doublePosition = new ChessPosition(row, column);
                 if (permStart.getRow() == 2){
                     if(chessBoard.getPiece(doublePosition) == null){
-                        ChessMove doubleMove = new ChessMove(permStart, doublePosition, ChessPiece.PieceType.PAWN);
+                        ChessMove doubleMove = new ChessMove(permStart, doublePosition, null);
                         chessMoveCollection.add(doubleMove);
                     }
                 }
@@ -68,7 +68,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
                 ChessPosition doublePosition = new ChessPosition(row, column);
                 if (permStart.getRow() == 7){
                     if(chessBoard.getPiece(doublePosition) == null){
-                        ChessMove doubleMove = new ChessMove(permStart, doublePosition, ChessPiece.PieceType.PAWN);
+                        ChessMove doubleMove = new ChessMove(permStart, doublePosition, null);
                         chessMoveCollection.add(doubleMove);
                     }
                 }
@@ -92,7 +92,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
 //            if piece is enemy color then they can move there
             if(chessBoard.getPiece(diagonalPosition).getTeamColor() != chessPiece.getTeamColor()) {
 //                can capture piece
-                ChessMove tmpMove = new ChessMove(permStart, diagonalPosition, ChessPiece.PieceType.PAWN);
+                ChessMove tmpMove = new ChessMove(permStart, diagonalPosition, null);
                 chessMoveCollection.add(tmpMove);
             }
         }
@@ -110,7 +110,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
         if (chessBoard.getPiece(diagonalPosition2) != null) {
 //            if piece is enemy color then they can move there
             if(chessBoard.getPiece(diagonalPosition2).getTeamColor() != chessPiece.getTeamColor()) {
-                ChessMove tmpMove = new ChessMove(permStart, diagonalPosition2, ChessPiece.PieceType.PAWN);
+                ChessMove tmpMove = new ChessMove(permStart, diagonalPosition2, null);
                 chessMoveCollection.add(tmpMove);
             }
         }

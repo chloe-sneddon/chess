@@ -70,7 +70,7 @@ public class ChessPiece {
                 moves = king.pieceMoves(this.board, this.myPosition);
                 break;
             case QUEEN:
-                BishopMovesCalculator queen = new BishopMovesCalculator();
+                QueenMovesCalculator queen = new QueenMovesCalculator();
                 moves = queen.pieceMoves(this.board, this.myPosition);
                 break;
             case BISHOP:
