@@ -86,7 +86,7 @@ public class ChessPiece {
                 moves = rook.pieceMoves(this.board, this.myPosition);
                 break;
             case PAWN:
-                BishopMovesCalculator pawn = new BishopMovesCalculator();
+                PawnMovesCalculator pawn = new PawnMovesCalculator();
                 moves = pawn.pieceMoves(this.board, this.myPosition);
                 break;
             default:

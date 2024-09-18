@@ -54,12 +54,12 @@ public class KnightMovesCalculator implements PieceMovesCalculator {
 //              can capture
             else if (chessPiece.getTeamColor() != chessBoard.getPiece(newPosition).getTeamColor()) {
 //                    TODO: can capture
-                ChessMove tmpMove = new ChessMove(permStart, newPosition, ChessPiece.PieceType.BISHOP);
+                ChessMove tmpMove = new ChessMove(permStart, newPosition, ChessPiece.PieceType.KNIGHT);
                 chessMoveCollection.add(tmpMove);
             }
         }
         else{
-            ChessMove tmpMove = new ChessMove(permStart, newPosition, ChessPiece.PieceType.BISHOP);
+            ChessMove tmpMove = new ChessMove(permStart, newPosition, ChessPiece.PieceType.KNIGHT);
             chessMoveCollection.add(tmpMove);
         }
     }
