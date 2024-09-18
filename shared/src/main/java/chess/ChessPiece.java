@@ -63,16 +63,10 @@ public class ChessPiece {
         this.board = board;
         this.myPosition = myPosition;
         Collection<ChessMove> moves = new ArrayList<>();
-//        TODO: fix this collection so it returns something
-
-        System.out.println("--- in pieceMoves() ");
-
-//       TODO: Figure out which pieceType it is and which class to use
-
 
         switch (PieceType) {
             case KING:
-                BishopMovesCalculator king = new BishopMovesCalculator();
+                KingMovesCalculator king = new KingMovesCalculator();
                 moves = king.pieceMoves(this.board, this.myPosition);
                 break;
             case QUEEN:
