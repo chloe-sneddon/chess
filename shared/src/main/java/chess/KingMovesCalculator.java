@@ -12,7 +12,6 @@ public class KingMovesCalculator implements PieceMovesCalculator {
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
-        System.out.print("---King Calculator()---");
 
 //        Calculate positive, positive diagonals
         permStart = position;
