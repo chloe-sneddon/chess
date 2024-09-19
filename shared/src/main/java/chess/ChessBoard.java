@@ -1,6 +1,7 @@
 package chess;
 //this is me testing commit to git using the github desktop app
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -28,11 +29,10 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-//        TODO: FIX
         squares[position.getRow()-1][position.getColumn()-1] = piece;
     }
     public void removePiece(ChessPosition position, ChessPiece piece) {
-//
+        squares[position.getRow()-1][position.getColumn()-1] = null;
     }
 
 
@@ -53,7 +53,10 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
-        throw new RuntimeException("Not implemented");
+//        clear board
+        this.squares = new ChessPiece[8][8];
+        AutomaticPieceLocations boardReset = new AutomaticPieceLocations(this);
+        boardReset.resetBoard();
     }
 
     @Override
@@ -71,8 +74,18 @@ public class ChessBoard {
 
     @Override
     public String toString() {
-        return "ChessBoard{" +
-                "squares=" + Arrays.toString(squares) +
-                '}';
+//        String[][] lines = new String[8][8];
+        String lines = "";
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(squares[i][j] == null){
+                    lines = lines + "null";
+                }
+                else {
+                    lines = lines + squares[i][j].toString();
+                }
+            }
+        }
+        return lines;
     }
 }

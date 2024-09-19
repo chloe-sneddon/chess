@@ -38,7 +38,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
         if(row > 8 | column > 8){
             return;
         }
-        if(row < 0 || column < 0){
+        if(row < 1 || column < 1){
             return;
         }
 
@@ -83,7 +83,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
         if(row > 8 | column > 8){
             return;
         }
-        if(row < 0 || column < 0){
+        if(row < 1 || column < 1){
             return;
         }
 
@@ -102,7 +102,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
         if(row > 8 | column > 8){
             return;
         }
-        if(row < 0 || column < 0){
+        if(row < 1 || column < 1){
             return;
         }
 
