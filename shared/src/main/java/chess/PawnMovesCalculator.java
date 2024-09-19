@@ -46,36 +46,47 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
 
 //      check to see if there is a piece directly in front
         if (chessBoard.getPiece(newPosition) == null) {
-            ChessMove tmpMove = new ChessMove(permStart, newPosition, null);
-            chessMoveCollection.add(tmpMove);
+//            if white reaches other side add promotion options
+            if((chessPiece.getTeamColor() == ChessGame.TeamColor.WHITE) & (newPosition.getRow() == 8)){
+//                TODO: fix promotion type
+                ChessMove tmpMove = new ChessMove(permStart, newPosition, ChessPiece.PieceType.QUEEN);
+                chessMoveCollection.add(tmpMove);
+            }
+//            if black reaches other side, add promotion options
+            else if ((chessPiece.getTeamColor() == ChessGame.TeamColor.BLACK)& (newPosition.getRow() == 0)) {
+//                TODO: FIX promotion type
+                ChessMove tmpMove = new ChessMove(permStart, newPosition,null);
+                chessMoveCollection.add(tmpMove);
+            }
+//            this is still a valid move
+            else{
+                ChessMove tmpMove = new ChessMove(permStart, newPosition, null);
+                chessMoveCollection.add(tmpMove);
+            }
 
 //          if () color is white and in start (row 2) then check for double
-            if(chessPiece.getTeamColor() == ChessGame.TeamColor.WHITE){
+            if((chessPiece.getTeamColor() == ChessGame.TeamColor.WHITE)&(permStart.getRow() == 2)){
 //            if color at start position, and the double position is not blocked, add piece move to collection
                 row = row + 1;
                 ChessPosition doublePosition = new ChessPosition(row, column);
-                if (permStart.getRow() == 2){
-                    if(chessBoard.getPiece(doublePosition) == null){
-                        ChessMove doubleMove = new ChessMove(permStart, doublePosition, null);
-                        chessMoveCollection.add(doubleMove);
-                    }
+                if(chessBoard.getPiece(doublePosition) == null){
+                    ChessMove doubleMove = new ChessMove(permStart, doublePosition, null);
+                    chessMoveCollection.add(doubleMove);
                 }
             }
 //            if () color is black and in start (row 7) then check for double
-            if(chessPiece.getTeamColor() == ChessGame.TeamColor.BLACK){
+            if((chessPiece.getTeamColor() == ChessGame.TeamColor.BLACK)&(permStart.getRow() == 7)){
 //            if color at start position, and the double position is not blocked, add piece move to collection
                 row = row - 1;
                 ChessPosition doublePosition = new ChessPosition(row, column);
-                if (permStart.getRow() == 7){
-                    if(chessBoard.getPiece(doublePosition) == null){
-                        ChessMove doubleMove = new ChessMove(permStart, doublePosition, null);
-                        chessMoveCollection.add(doubleMove);
-                    }
+                if(chessBoard.getPiece(doublePosition) == null){
+                    ChessMove doubleMove = new ChessMove(permStart, doublePosition, null);
+                    chessMoveCollection.add(doubleMove);
                 }
             }
 
         }
-//  check to see if there is any piece there. cannot move forward whether black or white
+
 //        check right diagonal
         row = permStart.getRow() + LorR;
         column = permStart.getColumn() + 1;
@@ -92,6 +103,18 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
 //            if piece is enemy color then they can move there
             if(chessBoard.getPiece(diagonalPosition).getTeamColor() != chessPiece.getTeamColor()) {
 //                can capture piece
+//              if new row is 8 for white or 0 for black then add promotion possibilities
+                if((chessPiece.getTeamColor() == ChessGame.TeamColor.WHITE) & (diagonalPosition.getRow() == 8)){
+//                    TODO: Fix promotion type
+                    ChessMove tmpMove = new ChessMove(permStart, newPosition, ChessPiece.PieceType.QUEEN);
+                    chessMoveCollection.add(tmpMove);
+                }
+//            if black reaches other side, add promotion options
+                else if ((chessPiece.getTeamColor() == ChessGame.TeamColor.BLACK)& (newPosition.getRow() == 0)) {
+//                TODO: FIX
+                    ChessMove tmpMove = new ChessMove(permStart, newPosition,null);
+                    chessMoveCollection.add(tmpMove);
+                }
                 ChessMove tmpMove = new ChessMove(permStart, diagonalPosition, null);
                 chessMoveCollection.add(tmpMove);
             }
