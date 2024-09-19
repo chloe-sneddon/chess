@@ -48,15 +48,11 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
         if (chessBoard.getPiece(newPosition) == null) {
 //            if white reaches other side add promotion options
             if((chessPiece.getTeamColor() == ChessGame.TeamColor.WHITE) & (newPosition.getRow() == 8)){
-//                TODO: fix promotion type
-                ChessMove tmpMove = new ChessMove(permStart, newPosition, ChessPiece.PieceType.QUEEN);
-                chessMoveCollection.add(tmpMove);
+                promotionMoves(newPosition);
             }
 //            if black reaches other side, add promotion options
-            else if ((chessPiece.getTeamColor() == ChessGame.TeamColor.BLACK)& (newPosition.getRow() == 0)) {
-//                TODO: FIX promotion type
-                ChessMove tmpMove = new ChessMove(permStart, newPosition,null);
-                chessMoveCollection.add(tmpMove);
+            else if ((chessPiece.getTeamColor() == ChessGame.TeamColor.BLACK)& (newPosition.getRow() == 1)) {
+                promotionMoves(newPosition);
             }
 //            this is still a valid move
             else{
@@ -105,18 +101,16 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
 //                can capture piece
 //              if new row is 8 for white or 0 for black then add promotion possibilities
                 if((chessPiece.getTeamColor() == ChessGame.TeamColor.WHITE) & (diagonalPosition.getRow() == 8)){
-//                    TODO: Fix promotion type
-                    ChessMove tmpMove = new ChessMove(permStart, newPosition, ChessPiece.PieceType.QUEEN);
-                    chessMoveCollection.add(tmpMove);
+                    promotionMoves(diagonalPosition);
                 }
 //            if black reaches other side, add promotion options
-                else if ((chessPiece.getTeamColor() == ChessGame.TeamColor.BLACK)& (newPosition.getRow() == 0)) {
-//                TODO: FIX
-                    ChessMove tmpMove = new ChessMove(permStart, newPosition,null);
-                    chessMoveCollection.add(tmpMove);
+                else if ((chessPiece.getTeamColor() == ChessGame.TeamColor.BLACK)& (diagonalPosition.getRow() == 1)) {
+                    promotionMoves(diagonalPosition);
                 }
+                else{
                 ChessMove tmpMove = new ChessMove(permStart, diagonalPosition, null);
                 chessMoveCollection.add(tmpMove);
+                }
             }
         }
 //        check left diagonal
@@ -131,12 +125,38 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
 
         ChessPosition diagonalPosition2 = new ChessPosition(row, column);
         if (chessBoard.getPiece(diagonalPosition2) != null) {
-//            if piece is enemy color then they can move there
+//           if piece is enemy color then they can move there
             if(chessBoard.getPiece(diagonalPosition2).getTeamColor() != chessPiece.getTeamColor()) {
-                ChessMove tmpMove = new ChessMove(permStart, diagonalPosition2, null);
-                chessMoveCollection.add(tmpMove);
+//                can capture piece
+//              if new row is 8 for white or 0 for black then add promotion possibilities
+                if((chessPiece.getTeamColor() == ChessGame.TeamColor.WHITE) & (diagonalPosition2.getRow() == 8)){
+                    promotionMoves(diagonalPosition2);
+                }
+//            if black reaches other side, add promotion options
+                else if ((chessPiece.getTeamColor() == ChessGame.TeamColor.BLACK)& (diagonalPosition2.getRow() == 1)) {
+                    promotionMoves(diagonalPosition2);
+                }
+                else{
+                    ChessMove tmpMove = new ChessMove(permStart, diagonalPosition2, null);
+                    chessMoveCollection.add(tmpMove);
+                }
             }
         }
+
+    }
+    private void promotionMoves(ChessPosition promoPosition){
+//        move promo queen
+        ChessMove qMove = new ChessMove(permStart, promoPosition, ChessPiece.PieceType.QUEEN);
+        chessMoveCollection.add(qMove);
+//        move promo rook
+        ChessMove rMove = new ChessMove(permStart, promoPosition, ChessPiece.PieceType.ROOK);
+        chessMoveCollection.add(rMove);
+//        move promo bishop
+        ChessMove bMove = new ChessMove(permStart, promoPosition, ChessPiece.PieceType.BISHOP);
+        chessMoveCollection.add(bMove);
+//        move promo knight
+        ChessMove kMove = new ChessMove(permStart, promoPosition, ChessPiece.PieceType.KNIGHT);
+        chessMoveCollection.add(kMove);
 
     }
 
