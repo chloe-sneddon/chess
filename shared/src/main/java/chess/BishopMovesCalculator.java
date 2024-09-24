@@ -50,7 +50,6 @@ public class BishopMovesCalculator implements PieceMovesCalculator {
                     break;
                 }
     //          if there is a piece there of opposite color
-
                 else if (chessPiece.getTeamColor() != chessBoard.getPiece(newPosition).getTeamColor()) {
                     ChessMove tmpMove = new ChessMove(permStart, newPosition, null);
                     chessMoveCollection.add(tmpMove);
@@ -58,7 +57,6 @@ public class BishopMovesCalculator implements PieceMovesCalculator {
                     break;
                 }
             }
-
             ChessMove tmpMove = new ChessMove(permStart, newPosition, null);
             chessMoveCollection.add(tmpMove);
             tmpPosition = newPosition;

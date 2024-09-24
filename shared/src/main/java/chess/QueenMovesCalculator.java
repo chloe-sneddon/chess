@@ -18,7 +18,7 @@ public class QueenMovesCalculator implements PieceMovesCalculator{
 //        calculate diagonal moves
         BishopMovesCalculator diagonalMoves = new BishopMovesCalculator();
         chessMoveCollection = diagonalMoves.pieceMoves(chessBoard, permStart);
-        System.out.println(chessMoveCollection);
+//        System.out.println(chessMoveCollection);
 //        calculate straight moves
         RookMovesCalculator rookMoves = new RookMovesCalculator();
         chessMoveCollection.addAll(rookMoves.pieceMoves(chessBoard, permStart));
