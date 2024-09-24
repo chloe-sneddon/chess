@@ -14,9 +14,9 @@ public class ChessMove {
     private ChessPiece.PieceType promotionPiece;
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece) {
-            this.startPosition = startPosition;
-            this.endPosition = endPosition;
-            this.promotionPiece = promotionPiece;
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
+        this.promotionPiece = promotionPiece;
     }
 
     /**
@@ -42,21 +42,13 @@ public class ChessMove {
     public ChessPiece.PieceType getPromotionPiece() {
         return promotionPiece;
     }
-    public void setPromotionPiece(ChessPiece.PieceType promotionPiece) {
-        this.promotionPiece = promotionPiece;
-    }
-
-//    @Override
-//    public String toString() {
-//        return super.toString();
-//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessMove chessMove = (ChessMove) o;
-        return Objects.equals(startPosition, chessMove.startPosition) && Objects.equals(endPosition, chessMove.endPosition) && Objects.equals(promotionPiece, chessMove.promotionPiece);
+        return Objects.equals(startPosition, chessMove.startPosition) && Objects.equals(endPosition, chessMove.endPosition) && promotionPiece == chessMove.promotionPiece;
     }
 
     @Override
@@ -66,6 +58,10 @@ public class ChessMove {
 
     @Override
     public String toString() {
-        return startPosition + ", " + endPosition;
+        return "{" + startPosition +
+                "} -> {" + endPosition +
+                "}(" + promotionPiece +
+                ')';
     }
+
 }

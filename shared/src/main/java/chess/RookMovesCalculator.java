@@ -2,67 +2,61 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public class RookMovesCalculator implements PieceMovesCalculator {
-    private Collection<ChessMove> chessMoveCollection;
-    private ChessPosition permStart;
-    private ChessBoard chessBoard;
-    private ChessPiece chessPiece;
+public class RookMovesCalculator {
+    private Collection<ChessMove> possibleMoves;
+    private ChessPosition startPosition;
+    private ChessBoard board;
+    private ChessPiece piece;
 
-    @Override
-    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
-        permStart = position;
-        chessBoard = board;
-        chessMoveCollection = new ArrayList<>();
-        chessPiece = board.getPiece(position);
+    RookMovesCalculator(){}
+    public Collection<ChessMove> CalculateMoves(ChessBoard board, ChessPiece piece, ChessPosition startPosition){
+        this.startPosition = startPosition;
+        this.board = board;
+        this.piece = piece;
+        possibleMoves = new ArrayList<>();
 
-//      forward
-        calcMove(1, 0);
-//      backward
-        calcMove(-1, 0);
-//      left
-        calcMove(0, -1);
-//      right
-        calcMove(0, 1);
+        calcMoves(1,0);
+        calcMoves(-1,0);
+        calcMoves(0,-1);
+        calcMoves(0,1);
 
-        return chessMoveCollection;
+        return possibleMoves;
     }
-
-    private void calcMove(int rowInc, int columnInc) {
-
-        ChessPosition tmpPosition = permStart;
-
-        for (int i = 0; i < 8; i++) {
-            int row = tmpPosition.getRow() + rowInc;
-            int column = tmpPosition.getColumn() + columnInc;
-            if (row > 8 | column > 8) {
-                break;
+    private void calcMoves(int rowInc, int colInc){
+//        calculate possible move
+        int row = startPosition.getRow();
+        int col = startPosition.getColumn();
+//        ChessPosition tmpPosition = new ChessPosition(row,col);
+        for(int i  = 0; i < 8; i++){
+            row = row + rowInc;
+            col = col + colInc;
+            ChessPosition newPosition = new ChessPosition(row,col);
+            //        check to see if it's out of bounds
+            if (row < 1 | col < 1){
+                return;
             }
-            if(row < 1 | column < 1) {
-                break;
+            if(row > 8 | col > 8){
+                return;
             }
-            ChessPosition newPosition = new ChessPosition(row, column);
-//          check the board at newPosition
-            if (chessBoard.getPiece(newPosition) != null) {
-//              piece is blocked by self
-                if (chessPiece.getTeamColor() == chessBoard.getPiece(newPosition).getTeamColor()) {
+            //        check to see if there is a piece in the way
+            if(board.getPiece(newPosition) != null){
+//                if piece is enemy piece can capture but loop breaks
+                if(board.getPiece(newPosition).getTeamColor() != piece.getTeamColor()){
+                    ChessMove newMove = new ChessMove(startPosition,newPosition,null);
+                    possibleMoves.add(newMove);
                     break;
                 }
-                //          if there is a piece there of opposite color
-
-                else if (chessPiece.getTeamColor() != chessBoard.getPiece(newPosition).getTeamColor()) {
-                    ChessMove tmpMove = new ChessMove(permStart, newPosition, null);
-                    chessMoveCollection.add(tmpMove);
-                    tmpPosition = newPosition;
+                else{
                     break;
                 }
+//                else break;
             }
-
-            ChessMove tmpMove = new ChessMove(permStart, newPosition, null);
-            chessMoveCollection.add(tmpMove);
-            tmpPosition = newPosition;
-
+//            still a valid move
+            ChessMove newMove = new ChessMove(startPosition,newPosition,null);
+            possibleMoves.add(newMove);
+            //        if there is a piece in the way mark it as possible capture and terminate line
         }
+//
     }
 }

@@ -2,64 +2,60 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public class KingMovesCalculator implements PieceMovesCalculator {
-    private Collection<ChessMove> chessMoveCollection;
-    private ChessPosition permStart;
-    private ChessBoard chessBoard;
-    private ChessPiece chessPiece;
+public class KingMovesCalculator {
+    private Collection<ChessMove> possibleMoves;
+    private ChessPosition startPosition;
+    private ChessBoard board;
+    private ChessPiece piece;
 
-    @Override
-    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
+    KingMovesCalculator(){}
+    public Collection<ChessMove> CalculateMoves(ChessBoard board, ChessPiece piece, ChessPosition startPosition){
+        this.startPosition = startPosition;
+        this.board = board;
+        this.piece = piece;
+        possibleMoves = new ArrayList<>();
 
-//        Calculate positive, positive diagonals
-        permStart = position;
-        chessBoard = board;
-        chessMoveCollection = new ArrayList<>();
-        chessPiece = board.getPiece(position);
-//        diagonal moves
-        calcMove(1, 1);
-        calcMove(-1, -1);
-        calcMove(1, -1);
-        calcMove(-1, 1);
-//        t-moves
-        calcMove(1, 0);
-        calcMove(-1, 0);
-        calcMove(0, -1);
-        calcMove(0, 1);
+//        Diagonals
+        calcMoves(1,1);
+        calcMoves(-1,1);
+        calcMoves(1,-1);
+        calcMoves(-1,-1);
 
-        return chessMoveCollection;
+//        Straights
+        calcMoves(1,0);
+        calcMoves(-1,0);
+        calcMoves(0,-1);
+        calcMoves(0,1);
+
+        return possibleMoves;
     }
-
-    private void calcMove(int rowInc, int columnInc) {
-
-        int newRow = permStart.getRow() + rowInc;
-        int newColumn = permStart.getColumn() + columnInc;
-
-            if (newRow > 8 | newColumn > 8) {
+    private void calcMoves(int rowInc, int colInc){
+//        calculate possible move
+        int row = startPosition.getRow();
+        int col = startPosition.getColumn();
+//        ChessPosition tmpPosition = new ChessPosition(row,col);
+            row = row + rowInc;
+            col = col + colInc;
+            ChessPosition newPosition = new ChessPosition(row,col);
+            //        check to see if it's out of bounds
+            if (row < 1 | col < 1){
                 return;
             }
-            if(newRow < 1 | newColumn < 1) {
+            if(row > 8 | col > 8){
                 return;
             }
-            ChessPosition newPosition = new ChessPosition(newRow, newColumn);
-//          check the board at newPosition
-            if (chessBoard.getPiece(newPosition) != null) {
-//              piece is blocked by self
-                if (chessPiece.getTeamColor() == chessBoard.getPiece(newPosition).getTeamColor()) {
-                    return;
-                }
-//              can capture
-                else if (chessPiece.getTeamColor() != chessBoard.getPiece(newPosition).getTeamColor()) {
-//                    TODO: King can capture
-                    ChessMove tmpMove = new ChessMove(permStart, newPosition, null);
-                    chessMoveCollection.add(tmpMove);
+            //        check to see if there is a piece in the way
+            if(board.getPiece(newPosition) != null){
+//                if piece is enemy piece can capture
+                if(board.getPiece(newPosition).getTeamColor() != piece.getTeamColor()){
+                    ChessMove newMove = new ChessMove(startPosition,newPosition,null);
+                    possibleMoves.add(newMove);
                 }
             }
-            else{
-                ChessMove tmpMove = new ChessMove(permStart, newPosition, null);
-                chessMoveCollection.add(tmpMove);
+            else {
+                ChessMove newMove = new ChessMove(startPosition, newPosition, null);
+                possibleMoves.add(newMove);
             }
     }
 }

@@ -3,7 +3,6 @@ package chess;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-import java.io.*;
 
 /**
  * Represents a single chess piece
@@ -12,18 +11,12 @@ import java.io.*;
  * signature of the existing methods.
  */
 public class ChessPiece {
-
-    private ChessBoard board;
-    private ChessPosition myPosition;
-    private final ChessGame.TeamColor TeamColor;
-    private final PieceType PieceType;
+    private ChessGame.TeamColor pieceColor;
+    private ChessPiece.PieceType pieceType;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
-//       TODO: set chessBoard and ChessPosition using an override function?
-//             *note: board and position are changeable throughout the game
-//                    and are called in pieceMoves method below
-        this.TeamColor = pieceColor;
-        this.PieceType = type;
+        this.pieceColor = pieceColor;
+        this.pieceType = type;
     }
 
     /**
@@ -42,14 +35,14 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        return TeamColor;
+        return pieceColor;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        return PieceType;
+        return pieceType;
     }
 
     /**
@@ -60,44 +53,37 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        this.board = board;
-        this.myPosition = myPosition;
         Collection<ChessMove> moves = new ArrayList<>();
+        ChessPiece piece = board.getPiece(myPosition);
 
-        switch (PieceType) {
+        switch (pieceType){
             case KING:
                 KingMovesCalculator king = new KingMovesCalculator();
-                moves = king.pieceMoves(this.board, this.myPosition);
+                moves = king.CalculateMoves(board,piece,myPosition);
+                break;
+            case PAWN:
+                PawnMoveCalculator pawn = new PawnMoveCalculator();
+                moves = pawn.CalculateMoves(board,piece,myPosition);
                 break;
             case QUEEN:
                 QueenMovesCalculator queen = new QueenMovesCalculator();
-                moves = queen.pieceMoves(this.board, this.myPosition);
+                moves = queen.CalculateMoves(board,piece,myPosition);
                 break;
             case BISHOP:
                 BishopMovesCalculator bishop = new BishopMovesCalculator();
-                moves = bishop.pieceMoves(this.board, this.myPosition);
+                moves = bishop.CalculateMoves(board,piece,myPosition);
                 break;
             case KNIGHT:
                 KnightMovesCalculator knight = new KnightMovesCalculator();
-                moves = knight.pieceMoves(this.board, this.myPosition);
+                moves = knight.CalculateMoves(board,piece,myPosition);
                 break;
             case ROOK:
                 RookMovesCalculator rook = new RookMovesCalculator();
-                moves = rook.pieceMoves(this.board, this.myPosition);
-                break;
-            case PAWN:
-                PawnMovesCalculator pawn = new PawnMovesCalculator();
-                moves = pawn.pieceMoves(this.board, this.myPosition);
-                break;
-            default:
+                moves = rook.CalculateMoves(board,piece,myPosition);
                 break;
         }
-//        BishopMovesCalculator bishop = new BishopMovesCalculator();
-//        moves = bishop.pieceMoves(this.board, this.myPosition);
 
-        return moves;
-//        throw new RuntimeException("Not implemented");
-//        return new ArrayList<ChessMove>();
+            return moves;
     }
 
     @Override
@@ -105,22 +91,19 @@ public class ChessPiece {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessPiece that = (ChessPiece) o;
-        return TeamColor == that.TeamColor && PieceType == that.PieceType;
+        return pieceColor == that.pieceColor && pieceType == that.pieceType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(TeamColor, PieceType);
+        return Objects.hash(pieceColor, pieceType);
     }
 
     @Override
     public String toString() {
         return "ChessPiece{" +
-                ", TeamColor=" + TeamColor +
-                ", PieceType=" + PieceType +
+                "pieceColor=" + pieceColor +
+                ", pieceType=" + pieceType +
                 '}';
     }
-//    private
-
-
 }

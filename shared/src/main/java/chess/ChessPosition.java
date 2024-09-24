@@ -32,11 +32,10 @@ public class ChessPosition {
     public int getColumn() {
         return col;
     }
-
-    public void setRow(int row) {
+    public void setRow(int row){
         this.row = row;
     }
-    public void setcol(int col) {
+    public void setCol(int col){
         this.col = col;
     }
 
@@ -55,6 +54,7 @@ public class ChessPosition {
 
     @Override
     public String toString() {
-        return "(" + row + ", " + col + ')';
+        return "row=" + row +
+                ", col=" + col;
     }
 }

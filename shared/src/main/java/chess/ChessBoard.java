@@ -1,5 +1,4 @@
 package chess;
-//this is me testing commit to git using the github desktop app
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,16 +11,12 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessBoard {
-    private ChessPiece[][] squares = new ChessPiece[8][8];
+    private ChessPiece[][] board = new ChessPiece[8][8];
 
-    public ChessBoard() {
-//        squares = null;
-//      initializeBoard();
+    public ChessBoard() {}
+    public ChessPiece[][] getBoard(){
+        return this.board;
     }
-//    public ChessBoard(ChessBoard copy) {
-//        this(copy.value);
-//    }
-
     /**
      * Adds a chess piece to the chessboard
      *
@@ -29,12 +24,8 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        squares[position.getRow()-1][position.getColumn()-1] = piece;
+        board[position.getRow() - 1][position.getColumn() -1] = piece;
     }
-    public void removePiece(ChessPosition position, ChessPiece piece) {
-        squares[position.getRow()-1][position.getColumn()-1] = null;
-    }
-
 
     /**
      * Gets a chess piece on the chessboard
@@ -45,7 +36,7 @@ public class ChessBoard {
      */
     public ChessPiece getPiece(ChessPosition position) {
 
-        return squares[position.getRow() -1][position.getColumn()-1];
+        return board[position.getRow()-1][position.getColumn()-1];
     }
 
     /**
@@ -53,10 +44,9 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
-//        clear board
-        this.squares = new ChessPiece[8][8];
-        AutomaticPieceLocations boardReset = new AutomaticPieceLocations(this);
-        boardReset.resetBoard();
+        DefaultBoard resetBoard = new DefaultBoard();
+        ChessBoard newBoard = resetBoard.SetDefaultBoard();
+        this.board = newBoard.getBoard();
     }
 
     @Override
@@ -64,28 +54,27 @@ public class ChessBoard {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessBoard that = (ChessBoard) o;
-        return Objects.deepEquals(squares, that.squares);
+        return Objects.deepEquals(board, that.board);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.deepHashCode(squares);
+        return Arrays.deepHashCode(board);
     }
 
     @Override
     public String toString() {
-//        String[][] lines = new String[8][8];
-        String lines = "";
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                if(squares[i][j] == null){
-                    lines = lines + "null";
+        String returnVal = "";
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                if(board[i][j] == null){
+                    returnVal = returnVal + "row: " + i+1 + " col: " + j+1 + " [null] ";
                 }
-                else {
-                    lines = lines + squares[i][j].toString();
+                else{
+                    returnVal = returnVal + "row: " + i+1 + " col: " + j+1 + " [" + board[i][j].toString() + "] ";
                 }
             }
         }
-        return lines;
+        return returnVal;
     }
 }
