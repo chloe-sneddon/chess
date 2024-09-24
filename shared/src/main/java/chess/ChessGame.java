@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -11,15 +12,22 @@ import java.util.Collection;
 public class ChessGame {
     private ChessBoard board;
     private InvalidMoveException invalidMoveException;
+    private TeamColor teamTurn;
+//    private
+
     public ChessGame() {
 
     }
+//    to decouple, implement addPiece and removePiece here
+//    https://docs.google.com/presentation/d/1dncxSAgnIqjV9RNzGR94EWVltJiCApqC3EvNPqz97-E/edit#slide=id.g286d6837b19_1_98
+//    use this slide (27) for why
+    
 
     /**
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        throw new RuntimeException("Not implemented");
+        return teamTurn;
     }
 
     /**
@@ -28,7 +36,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        this.teamTurn = team;
     }
 
     /**
@@ -47,7 +55,10 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+//        TODO: check if friendly king is put in check in any of the moves and remove it from the moves array
+        Collection <ChessMove> moves = new ArrayList<>();
+        moves = board.getPiece(startPosition).pieceMoves(board,startPosition);
+        return moves;
     }
 
     /**
@@ -57,6 +68,15 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+//        Pawn promotion is handled here!
+//        try{
+    //        if move is in validMoves (call it with move.getStartPosition())
+//        and it doesnt leave the team’s king in danger
+//        and it’s  the corresponding team's turn.
+    //        then remove that piece from start position and place on end position
+    //        note, if there is a piece that was there previously, do we need to keep track of it as being captured?
+//        }
+//        else throws error
         throw new RuntimeException("Not implemented");
     }
 
@@ -67,6 +87,11 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+//        check all possible piece moves from the other team,
+//        if any of them can capture king, king is in check
+    //        if king is in check, call isInCheckmate(teamColor);
+//              if returns true then isInCheck is false
+//              if returns false then isInCheck is true
         throw new RuntimeException("Not implemented");
     }
 
@@ -77,6 +102,11 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
+//        this method is only called when the king is in check
+//        check all possible teamColor moves and see if king can escape
+//        or another piece can be placed in path
+//        if there is no move possible, then return true
+//        else return false
         throw new RuntimeException("Not implemented");
     }
 
@@ -88,6 +118,8 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+//      check all possible moves for teamColor if is empty, then return false
+//      (this would be valid moves because it takes into account moving into check)
         throw new RuntimeException("Not implemented");
     }
 
@@ -97,7 +129,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        throw new RuntimeException("Not implemented");
+       this.board = board;
     }
 
     /**
@@ -106,6 +138,6 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
-        throw new RuntimeException("Not implemented");
+        return board;
     }
 }
