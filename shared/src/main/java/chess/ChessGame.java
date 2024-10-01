@@ -3,6 +3,8 @@ package chess;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
+
 /**
  * For a class that can manage a chess game, making moves on a board
  * <p>
@@ -56,9 +58,26 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
 //        TODO: check if friendly king is put in check in any of the moves and remove it from the moves array
-        Collection <ChessMove> moves = new ArrayList<>();
-        moves = board.getPiece(startPosition).pieceMoves(board,startPosition);
-        return moves;
+//          JUST ONE PIECE
+//        if the move completed does not put friendly king in check
+
+        Collection <ChessMove> moves = board.getPiece(startPosition).pieceMoves(board,startPosition);
+        Collection <ChessMove> filteredMoves = new ArrayList<>();
+
+        for (ChessMove move : moves) {
+            ChessBoard copyBoard = new ChessBoard(board);
+            copyBoard.movePiece(move);
+//          if the king is not put in check, then add the move to filteredMoves;
+            if(!isInCheck(this.teamTurn)){
+                filteredMoves.add(move);
+            }
+        }
+
+        if(filteredMoves.isEmpty()){
+            filteredMoves = null;
+        }
+
+        return filteredMoves;
     }
 
     /**
@@ -77,6 +96,7 @@ public class ChessGame {
     //        note, if there is a piece that was there previously, do we need to keep track of it as being captured?
 //        }
 //        else throws error
+//        changes team turn after making move
         throw new RuntimeException("Not implemented");
     }
 

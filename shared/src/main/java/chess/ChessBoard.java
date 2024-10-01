@@ -14,6 +14,27 @@ public class ChessBoard {
     private ChessPiece[][] board = new ChessPiece[8][8];
 
     public ChessBoard() {}
+    public ChessBoard(ChessBoard copy) {
+        this.board = copy.getBoard();
+    }
+
+    public void movePiece(ChessMove newMove){
+        ChessPiece chessPiece = getPiece(newMove.getStartPosition());
+//        TODO: Keep track of captured pieces (uncomment capturedPiece and if statement)
+//        ChessPiece capturedPiece = null;
+
+//        remove piece from start position
+        removePiece(newMove.getEndPosition());
+
+////        check to see if there is a piece in the new position
+//        if(getPiece(newMove.getEndPosition()) != null){
+//            capturedPiece = getPiece(newMove.getEndPosition());
+//        }
+//        add piece to new position
+        addPiece(newMove.getEndPosition(),chessPiece);
+
+    }
+
     public ChessPiece[][] getBoard(){
         return this.board;
     }
@@ -25,6 +46,9 @@ public class ChessBoard {
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
         board[position.getRow() - 1][position.getColumn() -1] = piece;
+    }
+    public void removePiece(ChessPosition position){
+        board[position.getRow() - 1][position.getColumn() -1] = null;
     }
 
     /**
