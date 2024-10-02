@@ -2,7 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.Objects;
 
 
 /**
@@ -63,12 +63,13 @@ public class ChessGame {
 
         Collection <ChessMove> moves = board.getPiece(startPosition).pieceMoves(board,startPosition);
         Collection <ChessMove> filteredMoves = new ArrayList<>();
+        TeamColor color = board.getPiece(startPosition).getTeamColor();
 
         for (ChessMove move : moves) {
             ChessBoard copyBoard = new ChessBoard(board);
             copyBoard.movePiece(move);
 //          if the king is not put in check, then add the move to filteredMoves;
-            if(!isInCheck(this.teamTurn)){
+            if(!isInCheck(color)){
                 filteredMoves.add(move);
             }
         }
@@ -88,6 +89,7 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
 //        Pawn promotion is handled here!
+//        Collection<ChessMove> moveList = validMoves(move.getStartPosition());
 //        try{
     //        if move is in validMoves (call it with move.getStartPosition())
 //        and it doesnt leave the team’s king in danger
@@ -159,5 +161,27 @@ public class ChessGame {
      */
     public ChessBoard getBoard() {
         return board;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessGame chessGame = (ChessGame) o;
+        return Objects.equals(board, chessGame.board) && Objects.equals(invalidMoveException, chessGame.invalidMoveException) && teamTurn == chessGame.teamTurn;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(board, invalidMoveException, teamTurn);
+    }
+
+    @Override
+    public String toString() {
+        return "ChessGame{" +
+                "board=" + board +
+                ", invalidMoveException=" + invalidMoveException +
+                ", teamTurn=" + teamTurn +
+                '}';
     }
 }
