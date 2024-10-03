@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Collection;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -14,25 +15,29 @@ public class ChessBoard {
     private ChessPiece[][] board = new ChessPiece[8][8];
 
     public ChessBoard() {}
+
     public ChessBoard(ChessBoard copy) {
         this.board = copy.getBoard();
     }
 
-    public void movePiece(ChessMove newMove){
-        ChessPiece chessPiece = getPiece(newMove.getStartPosition());
+    public void movePiece(ChessMove newMove,ChessPiece endPiece){
 //        TODO: Keep track of captured pieces (uncomment capturedPiece and if statement)
 //        ChessPiece capturedPiece = null;
 
 //        remove piece from start position
-        removePiece(newMove.getEndPosition());
+        removePiece(newMove.getStartPosition());
 
 ////        check to see if there is a piece in the new position
 //        if(getPiece(newMove.getEndPosition()) != null){
 //            capturedPiece = getPiece(newMove.getEndPosition());
 //        }
 //        add piece to new position
-        addPiece(newMove.getEndPosition(),chessPiece);
+        addPiece(newMove.getEndPosition(),endPiece);
 
+    }
+
+    public void setBoard (ChessBoard copyBoard){
+        this.board = copyBoard.getBoard();
     }
 
     public ChessPiece[][] getBoard(){
@@ -63,6 +68,21 @@ public class ChessBoard {
         return board[position.getRow()-1][position.getColumn()-1];
     }
 
+    public Collection <ChessPosition> getTeamPositions(ChessGame.TeamColor color){
+        Collection <ChessPosition> positionsList = new ArrayList<>();
+//        iterate through board and find each piece location of a specific color,
+//        add it to the list if its of the same color
+        for(int i = 1; i < 9; i++){
+            for(int j = 1; j < 9; j++){
+                ChessPosition tmpPosition = new ChessPosition(i,j);
+//                  if piece isnt null then can check for matching team color
+                 if((getPiece(tmpPosition) != null) && (getPiece(tmpPosition).getTeamColor() == color)){
+                    positionsList.add(tmpPosition);
+                }
+            }
+        }
+        return positionsList;
+    }
     /**
      * Sets the board to the default starting board
      * (How the game of chess normally starts)

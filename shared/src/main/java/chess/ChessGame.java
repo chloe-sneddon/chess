@@ -18,25 +18,12 @@ public class ChessGame {
 //    private
 
     public ChessGame() {
-
     }
-//    to decouple, implement addPiece and removePiece here
-//    https://docs.google.com/presentation/d/1dncxSAgnIqjV9RNzGR94EWVltJiCApqC3EvNPqz97-E/edit#slide=id.g286d6837b19_1_98
-//    use this slide (27) for why
-    
 
-    /**
-     * @return Which team's turn it is
-     */
     public TeamColor getTeamTurn() {
         return teamTurn;
     }
 
-    /**
-     * Set's which teams turn it is
-     *
-     * @param team the team whose turn it is
-     */
     public void setTeamTurn(TeamColor team) {
         this.teamTurn = team;
     }
@@ -57,26 +44,29 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-//        TODO: check if friendly king is put in check in any of the moves and remove it from the moves array
-//          JUST ONE PIECE
-//        if the move completed does not put friendly king in check
-
+        if (board.getPiece(startPosition) == null){
+//            no piece in this location so no moves
+            return null;
+        }
+//      go through each of the moves returned by pieceMove and implement the move on the board (MAKE SURE TO CHANGE IT BACK!!!)
+//      test for isInCheck()
+        TeamColor pieceColor = board.getPiece(startPosition).getTeamColor();
+        ChessPiece movePiece = board.getPiece(startPosition);
+        ChessBoard permBoard = new ChessBoard(board);
         Collection <ChessMove> moves = board.getPiece(startPosition).pieceMoves(board,startPosition);
         Collection <ChessMove> filteredMoves = new ArrayList<>();
-        TeamColor color = board.getPiece(startPosition).getTeamColor();
 
         for (ChessMove move : moves) {
-            ChessBoard copyBoard = new ChessBoard(board);
-            copyBoard.movePiece(move);
-//          if the king is not put in check, then add the move to filteredMoves;
-            if(!isInCheck(color)){
-                filteredMoves.add(move);
-            }
+                board.movePiece(move,movePiece);
+                if(!isInCheck(pieceColor)){
+                    filteredMoves.add(move);
+                }
+                board.setBoard(permBoard);
         }
 
-        if(filteredMoves.isEmpty()){
-            filteredMoves = null;
-        }
+//        if(filteredMoves.isEmpty()){
+//            filteredMoves = null;
+//        }
 
         return filteredMoves;
     }
@@ -88,18 +78,40 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-//        Pawn promotion is handled here!
-//        Collection<ChessMove> moveList = validMoves(move.getStartPosition());
-//        try{
-    //        if move is in validMoves (call it with move.getStartPosition())
-//        and it doesnt leave the team’s king in danger
-//        and it’s  the corresponding team's turn.
-    //        then remove that piece from start position and place on end position
-    //        note, if there is a piece that was there previously, do we need to keep track of it as being captured?
-//        }
-//        else throws error
-//        changes team turn after making move
-        throw new RuntimeException("Not implemented");
+
+        ChessPiece pieceToMove = board.getPiece(move.getStartPosition());
+
+        if(pieceToMove == null){
+            invalidMoveException = new InvalidMoveException("No piece in this location");
+            throw invalidMoveException;
+        }
+
+        if(teamTurn != pieceToMove.getTeamColor()){
+            invalidMoveException = new InvalidMoveException("Not this color's turn");
+            throw invalidMoveException;
+        }
+
+        Collection <ChessMove> valMoves = validMoves(move.getStartPosition());
+        boolean exists = false;
+        for(ChessMove compareVal: valMoves){
+            if(move.equals(compareVal)){
+                exists = true;
+                break;
+            }
+        }
+//      if move is not found in valid move list throw error
+        if(!exists){
+            invalidMoveException = new InvalidMoveException("Not a valid move");
+            throw invalidMoveException;
+        }
+
+        //        Pawn promotion is handled here!
+        if(move.getPromotionPiece() != null){
+            pieceToMove.executePromotion(move.getPromotionPiece());
+        }
+
+//      finally move the d*** piece
+        board.movePiece(move,pieceToMove);
     }
 
     /**
@@ -109,12 +121,28 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        //        get other color
+        TeamColor opposingTeam;
+        if (teamColor == TeamColor.WHITE){
+            opposingTeam = TeamColor.BLACK;
+        }
+        else{
+            opposingTeam = TeamColor.WHITE;
+        }
+
 //        check all possible piece moves from the other team,
-//        if any of them can capture king, king is in check
-    //        if king is in check, call isInCheckmate(teamColor);
-//              if returns true then isInCheck is false
-//              if returns false then isInCheck is true
-        throw new RuntimeException("Not implemented");
+        Collection <ChessPosition> startPositions = board.getTeamPositions(opposingTeam);
+
+        for (ChessPosition startPosition : startPositions){
+//            calculate all moves and if they can capture a piece, and it's a king, then yes in check
+            Collection <ChessMove> moves = board.getPiece(startPosition).pieceMoves(board,startPosition);
+            for (ChessMove move:moves){
+                if(move.getCapturePiece() == ChessPiece.PieceType.KING){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -124,12 +152,27 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-//        this method is only called when the king is in check
-//        check all possible teamColor moves and see if king can escape
-//        or another piece can be placed in path
-//        if there is no move possible, then return true
-//        else return false
-        throw new RuntimeException("Not implemented");
+
+        if(!isInCheck(teamColor)){
+            return false;
+        }
+        else{
+//          check all possible piece moves from the team,
+            Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
+            for (ChessPosition startPosition : startPositions){
+//            if the king is no longer in check then return false
+                Collection <ChessMove> moves = board.getPiece(startPosition).pieceMoves(board,startPosition);
+                for (ChessMove move:moves){
+//                    TODO: fix this so that it creates a copy board and makes the fake move also fix in is in check function
+//                    ChessGame testGame = new ChessGame();
+                    if(!isInCheck(teamColor)){
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
     }
 
     /**
@@ -142,7 +185,18 @@ public class ChessGame {
     public boolean isInStalemate(TeamColor teamColor) {
 //      check all possible moves for teamColor if is empty, then return false
 //      (this would be valid moves because it takes into account moving into check)
-        throw new RuntimeException("Not implemented");
+//        TODO: king is not in immediate danger.
+        Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
+        Collection <ChessMove> allMoves = new ArrayList<>();
+        for(ChessPosition startPosition:startPositions){
+            allMoves.addAll(validMoves(startPosition));
+        }
+        if(allMoves.isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**

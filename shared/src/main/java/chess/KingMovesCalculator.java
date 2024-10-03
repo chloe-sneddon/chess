@@ -49,7 +49,7 @@ public class KingMovesCalculator {
             if(board.getPiece(newPosition) != null){
 //                if piece is enemy piece can capture
                 if(board.getPiece(newPosition).getTeamColor() != piece.getTeamColor()){
-                    ChessMove newMove = new ChessMove(startPosition,newPosition,null);
+                    ChessMove newMove = new ChessMove(startPosition,newPosition,null,board.getPiece(newPosition).getPieceType());
                     possibleMoves.add(newMove);
                 }
             }

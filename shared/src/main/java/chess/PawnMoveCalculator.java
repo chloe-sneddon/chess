@@ -89,6 +89,7 @@ public class PawnMoveCalculator {
         }
 
     }
+
     private void calcDiagonalMoves(int rowChange, int colChange){
 //        check diagonal
         int row = startPosition.getRow() + rowChange;
@@ -107,15 +108,17 @@ public class PawnMoveCalculator {
         if(board.getPiece(tmpPosition) != null){
             if(board.getPiece(tmpPosition).getTeamColor() != piece.getTeamColor()){
 //                Can capture!
+                ChessPiece.PieceType capturePiece = board.getPiece(tmpPosition).getPieceType();
 //                check to see if promotion piece
                 if((piece.getTeamColor() == ChessGame.TeamColor.WHITE) & (tmpPosition.getRow() == 8)){
-                    isPromotionLocation(tmpPosition);
+                    isPromotionAndCapture(tmpPosition,capturePiece);
+
                 }
                 else if((piece.getTeamColor() == ChessGame.TeamColor.BLACK) & (tmpPosition.getRow() == 1)){
-                    isPromotionLocation(tmpPosition);
+                    isPromotionAndCapture(tmpPosition,capturePiece);
                 }
                 else {
-                    ChessMove newMove = new ChessMove(startPosition, tmpPosition, null);
+                    ChessMove newMove = new ChessMove(startPosition, tmpPosition, null,capturePiece);
                     possibleMoves.add(newMove);
                 }
             }
@@ -126,6 +129,17 @@ public class PawnMoveCalculator {
         ChessMove rMove = new ChessMove(startPosition,newPosition, ChessPiece.PieceType.ROOK);
         ChessMove kMove = new ChessMove(startPosition,newPosition, ChessPiece.PieceType.KNIGHT);
         ChessMove bMove = new ChessMove(startPosition,newPosition, ChessPiece.PieceType.BISHOP);
+
+        possibleMoves.add(qMove);
+        possibleMoves.add(rMove);
+        possibleMoves.add(kMove);
+        possibleMoves.add(bMove);
+    }
+    private void isPromotionAndCapture(ChessPosition newPosition, ChessPiece.PieceType piece){
+        ChessMove qMove = new ChessMove(startPosition,newPosition, ChessPiece.PieceType.QUEEN,piece);
+        ChessMove rMove = new ChessMove(startPosition,newPosition, ChessPiece.PieceType.ROOK,piece);
+        ChessMove kMove = new ChessMove(startPosition,newPosition, ChessPiece.PieceType.KNIGHT,piece);
+        ChessMove bMove = new ChessMove(startPosition,newPosition, ChessPiece.PieceType.BISHOP,piece);
 
         possibleMoves.add(qMove);
         possibleMoves.add(rMove);

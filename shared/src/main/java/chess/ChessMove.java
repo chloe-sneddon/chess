@@ -12,12 +12,30 @@ public class ChessMove {
     private ChessPosition startPosition;
     private ChessPosition endPosition;
     private ChessPiece.PieceType promotionPiece;
+    private ChessPiece.PieceType capturePiece;
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece) {
         this.startPosition = startPosition;
         this.endPosition = endPosition;
         this.promotionPiece = promotionPiece;
+        this.capturePiece = null;
     }
+    public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece, ChessPiece.PieceType capturePiece) {
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
+        this.promotionPiece = promotionPiece;
+        this.capturePiece = capturePiece;
+    }
+    public ChessPiece.PieceType getCapturePiece(){
+        return capturePiece;
+    }
+
+//    public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece, boolean opposingKingCheck) {
+//        this.startPosition = startPosition;
+//        this.endPosition = endPosition;
+//        this.promotionPiece = promotionPiece;
+//        this.opposingKingCheck = opposingKingCheck;
+//    }
 
     /**
      * @return ChessPosition of starting location
@@ -32,6 +50,10 @@ public class ChessMove {
     public ChessPosition getEndPosition() {
         return endPosition;
     }
+
+//    public boolean isOpposingKingCheck(){
+//        return opposingKingCheck;
+//    }
 
     /**
      * Gets the type of piece to promote a pawn to if pawn promotion is part of this

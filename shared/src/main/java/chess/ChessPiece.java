@@ -58,6 +58,9 @@ public class ChessPiece {
         moves = calcMoves.calculateMoves(board,myPosition);
         return moves;
     }
+    public void executePromotion (PieceType type){
+        this.pieceType = type;
+    }
 
     @Override
     public boolean equals(Object o) {

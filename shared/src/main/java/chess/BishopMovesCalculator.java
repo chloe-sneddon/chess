@@ -43,7 +43,8 @@ public class BishopMovesCalculator {
             if(board.getPiece(newPosition) != null){
 //                if piece is enemy piece can capture but loop breaks
                 if(board.getPiece(newPosition).getTeamColor() != piece.getTeamColor()){
-                    ChessMove newMove = new ChessMove(startPosition,newPosition,null);
+                    ChessPiece.PieceType capturePiece = board.getPiece(newPosition).getPieceType();
+                    ChessMove newMove = new ChessMove(startPosition,newPosition,null,capturePiece);
                     possibleMoves.add(newMove);
                     break;
                 }

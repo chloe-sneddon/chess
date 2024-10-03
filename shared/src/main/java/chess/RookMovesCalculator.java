@@ -27,11 +27,12 @@ public class RookMovesCalculator {
 //        calculate possible move
         int row = startPosition.getRow();
         int col = startPosition.getColumn();
-//        ChessPosition tmpPosition = new ChessPosition(row,col);
+
         for(int i  = 0; i < 8; i++){
             row = row + rowInc;
             col = col + colInc;
             ChessPosition newPosition = new ChessPosition(row,col);
+
             //        check to see if it's out of bounds
             if (row < 1 | col < 1){
                 return;
@@ -39,11 +40,13 @@ public class RookMovesCalculator {
             if(row > 8 | col > 8){
                 return;
             }
+
             //        check to see if there is a piece in the way
             if(board.getPiece(newPosition) != null){
 //                if piece is enemy piece can capture but loop breaks
                 if(board.getPiece(newPosition).getTeamColor() != piece.getTeamColor()){
-                    ChessMove newMove = new ChessMove(startPosition,newPosition,null);
+                    ChessPiece.PieceType capturePiece = board.getPiece(newPosition).getPieceType();
+                    ChessMove newMove = new ChessMove(startPosition,newPosition,null,capturePiece);
                     possibleMoves.add(newMove);
                     break;
                 }
