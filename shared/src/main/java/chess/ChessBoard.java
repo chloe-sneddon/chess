@@ -16,10 +16,6 @@ public class ChessBoard {
 
     public ChessBoard() {}
 
-    public ChessBoard(ChessBoard copy) {
-        this.board = copy.getBoard();
-    }
-
     public void movePiece(ChessMove newMove,ChessPiece endPiece){
 //        TODO: Keep track of captured pieces (uncomment capturedPiece and if statement)
 //        ChessPiece capturedPiece = null;
@@ -36,8 +32,25 @@ public class ChessBoard {
 
     }
 
-    public void setBoard (ChessBoard copyBoard){
-        this.board = copyBoard.getBoard();
+    public void setBoard (ChessBoard copy){
+        clearBoard();
+
+        for (int i = 1; i < 9; i++){
+            for (int j = 1; j < 9; j++){
+                ChessPosition tmpPosition = new ChessPosition(i,j);
+                ChessPiece tmpPiece = copy.getPiece(tmpPosition);
+                addPiece(tmpPosition,tmpPiece);
+            }
+        }
+
+    }
+    public void clearBoard(){
+        for (int i = 1; i < 9; i++){
+            for (int j = 1; j < 9; j++){
+            ChessPosition tmpPosition = new ChessPosition(i,j);
+            removePiece(tmpPosition);
+            }
+        }
     }
 
     public ChessPiece[][] getBoard(){

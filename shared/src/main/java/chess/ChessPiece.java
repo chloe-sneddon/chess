@@ -19,6 +19,8 @@ public class ChessPiece {
         this.pieceType = type;
     }
 
+//    public ChessPiece(ChessPiece copy){
+//    }
     /**
      * The various different chess piece options
      */

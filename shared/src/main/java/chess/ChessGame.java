@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public class ChessGame {
     private ChessBoard board;
-    private InvalidMoveException invalidMoveException;
+//    private InvalidMoveException invalidMoveException;
     private TeamColor teamTurn;
 //    private
 
@@ -52,7 +52,8 @@ public class ChessGame {
 //      test for isInCheck()
         TeamColor pieceColor = board.getPiece(startPosition).getTeamColor();
         ChessPiece movePiece = board.getPiece(startPosition);
-        ChessBoard permBoard = new ChessBoard(board);
+        ChessBoard permBoard = new ChessBoard();
+        permBoard.setBoard(board);
         Collection <ChessMove> moves = board.getPiece(startPosition).pieceMoves(board,startPosition);
         Collection <ChessMove> filteredMoves = new ArrayList<>();
 
@@ -63,10 +64,6 @@ public class ChessGame {
                 }
                 board.setBoard(permBoard);
         }
-
-//        if(filteredMoves.isEmpty()){
-//            filteredMoves = null;
-//        }
 
         return filteredMoves;
     }
@@ -82,27 +79,20 @@ public class ChessGame {
         ChessPiece pieceToMove = board.getPiece(move.getStartPosition());
 
         if(pieceToMove == null){
-            invalidMoveException = new InvalidMoveException("No piece in this location");
-            throw invalidMoveException;
+            throw new InvalidMoveException("No piece in this location");
         }
 
         if(teamTurn != pieceToMove.getTeamColor()){
-            invalidMoveException = new InvalidMoveException("Not this color's turn");
-            throw invalidMoveException;
+            throw new InvalidMoveException("Not this color's turn");
         }
 
         Collection <ChessMove> valMoves = validMoves(move.getStartPosition());
-        boolean exists = false;
-        for(ChessMove compareVal: valMoves){
-            if(move.equals(compareVal)){
-                exists = true;
-                break;
-            }
-        }
+
+        boolean exists = valMoves.contains(move);
+
 //      if move is not found in valid move list throw error
         if(!exists){
-            invalidMoveException = new InvalidMoveException("Not a valid move");
-            throw invalidMoveException;
+            throw new InvalidMoveException("Not a valid move");
         }
 
         //        Pawn promotion is handled here!
@@ -222,19 +212,18 @@ public class ChessGame {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessGame chessGame = (ChessGame) o;
-        return Objects.equals(board, chessGame.board) && Objects.equals(invalidMoveException, chessGame.invalidMoveException) && teamTurn == chessGame.teamTurn;
+        return Objects.equals(board, chessGame.board) && teamTurn == chessGame.teamTurn;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(board, invalidMoveException, teamTurn);
+        return Objects.hash(board, teamTurn);
     }
 
     @Override
     public String toString() {
         return "ChessGame{" +
                 "board=" + board +
-                ", invalidMoveException=" + invalidMoveException +
                 ", teamTurn=" + teamTurn +
                 '}';
     }
