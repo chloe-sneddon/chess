@@ -18,6 +18,9 @@ public class ChessGame {
 //    private
 
     public ChessGame() {
+        board = new ChessBoard();
+        board.resetBoard();
+        teamTurn = TeamColor.WHITE;
     }
 
     public TeamColor getTeamTurn() {
@@ -75,6 +78,9 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        if(board == null){
+            throw new InvalidMoveException("No board found");
+        }
 
         ChessPiece pieceToMove = board.getPiece(move.getStartPosition());
 
@@ -95,13 +101,22 @@ public class ChessGame {
             throw new InvalidMoveException("Not a valid move");
         }
 
-        //        Pawn promotion is handled here!
+//        Pawn promotion is handled here!
         if(move.getPromotionPiece() != null){
             pieceToMove.executePromotion(move.getPromotionPiece());
         }
 
 //      finally move the d*** piece
         board.movePiece(move,pieceToMove);
+
+//        change turns
+        if(teamTurn == TeamColor.WHITE){
+            teamTurn = TeamColor.BLACK;
+        }
+        else{
+            teamTurn = TeamColor.WHITE;
+        }
+
     }
 
     /**
@@ -147,20 +162,21 @@ public class ChessGame {
             return false;
         }
         else{
-//          check all possible piece moves from the team,
+//          valid moves takes into account check; if no valid moves then yes checkmate
             Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
+            Collection <ChessMove> moves = new ArrayList<>();
             for (ChessPosition startPosition : startPositions){
-//            if the king is no longer in check then return false
-                Collection <ChessMove> moves = board.getPiece(startPosition).pieceMoves(board,startPosition);
-                for (ChessMove move:moves){
-//                    TODO: fix this so that it creates a copy board and makes the fake move also fix in is in check function
-//                    ChessGame testGame = new ChessGame();
-                    if(!isInCheck(teamColor)){
-                        return false;
-                    }
-                }
+                Collection <ChessMove> tmpMoves = validMoves(startPosition);
+                moves.addAll(tmpMoves);
             }
-            return true;
+
+            if(moves.isEmpty()){
+                return true;
+            }
+
+            else{
+                return false;
+            }
         }
 
     }
@@ -173,16 +189,22 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-//      check all possible moves for teamColor if is empty, then return false
-//      (this would be valid moves because it takes into account moving into check)
-//        TODO: king is not in immediate danger.
-        Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
-        Collection <ChessMove> allMoves = new ArrayList<>();
-        for(ChessPosition startPosition:startPositions){
-            allMoves.addAll(validMoves(startPosition));
-        }
-        if(allMoves.isEmpty()){
-            return true;
+//        basically checkmate but the king isnt in check
+        if (!isInCheck(teamColor)){
+            Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
+            Collection <ChessMove> moves = new ArrayList<>();
+            for (ChessPosition startPosition : startPositions){
+                Collection <ChessMove> tmpMoves = validMoves(startPosition);
+                moves.addAll(tmpMoves);
+            }
+
+            if(moves.isEmpty()){
+                return true;
+            }
+
+            else{
+                return false;
+            }
         }
         else{
             return false;

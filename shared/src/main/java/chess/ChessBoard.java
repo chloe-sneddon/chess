@@ -101,6 +101,7 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
+        clearBoard();
         DefaultBoard resetBoard = new DefaultBoard();
         ChessBoard newBoard = resetBoard.SetDefaultBoard();
         this.board = newBoard.getBoard();
