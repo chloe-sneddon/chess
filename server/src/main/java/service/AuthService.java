@@ -1,4 +1,5 @@
 package service;
 
-public class AuthService {
+public class AuthService extends GeneralService{
+
 }

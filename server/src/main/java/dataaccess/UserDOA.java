@@ -6,6 +6,6 @@ import model.UserData;
 //getUser: Retrieve a user with the given username.
 
 interface UserDOA {
-    void insertUser(UserData u) throws DataAccessException;
+//    void insertUser(UserData u) throws DataAccessException;
 
 }

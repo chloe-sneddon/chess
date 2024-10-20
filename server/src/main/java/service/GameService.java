@@ -1,4 +1,7 @@
 package service;
 
-public class GameService {
+import com.google.gson.Gson;
+
+public class GameService extends GeneralService{
+
 }

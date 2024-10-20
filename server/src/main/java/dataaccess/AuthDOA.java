@@ -8,7 +8,7 @@ import java.util.UUID;
 //deleteAuth: Delete an authorization so that it is no longer valid.
 interface AuthDOA {
 
-    public void deleteAuth(AuthData token);
-    public int getAuth(String username);
+//    public void deleteAuth(AuthData token);
+//    public int getAuth(String username);
 //    int getAuth()
 }
