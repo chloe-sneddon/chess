@@ -1,4 +1,4 @@
 package dataaccess;
 
-public class MemoryAuthDOA extends AuthDOA{
+public class MemoryAuthDOA implements AuthDOA{
 }

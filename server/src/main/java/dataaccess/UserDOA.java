@@ -5,7 +5,7 @@ import model.UserData;
 //createUser: Create a new user.
 //getUser: Retrieve a user with the given username.
 
-public class UserDOA {
-//    void insertUser(UserData u) throws DataAccessException;
+interface UserDOA {
+    void insertUser(UserData u) throws DataAccessException;
 
 }
