@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.DataAccessException;
+import dataaccess.MemoryAuthDOA;
 import dataaccess.MemoryUserDOA;
 import model.AuthData;
 import model.UserData;
@@ -9,12 +10,11 @@ import spark.Response;
 
 
 public class UserService extends GeneralService{
-//    todo: if i have problems here then it could be the static usage
-    private final static MemoryUserDOA memUsrData = new MemoryUserDOA();
+
 //    public AuthData register(UserData user) {}
-//    public AuthData login(UserData user) {}
-//    public void logout(AuthData auth) {}
-    public static String register(UserData usrData){
+//  public AuthData login(UserData user) {}
+//  public void logout(AuthData auth) {}
+    public static AuthData register(UserData usrData){
 
         try{
             if(usrData == null){
@@ -22,22 +22,24 @@ public class UserService extends GeneralService{
                 throw new Exception("usrData is null");
             }
             if((usrData.username() == null)|(usrData.password() == null)|(usrData.email() == null)){
-//                [500]
-                throw new Exception("Empty Data field");
+//                TODO: [400]
+                throw new Exception("Empty UserData field");
             }
             if (memUsrData.userExists(usrData.username())){
-//                TODO: add error code to exception [400]
+//                TODO: add error code to exception [403]
                 throw new DataAccessException("Error: already taken");
             }
+
             memUsrData.insertUser(usrData);
+//          create token and add to authData
+            String token = memAuthData.createToken();
+            memAuthData.addAuthData(token,usrData.username());
 
-//            return "username: " + usrName + " pass: " + pass + " email: " + email;
-            return "hello";
+            return memAuthData.getAuthData(usrData.username());
         }
+
         catch(Exception e){
-            return e.toString();
+            return null;
         }
-
-//        String tmpReturn = "username: " + usrName + " pass: " + pass + " email: " + email;
     }
 }

@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import model.AuthData;
 import model.UserData;
 import service.UserService;
 import spark.*;
@@ -31,7 +32,6 @@ public class Server {
         var newUser = serializer.fromJson(req.body(), UserData.class);
         var result = UserService.register(newUser);
         return serializer.toJson(result);
-//        return "hello";
     }
 
 
