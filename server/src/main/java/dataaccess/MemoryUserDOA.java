@@ -1,4 +1,5 @@
 package dataaccess;
 
-public class MemoryUserDOA implements UserDOA{
+public class MemoryUserDOA extends UserDOA{
+
 }

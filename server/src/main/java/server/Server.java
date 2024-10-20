@@ -24,12 +24,14 @@ public class Server {
 
     /*
     * Registers new user when /user post is called
-    * */
+    * @param HTTP request and Response
+    * @return Serialized Json result
+    */
     private String createUser(Request req, Response res) throws Exception{
         var newUser = serializer.fromJson(req.body(), UserData.class);
         var result = UserService.register(newUser);
-//        return serializer.toJson(result);
-        return "hello";
+        return serializer.toJson(result);
+//        return "hello";
     }
 
 
