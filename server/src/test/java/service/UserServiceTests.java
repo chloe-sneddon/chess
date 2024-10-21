@@ -22,7 +22,9 @@ public class UserServiceTests {
         dataAccess.insertUser(expected);
         actual = dataAccess.getUser("usErName");
         Assertions.assertEquals(expected, actual, "User In Memory");
+        dataAccess.clear();
     }
+
     @Test
     @DisplayName("Register User Test")
     public void registerUserService() throws Exception{
@@ -32,6 +34,7 @@ public class UserServiceTests {
         var actual = userService.register(registerData);
 
         Assertions.assertEquals(expected,actual,"Login is true");
+        userService.clear();
     }
 
     @Test
@@ -48,5 +51,6 @@ public class UserServiceTests {
         var actual = userService.login(myUserData);
 
         Assertions.assertEquals(expected,actual,"Login is true");
+        userService.clear();
     }
 }

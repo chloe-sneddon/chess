@@ -42,4 +42,15 @@ public class UserHandler {
             return serializer.toJson(e);
         }
     }
+
+    public String logout(Request req, Response res) {
+        try{
+            UserService.logout(req.body());
+            return serializer.toJson("");
+        }
+        catch(Exception e){
+            res.status(500);
+            return serializer.toJson(e);
+        }
+    }
 }

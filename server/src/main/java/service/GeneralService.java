@@ -24,6 +24,12 @@ public class GeneralService {
         gameData.clear();
     }
 
+//  returns true if token is verified
+    public static boolean verifyToken(String authToken) throws DataAccessException{
+        authData.getAuthData(authToken);
+        return true;
+    }
+
 
 //    Verify authToken
 //    deserializing and re-serializing gson objects

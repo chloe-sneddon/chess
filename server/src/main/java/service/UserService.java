@@ -27,8 +27,9 @@ public class UserService extends GeneralService{
 //          create token and add to authData
             String token = authData.createToken();
             authData.addAuthData(token,usrData.username());
+            var returnVar = authData.getAuthData(token);
 //          TODO: Status Code Success [200]
-            return authData.getAuthData(usrData.username());
+            return returnVar;
     }
 
     public static AuthData login(UserData usrData) throws Exception{
@@ -46,7 +47,7 @@ public class UserService extends GeneralService{
 //                TODO: Status Code Success [200]
                 var token = authData.createToken();
                 authData.addAuthData(token,usrData.username());
-                return authData.getAuthData(usrData.username());
+                return authData.getAuthData(token);
             }
             else{
 //              TODO: [401] - unauthorized
@@ -57,5 +58,10 @@ public class UserService extends GeneralService{
 //            TODO: [500]
             throw new Exception ("User does not exist");
         }
+    }
+
+    public static void logout(String authToken) throws Exception {
+        verifyToken(authToken);
+        authData.deleteToken(authToken);
     }
 }
