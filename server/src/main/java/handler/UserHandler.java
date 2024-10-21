@@ -31,4 +31,15 @@ public class UserHandler {
             return serializer.toJson(e);
         }
     }
+
+    public String clear(Request req, Response res) {
+        try{
+            UserService.clear();
+            return serializer.toJson("");
+        }
+        catch(Exception e){
+            res.status(500);
+            return serializer.toJson(e);
+        }
+    }
 }

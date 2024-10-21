@@ -10,5 +10,6 @@ public interface AuthDAO {
     public void addAuthData(String authToken, String username);
     public String authString(String username);
     public AuthData getAuthData(String username);
+    public void clear();
 
 }

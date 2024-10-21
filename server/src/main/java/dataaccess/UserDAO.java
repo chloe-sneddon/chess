@@ -11,4 +11,5 @@ public interface UserDAO {
     public String getEmail(String username);
     public void insertUser(UserData u) throws DataAccessException;
     public boolean userExists(String username);
+    public void clear ();
 }

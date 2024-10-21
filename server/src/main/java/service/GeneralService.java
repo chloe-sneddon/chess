@@ -18,6 +18,11 @@ public class GeneralService {
     public GameDAO getGameDAO(){
         return gameData;
     }
+    public static void clear() throws Exception{
+        usrData.clear();
+        authData.clear();
+        gameData.clear();
+    }
 
 
 //    Verify authToken
