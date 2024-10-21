@@ -2,13 +2,14 @@ package server;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
+import handler.UserHandler;
 import model.AuthData;
 import model.UserData;
 import service.UserService;
 import spark.*;
 
 public class Server {
-    private final Gson serializer = new Gson();
+//    private final Gson serializer = new Gson();
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
@@ -27,27 +28,13 @@ public class Server {
     }
 
     private String createUser(Request req, Response res){
-        try {
-            var newUser = serializer.fromJson(req.body(), UserData.class);
-            var result = UserService.register(newUser);
-            return serializer.toJson(result);
-        }
-        catch (Exception e){
-            res.status(500);
-            return serializer.toJson(e);
-        }
-//        res.status()
+        UserHandler handler = new UserHandler();
+        return handler.createUser(req,res);
     }
 
     private String login(Request req, Response res){
-        try {
-            var newUser = serializer.fromJson(req.body(), UserData.class);
-            var result = UserService.login(newUser);
-            return serializer.toJson(result);
-        }
-        catch (Exception e){
-            return serializer.toJson(e);
-        }
+        UserHandler handler = new UserHandler();
+        return handler.login(req,res);
     }
 
     public void stop() {
