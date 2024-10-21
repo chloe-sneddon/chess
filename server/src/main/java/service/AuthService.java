@@ -1,10 +1,10 @@
 package service;
 
-import dataaccess.MemoryAuthDOA;
+import dataaccess.MemoryAuthDAO;
 
 public class AuthService extends GeneralService{
 
-    public void addAuthData(MemoryAuthDOA memAuthData){
+    public void addAuthData(MemoryAuthDAO memAuthData){
 
     }
 }

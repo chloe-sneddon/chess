@@ -1,22 +1,16 @@
 package service;
 
 import dataaccess.DataAccessException;
-import dataaccess.MemoryAuthDOA;
-import dataaccess.MemoryUserDOA;
 import model.AuthData;
 import model.UserData;
-import spark.Request;
-import spark.Response;
 
 
 public class UserService extends GeneralService{
 
-//    public AuthData register(UserData user) {}
 //  public AuthData login(UserData user) {}
 //  public void logout(AuthData auth) {}
-    public static AuthData register(UserData usrData){
+    public static AuthData register(UserData usrData) throws Exception{
 
-        try{
             if(usrData == null){
 //                TODO Add error code to ALL EXCEPTIONS [500]
                 throw new Exception("usrData is null");
@@ -25,21 +19,45 @@ public class UserService extends GeneralService{
 //                TODO: [400]
                 throw new Exception("Empty UserData field");
             }
-            if (memUsrData.userExists(usrData.username())){
+            if (UsrData.userExists(usrData.username())){
 //                TODO: add error code to exception [403]
                 throw new DataAccessException("Error: already taken");
             }
 
-            memUsrData.insertUser(usrData);
+            UsrData.insertUser(usrData);
 //          create token and add to authData
             String token = memAuthData.createToken();
             memAuthData.addAuthData(token,usrData.username());
-
+//          TODO: Status Code Success [200]
             return memAuthData.getAuthData(usrData.username());
-        }
+    }
 
-        catch(Exception e){
-            return null;
+    public static AuthData login(UserData usrData) throws Exception{
+        if(usrData == null){
+//                TODO Add error status code [500]
+            throw new Exception("usrData is null");
+        }
+        if((usrData.username() == null)|(usrData.password() == null)){
+//                TODO: [400]
+            throw new Exception("Empty UserData field");
+        }
+//       Verify Username and Password
+        if(UsrData.userExists(usrData.username())){
+            if(usrData.password().equals(UsrData.getPassword(usrData.username()))){
+//                happy route
+//                TODO: Status Code Success [200]
+                var token = memAuthData.createToken();
+                memAuthData.addAuthData(token,usrData.username());
+                return memAuthData.getAuthData(usrData.username());
+            }
+            else{
+//              TODO: [401] - unauthorized
+                throw new Exception("Unauthorized");
+            }
+        }
+        else{
+//            TODO: [500]
+            throw new Exception ("User does not exist");
         }
     }
 }

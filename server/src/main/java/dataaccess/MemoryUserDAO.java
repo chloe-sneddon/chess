@@ -4,11 +4,14 @@ import model.UserData;
 
 import java.util.HashMap;
 
-public class MemoryUserDOA implements UserDOA{
+public class MemoryUserDAO implements UserDAO {
     private HashMap<String, UserData> allUserData = new HashMap <String, UserData>();
 
     public String getUsername(UserData u){
         return u.username();
+    }
+    public UserData getUser(String usrname){
+        return allUserData.get(usrname);
     }
 
     public String getPassword(String username){
