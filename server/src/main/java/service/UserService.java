@@ -7,7 +7,6 @@ import model.UserData;
 
 public class UserService extends GeneralService{
 
-//  public AuthData login(UserData user) {}
 //  public void logout(AuthData auth) {}
     public static AuthData register(UserData usrData) throws Exception{
 
@@ -19,22 +18,22 @@ public class UserService extends GeneralService{
 //                TODO: [400]
                 throw new Exception("Empty UserData field");
             }
-            if (UsrData.userExists(usrData.username())){
+            if (GeneralService.usrData.userExists(usrData.username())){
 //                TODO: add error code to exception [403]
                 throw new DataAccessException("Error: already taken");
             }
 
-            UsrData.insertUser(usrData);
+            GeneralService.usrData.insertUser(usrData);
 //          create token and add to authData
-            String token = memAuthData.createToken();
-            memAuthData.addAuthData(token,usrData.username());
+            String token = authData.createToken();
+            authData.addAuthData(token,usrData.username());
 //          TODO: Status Code Success [200]
-            return memAuthData.getAuthData(usrData.username());
+            return authData.getAuthData(usrData.username());
     }
 
     public static AuthData login(UserData usrData) throws Exception{
         if(usrData == null){
-//                TODO Add error status code [500]
+//                TODO: Add error status code [500]
             throw new Exception("usrData is null");
         }
         if((usrData.username() == null)|(usrData.password() == null)){
@@ -42,13 +41,12 @@ public class UserService extends GeneralService{
             throw new Exception("Empty UserData field");
         }
 //       Verify Username and Password
-        if(UsrData.userExists(usrData.username())){
-            if(usrData.password().equals(UsrData.getPassword(usrData.username()))){
-//                happy route
+        if(GeneralService.usrData.userExists(usrData.username())){
+            if(usrData.password().equals(GeneralService.usrData.getPassword(usrData.username()))){
 //                TODO: Status Code Success [200]
-                var token = memAuthData.createToken();
-                memAuthData.addAuthData(token,usrData.username());
-                return memAuthData.getAuthData(usrData.username());
+                var token = authData.createToken();
+                authData.addAuthData(token,usrData.username());
+                return authData.getAuthData(usrData.username());
             }
             else{
 //              TODO: [401] - unauthorized

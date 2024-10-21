@@ -1,11 +1,6 @@
 package server;
 
-import com.google.gson.Gson;
-import dataaccess.DataAccessException;
 import handler.UserHandler;
-import model.AuthData;
-import model.UserData;
-import service.UserService;
 import spark.*;
 
 public class Server {
@@ -15,13 +10,12 @@ public class Server {
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("web");
-//        Spark.post("/user", this::createUser);
         // Register your endpoints and handle exceptions here.
         Spark.post("/user", this::createUser);
         Spark.post("/session", this::login);
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
-        Spark.init();
+//        Spark.init();
 
         Spark.awaitInitialization();
         return Spark.port();

@@ -25,12 +25,7 @@ public class MemoryUserDAO implements UserDAO {
         return u.email();
     }
 
-    public void insertUser(UserData u) throws DataAccessException{
-//        if UserData is null throw an exception
-        if(u == null){
-//           TODO: [400]
-            throw new DataAccessException("No UserData to insert");
-        }
+    public void insertUser(UserData u){
         allUserData.put(u.username(),u);
     }
 
