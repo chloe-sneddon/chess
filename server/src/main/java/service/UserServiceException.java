@@ -1,19 +1,20 @@
-package dataaccess;
+package service;
 
-/**
- * Indicates there was an error connecting to the database
- */
-public class DataAccessException extends Exception{
+
+public class UserServiceException extends Exception{
     final String message;
     final int errorCode;
-    public DataAccessException(String message, int errorCode) {
+
+    public UserServiceException(String message, int errorCode) {
         super(message);
         this.message = message;
         this.errorCode = errorCode;
     }
+
     public int statusCode(){
         return errorCode;
     }
+
     public String message(){
         return message;
     }

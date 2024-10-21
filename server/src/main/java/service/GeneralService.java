@@ -2,8 +2,6 @@ package service;
 
 import dataaccess.*;
 
-// Handles basic requests common to user, game, and auth service
-//is this an HTTP handler class
 public class GeneralService {
     public final static UserDAO usrData = new MemoryUserDAO();
     public final static AuthDAO authData = new MemoryAuthDAO();
@@ -18,20 +16,15 @@ public class GeneralService {
     public GameDAO getGameDAO(){
         return gameData;
     }
-    public static void clear() throws Exception{
+    public static void clear() throws DataAccessException{
         usrData.clear();
         authData.clear();
         gameData.clear();
     }
 
-//  returns true if token is verified
-    public static boolean verifyToken(String authToken) throws DataAccessException{
+//  throws error if not verified
+    public static void verifyToken(String authToken) throws DataAccessException{
         authData.getAuthData(authToken);
-        return true;
     }
 
-
-//    Verify authToken
-//    deserializing and re-serializing gson objects
-//    clear db / memory layer
 }

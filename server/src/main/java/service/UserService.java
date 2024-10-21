@@ -8,28 +8,22 @@ import model.UserData;
 public class UserService extends GeneralService{
 
 //  public void logout(AuthData auth) {}
-    public static AuthData register(UserData usrData) throws Exception{
+    public static AuthData register(UserData usrData) throws UserServiceException, DataAccessException {
 
             if(usrData == null){
-//                TODO Add error code to ALL EXCEPTIONS [500]
-                throw new Exception("usrData is null");
+                throw new UserServiceException("usrData is null",500);
             }
             if((usrData.username() == null)|(usrData.password() == null)|(usrData.email() == null)){
-//                TODO: [400]
-                throw new Exception("Empty UserData field");
+                throw new UserServiceException("Error: bad request",400);
             }
             if (GeneralService.usrData.userExists(usrData.username())){
-//                TODO: add error code to exception [403]
-                throw new DataAccessException("Error: already taken");
+                throw new UserServiceException("Error: already taken",403);
             }
 
             GeneralService.usrData.insertUser(usrData);
-//          create token and add to authData
             String token = authData.createToken();
             authData.addAuthData(token,usrData.username());
-            var returnVar = authData.getAuthData(token);
-//          TODO: Status Code Success [200]
-            return returnVar;
+            return authData.getAuthData(token);
     }
 
     public static AuthData login(UserData usrData) throws Exception{
@@ -64,4 +58,6 @@ public class UserService extends GeneralService{
         verifyToken(authToken);
         authData.deleteToken(authToken);
     }
+//    public static boolean verifyPassword(String hashedPassword){}
+
 }

@@ -1,5 +1,6 @@
 package service;
 
+import dataaccess.DataAccessException;
 import dataaccess.MemoryUserDAO;
 import model.AuthData;
 import model.UserData;
@@ -33,7 +34,7 @@ public class UserServiceTests {
         var registerData = new UserData("usErName","myPsw@rd", "email@email.com");
         var actual = userService.register(registerData);
 
-        Assertions.assertEquals(expected,actual,"Login is true");
+        Assertions.assertEquals(expected,actual,"Register is true");
         userService.clear();
     }
 
@@ -52,5 +53,32 @@ public class UserServiceTests {
 
         Assertions.assertEquals(expected,actual,"Login is true");
         userService.clear();
+    }
+
+    @Test
+    @DisplayName("Logout")
+    public void logout() throws Exception{
+//        TODO: Fix this test
+        AuthData expected = new AuthData ("this is a token", "usErName");
+        var userService = new UserService();
+        var registerData = new UserData("usErName","myPsw@rd", "email@email.com");
+        var actual = userService.register(registerData);
+
+        Assertions.assertEquals(expected,actual,"Register is true");
+
+        try{
+            userService.logout(actual.authToken());
+//            false
+//            Assertions.assertEquals(0,1);
+        }
+        catch(DataAccessException e){
+            if (e.toString().equals("unauthorized")){
+//                true
+                Assertions.assertEquals(0,0);
+            }
+
+        }
+
+
     }
 }

@@ -1,6 +1,6 @@
 package server;
 
-import handler.UserHandler;
+import handler.HandlerClass;
 import spark.*;
 
 public class Server {
@@ -15,6 +15,7 @@ public class Server {
         Spark.post("/session", this::login);
         Spark.delete("/db", this::clear);
         Spark.delete("/session", this::logout);
+//        Spark.post("/game",this::createGame);
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
 //        Spark.init();
@@ -24,24 +25,29 @@ public class Server {
     }
 
     private String createUser(Request req, Response res){
-        UserHandler handler = new UserHandler();
+        HandlerClass handler = new HandlerClass();
         return handler.createUser(req,res);
     }
 
     private String login(Request req, Response res){
-        UserHandler handler = new UserHandler();
+        HandlerClass handler = new HandlerClass();
         return handler.login(req,res);
     }
 
     private String clear(Request req, Response res){
-        UserHandler usrHandler = new UserHandler ();
+        HandlerClass usrHandler = new HandlerClass();
         return usrHandler.clear(req,res);
     }
 
     private String logout(Request req, Response res){
-        UserHandler usrHandler = new UserHandler ();
+        HandlerClass usrHandler = new HandlerClass();
         return usrHandler.logout(req,res);
     }
+
+//    private String createGame(Request req, Response res){
+//        HandlerClass gameHandler = new HandlerClass();
+//        return gameHandler.createGame(req,res);
+//    }
 
 
     public void stop() {
