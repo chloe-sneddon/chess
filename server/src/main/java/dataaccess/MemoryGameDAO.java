@@ -9,14 +9,15 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class MemoryGameDAO implements GameDAO {
-    private HashMap<Integer, GameData> allGameData = new HashMap <Integer, GameData>();
+    private HashMap<Integer, GameData> allGameData = new HashMap <>();
 
     public void clear() {
         allGameData.clear();
     }
+
     public int createGame(String gameName) throws ServiceException {
 
-        if((gameName == null)|(gameName.isEmpty())){
+        if((gameName == null)){
             throw new ServiceException("Error: no provided gameName",500);
         }
         var gameId = createGameID();
@@ -34,9 +35,58 @@ public class MemoryGameDAO implements GameDAO {
     public GameData getGameData(int gameID){
         return allGameData.get(gameID);
     }
+
+    public String getUser(int gameID, String playerColor) throws DataAccessException {
+        var targetGame = getGameData(gameID);
+        if (playerColor == null) {
+            throw new DataAccessException("Error: bad request", 400);
+        }
+        if (playerColor.equals("WHITE")) {
+            String username = targetGame.whiteUsername();
+            if ((username == null)) {
+                throw new DataAccessException("Error: no white user", 500);
+            }
+            return username;
+        }
+        else if (playerColor.equals("BLACK")) {
+            String username = targetGame.blackUsername();
+            if (username == null) {
+                throw new DataAccessException("Error: no black user", 500);
+            }
+            return username;
+        }
+        else{
+            throw new DataAccessException("Error: bad request", 400);
+        }
+    }
+
     public ArrayList<GameData> getActiveGames(){
         ArrayList<GameData> activeGames = new ArrayList<>();
         activeGames.addAll(allGameData.values());
         return activeGames;
+    }
+
+    public void joinGame(int gameID, String playerColor, String username) throws DataAccessException{
+        GameData joinGame = getGameData(gameID);
+        String whiteUsername = joinGame.whiteUsername();
+        String blackUsername = joinGame.blackUsername();
+        String gameName = joinGame.gameName();
+        ChessGame game = joinGame.game();
+
+        if(playerColor == null){
+            throw new DataAccessException("Error: bad request", 400);
+        }
+
+        if(playerColor.equals("WHITE")){
+            GameData joinedGame = new GameData(gameID, username, blackUsername,gameName,game);
+            allGameData.put(gameID,joinedGame);
+        }
+        else if(playerColor.equals("BLACK")){
+            GameData joinedGame = new GameData(gameID, whiteUsername, username,gameName,game);
+            allGameData.put(gameID,joinedGame);
+        }
+        else{
+            throw new DataAccessException("Error: bad request", 400);
+        }
     }
 }

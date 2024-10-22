@@ -9,6 +9,8 @@ import service.GameService;
 import service.ServiceException;
 import spark.Request;
 import spark.Response;
+import Response.ListGamesResponse;
+import Request.JoinGameRequest;
 
 import java.util.ArrayList;
 
@@ -107,7 +109,8 @@ public class HandlerClass {
         try{
             var authToken = req.headers("authorization");
             ArrayList<GameData> activeGames = GameService.listGames(authToken);
-            return wrapGameList(activeGames);
+            ListGamesResponse listGamesResponse = new ListGamesResponse(activeGames);
+            return serializer.toJson(listGamesResponse,ListGamesResponse.class);
         }
         catch(DataAccessException e){
             res.status(e.statusCode());
@@ -126,10 +129,11 @@ public class HandlerClass {
     public String joinGame(Request req, Response res){
         try{
             var authToken = req.headers("authorization");
-            var gmData = serializer.fromJson(req.body(), UserData.class);
-            GameData result = GameService.joinGame(authToken, gmData);
-
-            return serializer.toJson(result);
+            JoinGameRequest gmData = serializer.fromJson(req.body(), JoinGameRequest.class);
+            int gameID = gmData.gameID();
+            String playerColor = gmData.playerColor();
+            GameService.joinGame(authToken,gameID,playerColor);
+            return "{}";
         }
         catch(DataAccessException e){
             res.status(e.statusCode());
@@ -143,7 +147,7 @@ public class HandlerClass {
             res.status(500);
             return wrapException(e);
         }
-        return null;
+//        return null;
     }
 
     private String wrapException(Exception e){
