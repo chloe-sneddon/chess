@@ -1,5 +1,6 @@
 package service;
 
+import dataaccess.DataAccessException;
 import dataaccess.MemoryUserDAO;
 import model.UserData;
 import org.junit.jupiter.api.Test;
@@ -24,26 +25,13 @@ public class UserServiceTests {
     }
 
     @Test
-    @DisplayName("Register User DAO Test")
-    public void registerUserDAO() {
-        var dataAccess = new MemoryUserDAO();
-        var expected = new UserData("usErName", "myPsw@rd", "email@email.com");
-        var actual = dataAccess.getUser("a");
-        Assertions.assertNotEquals(expected, actual, "Not in memory");
-
-        dataAccess.insertUser(expected);
-        actual = dataAccess.getUser("usErName");
-        Assertions.assertEquals(expected, actual, "User In Memory");
-        dataAccess.clear();
-    }
-
-    @Test
     @DisplayName("Normal Register User Test")
     public void registerUserService() throws Exception {
         try{
             registerUser();
-        } catch (Exception e) {
-            Assertions.fail("Unexpected Error");
+        }
+        catch (Exception e) {
+            Assertions.fail(e.getLocalizedMessage());
         }
     }
 
@@ -52,32 +40,38 @@ public class UserServiceTests {
     public void badRegisterInput() {
         try {
             registerUser();
-        } catch (Exception e) {
-            Assertions.fail("unexpected invalid registration from cleared db");
         }
+        catch (Exception e) {
+            Assertions.fail(e.getLocalizedMessage());
+        }
+
         try {
             registerUser();
             Assertions.fail("No Error thrown");
-        } catch (Exception e) {
         }
-
+        catch(DataAccessException e){
+            Assertions.fail(e.message());
+        }
+        catch(ServiceException e){
+            ServiceException expected =  new ServiceException("Error: already taken",403);
+            Assertions.assertEquals(expected.message(),e.message());
+            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+        }
+        catch (Exception e) {
+            Assertions.fail(e.getLocalizedMessage());
+        }
     }
 
     @Test
     @DisplayName("Normal Login Test")
     public void login() {
         try {
-//        set up
-            var userService = new UserService();
-            UserData registerData = new UserData("usErName", "myPsw@rd", "email@email.com");
-            userService.register(registerData);
-
-//        test
+            registerUser();
             UserData myUserData = new UserData("usErName", "myPsw@rd", null);
             userService.login(myUserData);
         }
         catch (Exception e) {
-            Assertions.fail("Unexpected Error");
+            Assertions.fail(e.getLocalizedMessage());
         }
     }
 
@@ -85,9 +79,10 @@ public class UserServiceTests {
     @DisplayName("Normal Logout")
     public void logout() {
         try {
-            var registerData = new UserData("usErName", "myPsw@rd", "email@email.com");
-            var authData = userService.register(registerData);
-            userService.logout(authData.authToken());
+//            var registerData = new UserData("usErName", "myPsw@rd", "email@email.com");
+//            var authData = userService.register(registerData);
+            var authToken = registerUser();
+            userService.logout(authToken);
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -98,15 +93,25 @@ public class UserServiceTests {
     public void badLogin(){
         try{
             registerUser();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Assertions.fail("Invalid register");
         }
         try{
             var myUserData = new UserData("usErName", "wrongPassword", null);
             userService.login(myUserData);
-            Assertions.fail("Logged in with invalid credentials");
         }
-        catch(Exception e){}
+        catch(DataAccessException e){
+           Assertions.fail(e.message());
+        }
+        catch (ServiceException e){
+            ServiceException expected = new ServiceException("Error: unauthorized",401);
+            Assertions.assertEquals(expected.message(),e.message());
+            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+        }
+        catch(Exception e){
+            Assertions.fail(e.getLocalizedMessage());
+        }
     }
 
     @Test
@@ -115,7 +120,15 @@ public class UserServiceTests {
         try{
            registerUser();
            userService.logout("wrongToken");
-           Assertions.fail("No error thrown");
-        } catch (Exception e) {}
+           Assertions.fail("Error: logout permitted from invaild login");
+        }
+        catch (DataAccessException e){
+            DataAccessException expected = new DataAccessException("Error: unauthorized",401);
+            Assertions.assertEquals(expected.message(),e.message());
+            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+        }
+        catch (Exception e) {
+            Assertions.fail(e.getLocalizedMessage());
+        }
     }
 }

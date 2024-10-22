@@ -32,12 +32,18 @@ public class MemoryGameDAO implements GameDAO {
         return gameId;
     }
 
-    public GameData getGameData(int gameID){
+    public GameData getGameData(int gameID) throws DataAccessException{
+        if(allGameData.isEmpty()){
+            throw new DataAccessException("Error: bad request",400);
+        }
         return allGameData.get(gameID);
     }
 
     public String getUser(int gameID, String playerColor) throws DataAccessException {
         var targetGame = getGameData(gameID);
+        if(targetGame == null){
+            throw new DataAccessException("Error: bad request", 400);
+        }
         if (playerColor == null) {
             throw new DataAccessException("Error: bad request", 400);
         }
@@ -68,6 +74,9 @@ public class MemoryGameDAO implements GameDAO {
 
     public void joinGame(int gameID, String playerColor, String username) throws DataAccessException{
         GameData joinGame = getGameData(gameID);
+        if(joinGame == null){
+            throw new DataAccessException("Error: bad request", 400);
+        }
         String whiteUsername = joinGame.whiteUsername();
         String blackUsername = joinGame.blackUsername();
         String gameName = joinGame.gameName();

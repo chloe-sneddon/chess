@@ -6,9 +6,9 @@ import model.UserData;
 //getUser: Retrieve a user with the given username.
 
 public interface UserDAO {
-    public UserData getUser(String usrname);
-    public String getPassword(String username);
-    public String getEmail(String username);
+    public UserData getUserData(String usrname) throws DataAccessException;
+    public String getPassword(String username) throws DataAccessException;
+    public String getEmail(String username) throws DataAccessException;
     public void insertUser(UserData u) throws DataAccessException;
     public boolean userExists(String username);
     public void clear ();

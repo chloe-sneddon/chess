@@ -1,5 +1,8 @@
 package service;
 
+import dataaccess.DataAccessException;
+import dataaccess.GameDAO;
+import dataaccess.MemoryGameDAO;
 import dataaccess.MemoryUserDAO;
 import handler.HandlerClass;
 import model.GameData;
@@ -8,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;
+import spark.utils.Assert;
 
 import java.util.ArrayList;
 
@@ -97,6 +101,78 @@ public class GameServiceTests {
         } catch (Exception e) {
             Assertions.fail("unexpected error");
         }
+    }
+
+    @Test
+    @DisplayName("Normal join game")
+    public void joinGame(){
+        try{
+            String token = registerUser();
+            int gameID = gameSetUp(token);
+            GameDAO gameMem = gameService.getGameDAO();
+            String expected = "usErName";
+//            test white
+            gameService.joinGame(token,gameID,"WHITE");
+            String actualUser = gameMem.getUser(gameID,"WHITE");
+            Assertions.assertEquals(expected,actualUser);
+//            test black
+            gameService.joinGame(token,gameID,"BLACK");
+            actualUser = gameMem.getUser(gameID,"BLACK");
+            Assertions.assertEquals(expected,actualUser);
+
+        }
+        catch (Exception e) {
+            Assertions.fail("unexpected error");
+        }
+    }
+
+    @Test
+    @DisplayName("Bad request joinGame")
+    public void badJoinGame(){
+        try{
+            String token = registerUser();
+            int expectedGameID = gameSetUp(token);
+            int badGameID = 1211;
+            GameDAO gameMem = gameService.getGameDAO();
+
+            gameService.joinGame(token,badGameID,"WHITE");
+            gameMem.getUser(expectedGameID,"WHITE");
+        }
+        catch (DataAccessException e) {
+            DataAccessException expected = new DataAccessException("Error: bad request",400);
+            Assertions.assertEquals(expected.message(),e.message());
+            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+        }
+        catch (Exception e){
+            Assertions.fail(e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Already Taken joinGame")
+    public void takenJoinGame(){
+        try{
+            String token = registerUser();
+            int expectedGameID = gameSetUp(token);
+            GameDAO gameMem = gameService.getGameDAO();
+
+            gameService.joinGame(token,expectedGameID,"WHITE");
+            gameMem.getUser(expectedGameID,"WHITE");
+//            test
+            gameService.joinGame(token,expectedGameID,"WHITE");
+        }
+        catch (DataAccessException e){
+            Assertions.fail(e.message());
+        }
+        catch (ServiceException e){
+            ServiceException expected = new ServiceException("Error: already taken",403);
+            Assertions.assertEquals(expected.message(),e.message());
+            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+        }
+        catch (Exception e){
+            Assertions.fail(e.getLocalizedMessage());
+        }
+        //   403 { "message": "Error: already taken" }
     }
 
 }

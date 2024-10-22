@@ -7,13 +7,13 @@ public class GeneralService {
     public final static AuthDAO authData = new MemoryAuthDAO();
     public final static GameDAO gameData = new MemoryGameDAO();
 
-    public UserDAO getUserDAO(){
+    public static UserDAO getUserDAO(){
         return usrData;
     }
-    public AuthDAO getAuthDAO(){
+    public static AuthDAO getAuthDAO(){
         return authData;
     }
-    public GameDAO getGameDAO(){
+    public static GameDAO getGameDAO(){
         return gameData;
     }
 

@@ -154,26 +154,4 @@ public class HandlerClass {
         return "{\"message\": \"" + e.getLocalizedMessage() + "\"}";
     }
 
-    public static String wrapGameList(ArrayList<GameData> gameList){
-//    [200] { "games": [{"gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""}, {"gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""} ]}
-
-        if(gameList.isEmpty()){
-            return "{ \"games\": [] }";
-        }
-
-        String finalString = "{ \"games\": [";
-        for (int i = 0; i < gameList.size(); i++){
-            GameData game = gameList.get(i);
-            if(i == gameList.size()-1){
-                String tmp = game.toString();
-                finalString = finalString + tmp + " ]}";
-            }
-            else{
-                String tmp = game.toString();
-                finalString = finalString + tmp + ", ";
-            }
-        }
-        return finalString;
-    }
-
 }

@@ -25,7 +25,10 @@ public class MemoryAuthDAO implements AuthDAO {
         return allAuthData.get(token);
     }
 
-    public String getUsername(String token){
+    public String getUsername(String token) throws DataAccessException{
+        if(allAuthData.isEmpty()){
+            throw new DataAccessException("Error: unauthorized", 401);
+        }
         return allAuthData.get(token).username();
     }
 

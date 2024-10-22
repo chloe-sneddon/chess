@@ -7,20 +7,27 @@ import java.util.HashMap;
 public class MemoryUserDAO implements UserDAO {
     private HashMap<String, UserData> allUserData = new HashMap <String, UserData>();
 
-    public String getUsername(UserData u){
-        return u.username();
-    }
-    public UserData getUser(String usrname){
+
+    public UserData getUserData(String usrname) throws DataAccessException{
+        if(allUserData.isEmpty()){
+            throw new DataAccessException("Error: bad request",400);
+        }
         return allUserData.get(usrname);
     }
 
-    public String getPassword(String username){
+    public String getPassword(String username) throws DataAccessException{
 //        TODO: Encode this step (get hash of password or something)
+        if(allUserData.isEmpty()){
+            throw new DataAccessException("Error: bad request",400);
+        }
         UserData u = allUserData.get(username);
         return u.password();
     }
 
-    public String getEmail(String username){
+    public String getEmail(String username) throws DataAccessException{
+        if(allUserData.isEmpty()){
+            throw new DataAccessException("Error: bad request",400);
+        }
         UserData u = allUserData.get(username);
         return u.email();
     }
