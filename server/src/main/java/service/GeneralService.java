@@ -16,7 +16,8 @@ public class GeneralService {
     public GameDAO getGameDAO(){
         return gameData;
     }
-    public static void clear() throws DataAccessException{
+
+    public static void clear(){
         usrData.clear();
         authData.clear();
         gameData.clear();

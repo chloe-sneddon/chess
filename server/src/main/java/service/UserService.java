@@ -10,6 +10,7 @@ public class UserService extends GeneralService{
 //  public void logout(AuthData auth) {}
     public static AuthData register(UserData usrData) throws UserServiceException, DataAccessException {
 
+//        TODO: 500 error vs 400 error
             if(usrData == null){
                 throw new UserServiceException("usrData is null",500);
             }
@@ -26,35 +27,31 @@ public class UserService extends GeneralService{
             return authData.getAuthData(token);
     }
 
-    public static AuthData login(UserData usrData) throws Exception{
+    public static AuthData login(UserData usrData) throws UserServiceException, DataAccessException{
         if(usrData == null){
-//                TODO: Add error status code [500]
-            throw new Exception("usrData is null");
+            throw new UserServiceException("Error: usrData is null",500);
         }
         if((usrData.username() == null)|(usrData.password() == null)){
-//                TODO: [400]
-            throw new Exception("Empty UserData field");
+            throw new UserServiceException("Error: empty UserData field",500);
         }
+
 //       Verify Username and Password
         if(GeneralService.usrData.userExists(usrData.username())){
             if(usrData.password().equals(GeneralService.usrData.getPassword(usrData.username()))){
-//                TODO: Status Code Success [200]
                 var token = authData.createToken();
                 authData.addAuthData(token,usrData.username());
                 return authData.getAuthData(token);
             }
             else{
-//              TODO: [401] - unauthorized
-                throw new Exception("Unauthorized");
+                throw new UserServiceException("Error: unauthorized",401);
             }
         }
         else{
-//            TODO: [500]
-            throw new Exception ("User does not exist");
+            throw new UserServiceException ("Error: user does not exist",500);
         }
     }
 
-    public static void logout(String authToken) throws Exception {
+    public static void logout(String authToken) throws DataAccessException {
         verifyToken(authToken);
         authData.deleteToken(authToken);
     }

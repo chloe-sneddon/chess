@@ -21,15 +21,15 @@ public class HandlerClass {
         }
         catch (DataAccessException dta){
             res.status(dta.statusCode());
-            return serializer.toJson(dta.message());
+            return wrapException(dta);
         }
         catch(UserServiceException userE){
             res.status(userE.statusCode());
-            return serializer.toJson(userE.message());
+            return wrapException(userE);
         }
-        catch (Exception e){
+        catch (Exception e) {
             res.status(500);
-            return serializer.toJson(e.getLocalizedMessage());
+            return wrapException(e);
         }
     }
 
@@ -41,45 +41,52 @@ public class HandlerClass {
         }
         catch (DataAccessException dta){
             res.status(dta.statusCode());
-            return serializer.toJson(dta.message());
+            return wrapException(dta);
         }
         catch (Exception e){
             res.status(500);
-            return serializer.toJson(e.getLocalizedMessage());
+            return wrapException(e);
         }
     }
 
     public String clear(Request req, Response res) {
         try{
             UserService.clear();
-            return serializer.toJson("");
+            return "{}";
         }
         catch(Exception e){
             res.status(500);
-            return serializer.toJson(e.getLocalizedMessage());
+            return wrapException(e);
         }
     }
 
     public String logout(Request req, Response res) {
         try{
-            UserService.logout(req.body());
-            return serializer.toJson("");
+            UserService.logout(req.headers("authorization"));
+            return "{}";
         }
         catch(Exception e){
             res.status(500);
-            return serializer.toJson(e.getLocalizedMessage());
+            return wrapException(e);
         }
     }
 
-//    public String createGame(Request req, Response res){
-//        try{
-//            var newGame = serializer.fromJson(req.body(), GameData.class);
-//            var result = GameService.createGame(newGame);
-//            return serializer.toJson(result);
-//        }
-//        catch(Exception e){
-//            return serializer.toJson(e.getLocalizedMessage());
-//        }
-//    }
+    public String createGame(Request req, Response res){
+        try{
+            var authToken = req.headers("authorization");
+            GameData newGame = serializer.fromJson(req.body(), GameData.class);
+
+            GameData result = GameService.createGame(authToken,newGame);
+            return serializer.toJson(result);
+        }
+        catch(Exception e){
+            return wrapException(e);
+        }
+    }
+    String wrapException(Exception e){
+        String wrapper = "{\"message\": \"" + e.getLocalizedMessage() + "\"}";
+//        { "message": "Error: (description of error)" }
+        return wrapper;
+    }
 
 }
