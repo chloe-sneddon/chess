@@ -8,17 +8,17 @@ import model.UserData;
 public class UserService extends GeneralService{
 
 //  public void logout(AuthData auth) {}
-    public static AuthData register(UserData usrData) throws UserServiceException, DataAccessException {
+    public static AuthData register(UserData usrData) throws ServiceException, DataAccessException {
 
 //        TODO: 500 error vs 400 error
             if(usrData == null){
-                throw new UserServiceException("usrData is null",500);
+                throw new ServiceException("usrData is null",500);
             }
             if((usrData.username() == null)|(usrData.password() == null)|(usrData.email() == null)){
-                throw new UserServiceException("Error: bad request",400);
+                throw new ServiceException("Error: bad request",400);
             }
             if (GeneralService.usrData.userExists(usrData.username())){
-                throw new UserServiceException("Error: already taken",403);
+                throw new ServiceException("Error: already taken",403);
             }
 
             GeneralService.usrData.insertUser(usrData);
@@ -27,12 +27,12 @@ public class UserService extends GeneralService{
             return authData.getAuthData(token);
     }
 
-    public static AuthData login(UserData usrData) throws UserServiceException, DataAccessException{
+    public static AuthData login(UserData usrData) throws ServiceException, DataAccessException{
         if(usrData == null){
-            throw new UserServiceException("Error: usrData is null",500);
+            throw new ServiceException("Error: usrData is null",500);
         }
         if((usrData.username() == null)|(usrData.password() == null)){
-            throw new UserServiceException("Error: empty UserData field",500);
+            throw new ServiceException("Error: empty UserData field",500);
         }
 
 //       Verify Username and Password
@@ -43,11 +43,11 @@ public class UserService extends GeneralService{
                 return authData.getAuthData(token);
             }
             else{
-                throw new UserServiceException("Error: unauthorized",401);
+                throw new ServiceException("Error: unauthorized",401);
             }
         }
         else{
-            throw new UserServiceException ("Error: user does not exist",401);
+            throw new ServiceException("Error: user does not exist",401);
         }
     }
 

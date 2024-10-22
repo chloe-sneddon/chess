@@ -2,7 +2,7 @@ package dataaccess;
 
 import chess.ChessGame;
 import model.GameData;
-import service.UserServiceException;
+import service.ServiceException;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -13,10 +13,10 @@ public class MemoryGameDAO implements GameDAO {
     public void clear() {
         allGameData.clear();
     }
-    public int createGame(String gameName) throws UserServiceException{
+    public int createGame(String gameName) throws ServiceException {
 
         if((gameName == null)|(gameName.isEmpty())){
-            throw new UserServiceException("Error: no provided gameName",500);
+            throw new ServiceException("Error: no provided gameName",500);
         }
         var gameId = createGameID();
         GameData gmData = new GameData(gameId,null,null,gameName,new ChessGame());

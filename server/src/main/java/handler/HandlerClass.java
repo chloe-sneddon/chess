@@ -6,7 +6,7 @@ import model.GameData;
 import model.UserData;
 import service.UserService;
 import service.GameService;
-import service.UserServiceException;
+import service.ServiceException;
 import spark.Request;
 import spark.Response;
 
@@ -23,7 +23,7 @@ public class HandlerClass {
             res.status(e.statusCode());
             return wrapException(e);
         }
-        catch(UserServiceException e){
+        catch(ServiceException e){
             res.status(e.statusCode());
             return wrapException(e);
         }
@@ -43,7 +43,7 @@ public class HandlerClass {
             res.status(e.statusCode());
             return wrapException(e);
         }
-        catch (UserServiceException e) {
+        catch (ServiceException e) {
             res.status(e.statusCode());
             return wrapException(e);
         }
@@ -91,7 +91,29 @@ public class HandlerClass {
             res.status(e.statusCode());
             return wrapException(e);
         }
-        catch(UserServiceException e){
+        catch(ServiceException e){
+            res.status(e.statusCode());
+            return wrapException(e);
+        }
+        catch(Exception e){
+            res.status(500);
+            return wrapException(e);
+        }
+    }
+
+    public String listGame(Request req, Response res){
+        try{
+            var authToken = req.headers("authorization");
+//            GameData newGame = serializer.fromJson(req.body(), GameData.class);
+//        [200] { "games": [{"gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""} ]}
+            GameData result = GameService.listGames(authToken);
+            return serializer.toJson(result);
+        }
+        catch(DataAccessException e){
+            res.status(e.statusCode());
+            return wrapException(e);
+        }
+        catch(ServiceException e){
             res.status(e.statusCode());
             return wrapException(e);
         }
@@ -105,7 +127,4 @@ public class HandlerClass {
         return "{\"message\": \"" + e.getLocalizedMessage() + "\"}";
     }
 
-    private String createGameWrapper(int gameID){
-        return "{ \"gameID\": " + Integer.toString(gameID) + "}";
-    }
 }

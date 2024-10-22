@@ -1,11 +1,11 @@
 package service;
 
 
-public class UserServiceException extends Exception{
+public class ServiceException extends Exception{
     final String message;
     final int errorCode;
 
-    public UserServiceException(String message, int errorCode) {
+    public ServiceException(String message, int errorCode) {
         super(message);
         this.message = message;
         this.errorCode = errorCode;
