@@ -1,12 +1,15 @@
 package service;
 
 import dataaccess.MemoryUserDAO;
+import handler.HandlerClass;
 import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;
+
+import java.util.ArrayList;
 
 import static service.UserServiceTests.userService;
 
@@ -24,10 +27,9 @@ public class GameServiceTests {
         return regData.authToken();
     }
 
-    private int gameSetUp() throws Exception{
+    private int gameSetUp(String authToken) throws Exception{
         GameData gmDataInput = new GameData(0,null,null,"gameNAmed",null);
-        var authData = registerUser();
-        var gameData = gameService.createGame(authData,gmDataInput);
+        var gameData = gameService.createGame(authToken,gmDataInput);
         return gameData.gameID();
     }
 
@@ -60,12 +62,41 @@ public class GameServiceTests {
     public void listGames(){
         try{
             var authToken = registerUser();
-            gameSetUp();
-            gameService.listGames(authToken);
+            ArrayList<GameData> expected = new ArrayList<>();
+            GameData gmDataInput = new GameData(0,null,null,"gameNAmed",null);
+
+            var gameOneData = gameService.createGame(authToken,gmDataInput);
+            var gameTwoData = gameService.createGame(authToken,gmDataInput);
+            expected.add(gameTwoData);
+            expected.add(gameOneData);
+
+            ArrayList<GameData> activeGames = GameService.listGames(authToken);
+            for (GameData game : activeGames){
+                if(!expected.contains(game)){
+                    Assertions.fail("Not same games");
+                }
+            }
         } catch (Exception e) {
             Assertions.fail("unexpected error");
         }
+    }
 
+    @Test
+    @DisplayName("Empty List game")
+    public void emptylistGames() {
+        try {
+            var authToken = registerUser();
+            ArrayList<GameData> expected = new ArrayList<>();
+            ArrayList<GameData> activeGames = GameService.listGames(authToken);
+
+            for (GameData game : activeGames) {
+                if (!expected.contains(game)) {
+                    Assertions.fail("Not same games");
+                }
+            }
+        } catch (Exception e) {
+            Assertions.fail("unexpected error");
+        }
     }
 
 }

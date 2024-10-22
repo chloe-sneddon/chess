@@ -7,9 +7,11 @@ package dataaccess;
 import model.GameData;
 import service.ServiceException;
 
+import java.util.ArrayList;
+
 public interface GameDAO {
     void clear();
     int createGame(String gameName) throws ServiceException;
     GameData getGameData(int gameID);
-
+    ArrayList<GameData> getActiveGames();
 }

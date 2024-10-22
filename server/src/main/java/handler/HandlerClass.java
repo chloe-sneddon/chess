@@ -10,6 +10,8 @@ import service.ServiceException;
 import spark.Request;
 import spark.Response;
 
+import java.util.ArrayList;
+
 public class HandlerClass {
     private final Gson serializer = new Gson();
 
@@ -101,13 +103,11 @@ public class HandlerClass {
         }
     }
 
-    public String listGame(Request req, Response res){
+    public String listGames(Request req, Response res){
         try{
             var authToken = req.headers("authorization");
-//            GameData newGame = serializer.fromJson(req.body(), GameData.class);
-//        [200] { "games": [{"gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""} ]}
-            GameData result = GameService.listGames(authToken);
-            return serializer.toJson(result);
+            ArrayList<GameData> activeGames = GameService.listGames(authToken);
+            return wrapGameList(activeGames);
         }
         catch(DataAccessException e){
             res.status(e.statusCode());
@@ -123,8 +123,53 @@ public class HandlerClass {
         }
     }
 
+    public String joinGame(Request req, Response res){
+        try{
+            var authToken = req.headers("authorization");
+            var gmData = serializer.fromJson(req.body(), UserData.class);
+            GameData result = GameService.joinGame(authToken, gmData);
+
+            return serializer.toJson(result);
+        }
+        catch(DataAccessException e){
+            res.status(e.statusCode());
+            return wrapException(e);
+        }
+        catch(ServiceException e){
+            res.status(e.statusCode());
+            return wrapException(e);
+        }
+        catch (Exception e) {
+            res.status(500);
+            return wrapException(e);
+        }
+        return null;
+    }
+
     private String wrapException(Exception e){
         return "{\"message\": \"" + e.getLocalizedMessage() + "\"}";
+    }
+
+    public static String wrapGameList(ArrayList<GameData> gameList){
+//    [200] { "games": [{"gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""}, {"gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""} ]}
+
+        if(gameList.isEmpty()){
+            return "{ \"games\": [] }";
+        }
+
+        String finalString = "{ \"games\": [";
+        for (int i = 0; i < gameList.size(); i++){
+            GameData game = gameList.get(i);
+            if(i == gameList.size()-1){
+                String tmp = game.toString();
+                finalString = finalString + tmp + " ]}";
+            }
+            else{
+                String tmp = game.toString();
+                finalString = finalString + tmp + ", ";
+            }
+        }
+        return finalString;
     }
 
 }

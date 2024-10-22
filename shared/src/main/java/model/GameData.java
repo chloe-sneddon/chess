@@ -10,6 +10,10 @@ import chess.ChessGame;
 public record GameData(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) {
     @Override
     public String toString() {
-        return "gameID:" + gameID;
+        return "{\"gameID\": " + gameID +
+                ", \"whiteUsername\": \"" + whiteUsername + "\"" +
+                ", \"blackUsername\": \"" + blackUsername + "\"" +
+                ", \"gameName\": \"" + gameName + "\"}";
+//        {"gameID": int, "whiteUsername": "", "blackUsername": "", "gameName": ""}
     }
 }

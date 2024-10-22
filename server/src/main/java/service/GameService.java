@@ -3,6 +3,8 @@ package service;
 import dataaccess.DataAccessException;
 import model.GameData;
 
+import java.util.ArrayList;
+
 public class GameService extends GeneralService{
 
     public static GameData createGame(String authToken, GameData gmData) throws ServiceException, DataAccessException {
@@ -10,9 +12,12 @@ public class GameService extends GeneralService{
         int gameID = gameData.createGame(gmData.gameName());
         return gameData.getGameData(gameID);
     }
-    public static GameData listGames (String authToken) throws DataAccessException, ServiceException{
+    public static ArrayList<GameData> listGames (String authToken) throws ServiceException, DataAccessException{
         verifyToken(authToken);
-//        [200] { "games": [{"gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""} ]}
-        return null;
-        }
+        return gameData.getActiveGames();
+    }
+    public static GameData joinGame(String authToken, GameData gmData) throws ServiceException, DataAccessException{
+        verifyToken(authToken);
+
+    }
 }

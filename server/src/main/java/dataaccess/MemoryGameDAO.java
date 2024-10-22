@@ -4,6 +4,7 @@ import chess.ChessGame;
 import model.GameData;
 import service.ServiceException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -32,5 +33,10 @@ public class MemoryGameDAO implements GameDAO {
 
     public GameData getGameData(int gameID){
         return allGameData.get(gameID);
+    }
+    public ArrayList<GameData> getActiveGames(){
+        ArrayList<GameData> activeGames = new ArrayList<>();
+        activeGames.addAll(allGameData.values());
+        return activeGames;
     }
 }
