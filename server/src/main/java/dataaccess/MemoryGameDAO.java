@@ -23,11 +23,13 @@ public class MemoryGameDAO implements GameDAO {
         allGameData.put(gameId,gmData);
         return gmData.gameID();
     }
+
     private int createGameID(){
         Random rand = new Random();
         int gameId = rand.nextInt(1000);
         return gameId;
     }
+
     public GameData getGameData(int gameID){
         return allGameData.get(gameID);
     }

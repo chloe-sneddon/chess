@@ -87,7 +87,16 @@ public class HandlerClass {
             GameData result = GameService.createGame(authToken,newGame);
             return serializer.toJson(result);
         }
+        catch(DataAccessException e){
+            res.status(e.statusCode());
+            return wrapException(e);
+        }
+        catch(UserServiceException e){
+            res.status(e.statusCode());
+            return wrapException(e);
+        }
         catch(Exception e){
+            res.status(500);
             return wrapException(e);
         }
     }
