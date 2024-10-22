@@ -1,13 +1,12 @@
 package service;
 
 import dataaccess.DataAccessException;
-import dataaccess.MemoryUserDAO;
+import dataaccess.UserDAO;
 import model.UserData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;
-
 
 
 public class UserServiceTests {
@@ -61,6 +60,7 @@ public class UserServiceTests {
             Assertions.fail(e.getLocalizedMessage());
         }
     }
+
 
     @Test
     @DisplayName("Normal Login Test")

@@ -1,17 +1,13 @@
 package dataaccess;
 
 import model.AuthData;
-
 import java.util.HashMap;
 import java.util.UUID;
 
 public class MemoryAuthDAO implements AuthDAO {
     private HashMap<String, AuthData> allAuthData = new HashMap <String, AuthData>();
 
-    public String createToken(){
-//        return "this is a token";
-        return UUID.randomUUID().toString();
-    }
+    public String createToken(){ return UUID.randomUUID().toString(); }
 
     public void addAuthData(String authToken, String username){
         AuthData authData = new AuthData(authToken, username);
@@ -32,12 +28,8 @@ public class MemoryAuthDAO implements AuthDAO {
         return allAuthData.get(token).username();
     }
 
-    public void clear() {
-        allAuthData.clear();
-    }
+    public void clear() { allAuthData.clear(); }
 
-    public void deleteToken(String authToken){
-        allAuthData.remove(authToken);
-    }
+    public void deleteToken(String authToken){ allAuthData.remove(authToken); }
 
 }

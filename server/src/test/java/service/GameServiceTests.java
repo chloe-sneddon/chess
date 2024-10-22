@@ -2,16 +2,12 @@ package service;
 
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
-import dataaccess.MemoryGameDAO;
-import dataaccess.MemoryUserDAO;
-import handler.HandlerClass;
 import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;
-import spark.utils.Assert;
 
 import java.util.ArrayList;
 
@@ -140,6 +136,11 @@ public class GameServiceTests {
         }
         catch (DataAccessException e) {
             DataAccessException expected = new DataAccessException("Error: bad request",400);
+            Assertions.assertEquals(expected.message(),e.message());
+            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+        }
+        catch (ServiceException e){
+            ServiceException expected = new ServiceException("Error: bad request",400);
             Assertions.assertEquals(expected.message(),e.message());
             Assertions.assertEquals(expected.statusCode(),e.statusCode());
         }

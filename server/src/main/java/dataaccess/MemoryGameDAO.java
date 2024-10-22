@@ -11,15 +11,14 @@ import java.util.Random;
 public class MemoryGameDAO implements GameDAO {
     private HashMap<Integer, GameData> allGameData = new HashMap <>();
 
-    public void clear() {
-        allGameData.clear();
-    }
+    public void clear() { allGameData.clear(); }
 
     public int createGame(String gameName) throws ServiceException {
 
         if((gameName == null)){
             throw new ServiceException("Error: no provided gameName",500);
         }
+
         var gameId = createGameID();
         GameData gmData = new GameData(gameId,null,null,gameName,new ChessGame());
         allGameData.put(gameId,gmData);
@@ -41,10 +40,8 @@ public class MemoryGameDAO implements GameDAO {
 
     public String getUser(int gameID, String playerColor) throws DataAccessException {
         var targetGame = getGameData(gameID);
-        if(targetGame == null){
-            throw new DataAccessException("Error: bad request", 400);
-        }
-        if (playerColor == null) {
+
+        if((targetGame == null)|(playerColor == null)){
             throw new DataAccessException("Error: bad request", 400);
         }
         if (playerColor.equals("WHITE")) {

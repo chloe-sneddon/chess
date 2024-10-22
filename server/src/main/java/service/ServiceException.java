@@ -1,6 +1,8 @@
 package service;
 
-
+/*
+* indicates there was an error in the service layer
+*/
 public class ServiceException extends Exception{
     final String message;
     final int errorCode;
@@ -11,11 +13,7 @@ public class ServiceException extends Exception{
         this.errorCode = errorCode;
     }
 
-    public int statusCode(){
-        return errorCode;
-    }
+    public int statusCode(){ return errorCode; }
 
-    public String message(){
-        return message;
-    }
+    public String message(){ return message; }
 }

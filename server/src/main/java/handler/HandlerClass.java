@@ -116,10 +116,6 @@ public class HandlerClass {
             res.status(e.statusCode());
             return wrapException(e);
         }
-        catch(ServiceException e){
-            res.status(e.statusCode());
-            return wrapException(e);
-        }
         catch(Exception e){
             res.status(500);
             return wrapException(e);

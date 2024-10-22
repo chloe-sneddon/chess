@@ -1,3 +1,5 @@
 package Request;
-
-public record JoinGameRequest (String playerColor, int gameID) { }
+/*
+ * Class Model for JoinGame Request
+ */
+public record JoinGameRequest (String playerColor, int gameID) {}

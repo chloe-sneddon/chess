@@ -1,19 +1,19 @@
 package dataaccess;
-//createGame: Create a new game.
-//getGame: Retrieve a specified game with the given game ID.
-//listGames: Retrieve all games.
-//updateGame: Updates a chess game. It should replace the chess game string corresponding to a given gameID. This is used when players join a game or when a move is made.
 
 import model.GameData;
 import service.ServiceException;
-
 import java.util.ArrayList;
 
+/*
+ * Data Access Object Interface for Game Data (model.GameData)
+ */
 public interface GameDAO {
+
     void clear();
     int createGame(String gameName) throws ServiceException;
     GameData getGameData(int gameID) throws DataAccessException;
     ArrayList<GameData> getActiveGames();
     String getUser(int gameID, String playerColor) throws DataAccessException;
     void joinGame(int gameID, String playerColor, String username) throws DataAccessException;
+
 }

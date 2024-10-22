@@ -4,10 +4,11 @@ import dataaccess.DataAccessException;
 import model.AuthData;
 import model.UserData;
 
-
+/*
+ * Performs User Service Duties
+ */
 public class UserService extends GeneralService{
 
-//  public void logout(AuthData auth) {}
     public static AuthData register(UserData usrData) throws ServiceException, DataAccessException {
 
 //        TODO: 500 error vs 400 error
@@ -35,14 +36,22 @@ public class UserService extends GeneralService{
             throw new ServiceException("Error: empty UserData field",500);
         }
 
-//       Verify Username and Password
-        if(GeneralService.usrData.userExists(usrData.username())){
-            if(usrData.password().equals(GeneralService.usrData.getPassword(usrData.username()))){
-                var token = authData.createToken();
-                authData.addAuthData(token,usrData.username());
-                return authData.getAuthData(token);
-            }
-            else{
+        verifyPassword(usrData.username(),usrData.password());
+        var token = authData.createToken();
+        authData.addAuthData(token,usrData.username());
+        return authData.getAuthData(token);
+
+    }
+
+    public static void logout(String authToken) throws DataAccessException {
+        verifyToken(authToken);
+        authData.deleteToken(authToken);
+    }
+
+    public static void verifyPassword(String username, String password) throws ServiceException,DataAccessException{
+
+        if(GeneralService.usrData.userExists(username)){
+            if(!(password.equals(GeneralService.usrData.getPassword(username)))){
                 throw new ServiceException("Error: unauthorized",401);
             }
         }
@@ -51,10 +60,5 @@ public class UserService extends GeneralService{
         }
     }
 
-    public static void logout(String authToken) throws DataAccessException {
-        verifyToken(authToken);
-        authData.deleteToken(authToken);
-    }
-//    public static boolean verifyPassword(String hashedPassword){}
 
 }
