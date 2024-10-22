@@ -49,7 +49,6 @@ public class Server {
         return gameHandler.createGame(req,res);
     }
 
-
     public void stop() {
         Spark.stop();
         Spark.awaitStop();

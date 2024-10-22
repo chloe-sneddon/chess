@@ -47,7 +47,7 @@ public class UserService extends GeneralService{
             }
         }
         else{
-            throw new UserServiceException ("Error: user does not exist",500);
+            throw new UserServiceException ("Error: user does not exist",401);
         }
     }
 

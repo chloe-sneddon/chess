@@ -3,12 +3,14 @@ package dataaccess;
 import model.AuthData;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class MemoryAuthDAO implements AuthDAO {
     private HashMap<String, AuthData> allAuthData = new HashMap <String, AuthData>();
 
     public String createToken(){
-        return "this is a token";
+//        return "this is a token";
+        return UUID.randomUUID().toString();
     }
 
     public void addAuthData(String authToken, String username){
@@ -18,7 +20,7 @@ public class MemoryAuthDAO implements AuthDAO {
 
     public AuthData getAuthData(String token) throws DataAccessException{
         if(allAuthData.get(token) == null){
-            throw new DataAccessException("unauthorized", 401);
+            throw new DataAccessException("Error: unauthorized", 401);
         }
         return allAuthData.get(token);
     }

@@ -19,13 +19,13 @@ public class HandlerClass {
             var result = UserService.register(newUser);
             return serializer.toJson(result);
         }
-        catch (DataAccessException dta){
-            res.status(dta.statusCode());
-            return wrapException(dta);
+        catch (DataAccessException e){
+            res.status(e.statusCode());
+            return wrapException(e);
         }
-        catch(UserServiceException userE){
-            res.status(userE.statusCode());
-            return wrapException(userE);
+        catch(UserServiceException e){
+            res.status(e.statusCode());
+            return wrapException(e);
         }
         catch (Exception e) {
             res.status(500);
@@ -39,9 +39,13 @@ public class HandlerClass {
             var result = UserService.login(newUser);
             return serializer.toJson(result);
         }
-        catch (DataAccessException dta){
-            res.status(dta.statusCode());
-            return wrapException(dta);
+        catch (DataAccessException e){
+            res.status(e.statusCode());
+            return wrapException(e);
+        }
+        catch (UserServiceException e) {
+            res.status(e.statusCode());
+            return wrapException(e);
         }
         catch (Exception e){
             res.status(500);
@@ -65,6 +69,10 @@ public class HandlerClass {
             UserService.logout(req.headers("authorization"));
             return "{}";
         }
+        catch(DataAccessException e){
+            res.status(e.statusCode());
+            return wrapException(e);
+        }
         catch(Exception e){
             res.status(500);
             return wrapException(e);
@@ -83,10 +91,12 @@ public class HandlerClass {
             return wrapException(e);
         }
     }
-    String wrapException(Exception e){
-        String wrapper = "{\"message\": \"" + e.getLocalizedMessage() + "\"}";
-//        { "message": "Error: (description of error)" }
-        return wrapper;
+
+    private String wrapException(Exception e){
+        return "{\"message\": \"" + e.getLocalizedMessage() + "\"}";
     }
 
+    private String createGameWrapper(int gameID){
+        return "{ \"gameID\": " + Integer.toString(gameID) + "}";
+    }
 }

@@ -5,6 +5,7 @@ import model.GameData;
 import service.UserServiceException;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class MemoryGameDAO implements GameDAO {
     private HashMap<Integer, GameData> allGameData = new HashMap <Integer, GameData>();
@@ -23,8 +24,9 @@ public class MemoryGameDAO implements GameDAO {
         return gmData.gameID();
     }
     private int createGameID(){
-//        generate random ID
-        return 10;
+        Random rand = new Random();
+        int gameId = rand.nextInt(1000);
+        return gameId;
     }
     public GameData getGameData(int gameID){
         return allGameData.get(gameID);
