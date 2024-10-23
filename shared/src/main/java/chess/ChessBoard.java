@@ -17,19 +17,8 @@ public class ChessBoard {
     public ChessBoard() {}
 
     public void movePiece(ChessMove newMove,ChessPiece endPiece){
-//        TODO: Keep track of captured pieces (uncomment capturedPiece and if statement)
-//        ChessPiece capturedPiece = null;
-
-//        remove piece from start position
         removePiece(newMove.getStartPosition());
-
-////        check to see if there is a piece in the new position
-//        if(getPiece(newMove.getEndPosition()) != null){
-//            capturedPiece = getPiece(newMove.getEndPosition());
-//        }
-//        add piece to new position
         addPiece(newMove.getEndPosition(),endPiece);
-
     }
 
     public void setBoard (ChessBoard copy){

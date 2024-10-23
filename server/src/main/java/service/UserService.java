@@ -11,7 +11,6 @@ public class UserService extends GeneralService{
 
     public static AuthData register(UserData usrData) throws ServiceException, DataAccessException {
 
-//        TODO: 500 error vs 400 error
             if(usrData == null){
                 throw new ServiceException("usrData is null",500);
             }

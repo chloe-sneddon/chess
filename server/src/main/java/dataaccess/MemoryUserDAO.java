@@ -7,7 +7,7 @@ public class MemoryUserDAO implements UserDAO {
     private HashMap<String, UserData> allUserData = new HashMap <String, UserData>();
 
     public String getPassword(String username) throws DataAccessException{
-//        TODO: Phase 4, Encode this step (get hash of password or something)
+//        Phase 4, Encode this step (get hash of password or something)
         if(allUserData.isEmpty()){
             throw new DataAccessException("Error: bad request",400);
         }
