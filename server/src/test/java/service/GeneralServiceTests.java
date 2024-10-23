@@ -57,10 +57,10 @@ public class GeneralServiceTests {
         try{
             var token = registerUser();
             gameSetUp(token);
-            var DAO = GeneralService.getUserDAO();
+            var dao = GeneralService.getUserDAO();
 
             GeneralService.clear();
-            DAO.getPassword("usErName");
+            dao.getPassword("usErName");
             Assertions.fail("Error: userDAO was not cleared");
         }
         catch(DataAccessException e){
@@ -79,10 +79,10 @@ public class GeneralServiceTests {
         try{
             var token = registerUser();
             var gameID = gameSetUp(token);
-            var DAO = GeneralService.getGameDAO();
+            var dao = GeneralService.getGameDAO();
             GeneralService.clear();
 
-            DAO.getGameData(gameID);
+            dao.getGameData(gameID);
             Assertions.fail("Error: gameDAO was not cleared");
         }
         catch(DataAccessException e){

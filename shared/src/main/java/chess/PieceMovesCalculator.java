@@ -13,27 +13,27 @@ public class PieceMovesCalculator {
         switch (pieceType) {
             case KING:
                 KingMovesCalculator king = new KingMovesCalculator();
-                moves = king.CalculateMoves(board, piece, myPosition);
+                moves = king.calculateMoves(board, piece, myPosition);
                 break;
             case PAWN:
                 PawnMoveCalculator pawn = new PawnMoveCalculator();
-                moves = pawn.CalculateMoves(board, piece, myPosition);
+                moves = pawn.calculateMoves(board, piece, myPosition);
                 break;
             case QUEEN:
                 QueenMovesCalculator queen = new QueenMovesCalculator();
-                moves = queen.CalculateMoves(board, piece, myPosition);
+                moves = queen.calculateMoves(board, piece, myPosition);
                 break;
             case BISHOP:
                 BishopMovesCalculator bishop = new BishopMovesCalculator();
-                moves = bishop.CalculateMoves(board, piece, myPosition);
+                moves = bishop.calculateMoves(board, piece, myPosition);
                 break;
             case KNIGHT:
                 KnightMovesCalculator knight = new KnightMovesCalculator();
-                moves = knight.CalculateMoves(board, piece, myPosition);
+                moves = knight.calculateMoves(board, piece, myPosition);
                 break;
             case ROOK:
                 RookMovesCalculator rook = new RookMovesCalculator();
-                moves = rook.CalculateMoves(board, piece, myPosition);
+                moves = rook.calculateMoves(board, piece, myPosition);
                 break;
         }
         return moves;

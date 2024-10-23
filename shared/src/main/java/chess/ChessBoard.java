@@ -103,7 +103,7 @@ public class ChessBoard {
     public void resetBoard() {
         clearBoard();
         DefaultBoard resetBoard = new DefaultBoard();
-        ChessBoard newBoard = resetBoard.SetDefaultBoard();
+        ChessBoard newBoard = resetBoard.setDefaultBoard();
         this.board = newBoard.getBoard();
     }
 

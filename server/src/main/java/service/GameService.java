@@ -11,13 +11,13 @@ public class GameService extends GeneralService{
 
     public static GameData createGame(String authToken, GameData gmData) throws ServiceException, DataAccessException {
         verifyToken(authToken);
-        int gameID = gameData.createGame(gmData.gameName());
-        return gameData.getGameData(gameID);
+        int gameID = GAMEDATA.createGame(gmData.gameName());
+        return GAMEDATA.getGameData(gameID);
     }
 
     public static ArrayList<GameData> listGames (String authToken) throws DataAccessException{
         verifyToken(authToken);
-        return gameData.getActiveGames();
+        return GAMEDATA.getActiveGames();
     }
 
     public static void joinGame(String authToken, int gameID,String playerColor) throws ServiceException, DataAccessException{
@@ -29,14 +29,14 @@ public class GameService extends GeneralService{
         }
         verifyToken(authToken);
 
-        String playerUsername = authData.getUsername(authToken);
+        String playerUsername = AUTHDATA.getUsername(authToken);
         colorAvailable(gameID, playerColor);
-        gameData.joinGame(gameID,playerColor,playerUsername);
+        GAMEDATA.joinGame(gameID,playerColor,playerUsername);
     }
 
     static private void colorAvailable(int gameID, String playerColor) throws ServiceException,DataAccessException{
         try{
-            gameData.getUser(gameID,playerColor);
+            GAMEDATA.getUser(gameID,playerColor);
             throw new ServiceException("Error: already taken",403);
         }
         catch(DataAccessException e){

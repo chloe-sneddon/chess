@@ -10,7 +10,7 @@ public class PawnMoveCalculator {
     private ChessPiece piece;
 
     PawnMoveCalculator(){}
-    public Collection<ChessMove> CalculateMoves(ChessBoard board, ChessPiece piece, ChessPosition startPosition){
+    public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPiece piece, ChessPosition startPosition){
         this.startPosition = startPosition;
         this.board = board;
         this.piece = piece;

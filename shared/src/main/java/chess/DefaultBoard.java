@@ -5,7 +5,7 @@ public class DefaultBoard {
     DefaultBoard(){
         newBoard = new ChessBoard();
     }
-    public ChessBoard SetDefaultBoard(){
+    public ChessBoard setDefaultBoard(){
 
 //      Pawn Location
 //          black

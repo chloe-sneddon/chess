@@ -18,14 +18,14 @@ public class UserService extends GeneralService{
             if((usrData.username() == null)|(usrData.password() == null)|(usrData.email() == null)){
                 throw new ServiceException("Error: bad request",400);
             }
-            if (GeneralService.usrData.userExists(usrData.username())){
+            if (GeneralService.USRDATA.userExists(usrData.username())){
                 throw new ServiceException("Error: already taken",403);
             }
 
-            GeneralService.usrData.insertUser(usrData);
-            String token = authData.createToken();
-            authData.addAuthData(token,usrData.username());
-            return authData.getAuthData(token);
+            GeneralService.USRDATA.insertUser(usrData);
+            String token = AUTHDATA.createToken();
+            AUTHDATA.addAuthData(token,usrData.username());
+            return AUTHDATA.getAuthData(token);
     }
 
     public static AuthData login(UserData usrData) throws ServiceException, DataAccessException{
@@ -37,21 +37,21 @@ public class UserService extends GeneralService{
         }
 
         verifyPassword(usrData.username(),usrData.password());
-        var token = authData.createToken();
-        authData.addAuthData(token,usrData.username());
-        return authData.getAuthData(token);
+        var token = AUTHDATA.createToken();
+        AUTHDATA.addAuthData(token,usrData.username());
+        return AUTHDATA.getAuthData(token);
 
     }
 
     public static void logout(String authToken) throws DataAccessException {
         verifyToken(authToken);
-        authData.deleteToken(authToken);
+        AUTHDATA.deleteToken(authToken);
     }
 
     public static void verifyPassword(String username, String password) throws ServiceException,DataAccessException{
 
-        if(GeneralService.usrData.userExists(username)){
-            if(!(password.equals(GeneralService.usrData.getPassword(username)))){
+        if(GeneralService.USRDATA.userExists(username)){
+            if(!(password.equals(GeneralService.USRDATA.getPassword(username)))){
                 throw new ServiceException("Error: unauthorized",401);
             }
         }

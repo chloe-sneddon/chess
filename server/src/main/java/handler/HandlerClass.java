@@ -9,8 +9,8 @@ import service.GameService;
 import service.ServiceException;
 import spark.Request;
 import spark.Response;
-import Response.ListGamesResponse;
-import Request.JoinGameRequest;
+import response.ListGamesResponse;
+import request.JoinGameRequest;
 
 import java.util.ArrayList;
 

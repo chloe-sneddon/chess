@@ -8,11 +8,11 @@ public class QueenMovesCalculator {
     QueenMovesCalculator(){
         moves = new ArrayList<>();
     }
-    public Collection<ChessMove> CalculateMoves (ChessBoard board,ChessPiece piece,ChessPosition myPosition){
+    public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPiece piece, ChessPosition myPosition){
         BishopMovesCalculator diagonalMoves = new BishopMovesCalculator();
         RookMovesCalculator straightMoves = new RookMovesCalculator();
-        moves = diagonalMoves.CalculateMoves(board,piece,myPosition);
-        moves.addAll(straightMoves.CalculateMoves(board,piece,myPosition));
+        moves = diagonalMoves.calculateMoves(board,piece,myPosition);
+        moves.addAll(straightMoves.calculateMoves(board,piece,myPosition));
         return moves;
     }
 
