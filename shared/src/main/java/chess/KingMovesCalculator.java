@@ -3,7 +3,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class KingMovesCalculator {
+public class KingMovesCalculator extends MovesCalculator {
     private Collection<ChessMove> possibleMoves;
     private ChessPosition startPosition;
     private ChessBoard board;
@@ -17,16 +17,26 @@ public class KingMovesCalculator {
         possibleMoves = new ArrayList<>();
 
 //        Diagonals
+
         calcMoves(1,1);
         calcMoves(-1,1);
         calcMoves(1,-1);
         calcMoves(-1,-1);
+//        possibleMoves.addAll(calcMoves(1,1,startPosition,board,piece));
+//        possibleMoves.addAll(calcMoves(-1,1, startPosition,board,piece));
+//        possibleMoves.addAll(calcMoves(1,-1, startPosition,board,piece));
+//        possibleMoves.addAll(calcMoves(-1,-1, startPosition,board,piece));
 
 //        Straights
+
         calcMoves(1,0);
         calcMoves(-1,0);
         calcMoves(0,-1);
         calcMoves(0,1);
+//        possibleMoves.addAll(calcMoves(1,0,startPosition,board,piece));
+//        possibleMoves.addAll(calcMoves(-1,0, startPosition,board,piece));
+//        possibleMoves.addAll(calcMoves(0,-1, startPosition,board,piece));
+//        possibleMoves.addAll(calcMoves(0,1, startPosition,board,piece));
 
         return possibleMoves;
     }
