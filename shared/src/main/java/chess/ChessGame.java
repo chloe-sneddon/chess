@@ -162,13 +162,6 @@ public class ChessGame {
             return false;
         }
         else{
-//          valid moves takes into account check; if no valid moves then yes checkmate
-//            Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
-//            Collection <ChessMove> moves = new ArrayList<>();
-//            for (ChessPosition startPosition : startPositions){
-//                Collection <ChessMove> tmpMoves = validMoves(startPosition);
-//                moves.addAll(tmpMoves);
-//            }
             Collection <ChessMove> moves = getAllMoves(teamColor);
 
             if(moves.isEmpty()){
@@ -202,13 +195,6 @@ public class ChessGame {
     public boolean isInStalemate(TeamColor teamColor) {
 //        basically checkmate but the king isn't in check
         if (!isInCheck(teamColor)){
-//            Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
-//            Collection <ChessMove> moves = new ArrayList<>();
-//
-//            for (ChessPosition startPosition : startPositions){
-//                Collection <ChessMove> tmpMoves = validMoves(startPosition);
-//                moves.addAll(tmpMoves);
-//            }
             Collection <ChessMove> moves = getAllMoves(teamColor);
 
             if(moves.isEmpty()){
