@@ -1,33 +1,12 @@
 package service;
 
 import dataaccess.DataAccessException;
-import model.GameData;
-import model.UserData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.BeforeEach;
 
-import static service.GameServiceTests.gameService;
-import static service.UserServiceTests.userService;
 
-public class GeneralServiceTests {
-    @BeforeEach
-    public void run() {
-        userService.clear();
-    }
-
-    private String registerUser() throws Exception {
-        var registerData = new UserData("usErName", "myPsw@rd", "email@email.com");
-        var regData = userService.register(registerData);
-        return regData.authToken();
-    }
-
-    private int gameSetUp(String authToken) throws Exception{
-        GameData gmDataInput = new GameData(0,null,null,"gameNAmed",null);
-        var gameData = gameService.createGame(authToken,gmDataInput);
-        return gameData.gameID();
-    }
+public class GeneralServiceTests extends TestSetUp {
 
     @Test
     @DisplayName("clear auth")

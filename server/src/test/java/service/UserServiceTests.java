@@ -5,22 +5,10 @@ import model.UserData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.BeforeEach;
 
 
-public class UserServiceTests {
+public class UserServiceTests extends TestSetUp {
     static UserService userService = new UserService();
-
-    @BeforeEach
-    public void run() {
-        userService.clear();
-    }
-
-    private String registerUser() throws Exception {
-        var registerData = new UserData("usErName", "myPsw@rd", "email@email.com");
-        var regData = userService.register(registerData);
-        return regData.authToken();
-    }
 
     @Test
     @DisplayName("Normal Register User Test")

@@ -3,35 +3,12 @@ package service;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.GameData;
-import model.UserData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.BeforeEach;
-
 import java.util.ArrayList;
 
-import static service.UserServiceTests.userService;
-
-public class GameServiceTests {
-    static GameService gameService = new GameService();
-
-    @BeforeEach
-    public void run() {
-        GeneralService.clear();
-    }
-
-    private String registerUser() throws Exception {
-        var registerData = new UserData("usErName", "myPsw@rd", "email@email.com");
-        var regData = userService.register(registerData);
-        return regData.authToken();
-    }
-
-    private int gameSetUp(String authToken) throws Exception{
-        GameData gmDataInput = new GameData(0,null,null,"gameNAmed",null);
-        var gameData = gameService.createGame(authToken,gmDataInput);
-        return gameData.gameID();
-    }
+public class GameServiceTests extends TestSetUp{
 
     @Test
     @DisplayName("Normal createGame")
