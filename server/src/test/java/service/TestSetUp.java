@@ -25,4 +25,11 @@ public class TestSetUp {
         var gameData = gameService.createGame(authToken,gmDataInput);
         return gameData.gameID();
     }
+
+//    public boolean dataAccessAcception(DataAccessException expected,DataAccessException e){
+//        DataAccessException expected = new DataAccessException("Error: unauthorized",401);
+//        Assertions.assertEquals(expected.message(),e.message());
+//        Assertions.assertEquals(expected.statusCode(),e.statusCode());
+//    }
+
 }

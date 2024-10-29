@@ -22,6 +22,7 @@ public class GeneralServiceTests extends TestSetUp {
         }
         catch(DataAccessException e){
             DataAccessException expected = new DataAccessException("Error: unauthorized",401);
+
             Assertions.assertEquals(expected.message(),e.message());
             Assertions.assertEquals(expected.statusCode(),e.statusCode());
         }
