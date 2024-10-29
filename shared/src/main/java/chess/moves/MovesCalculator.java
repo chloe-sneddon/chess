@@ -1,11 +1,16 @@
-package chess;
+package chess.moves;
+
+import chess.ChessBoard;
+import chess.ChessMove;
+import chess.ChessPiece;
+import chess.ChessPosition;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class MovesCalculator {
 
-    public Collection<ChessMove> calcMoves(int rowInc, int colInc, ChessPosition startPosition,ChessBoard board, ChessPiece piece){
+    public Collection<ChessMove> calcMoves(int rowInc, int colInc, ChessPosition startPosition, ChessBoard board, ChessPiece piece){
 //        calculate possible move
         Collection<ChessMove> possibleMoves = new ArrayList<>();
         int row = startPosition.getRow();
