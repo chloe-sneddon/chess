@@ -163,12 +163,13 @@ public class ChessGame {
         }
         else{
 //          valid moves takes into account check; if no valid moves then yes checkmate
-            Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
-            Collection <ChessMove> moves = new ArrayList<>();
-            for (ChessPosition startPosition : startPositions){
-                Collection <ChessMove> tmpMoves = validMoves(startPosition);
-                moves.addAll(tmpMoves);
-            }
+//            Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
+//            Collection <ChessMove> moves = new ArrayList<>();
+//            for (ChessPosition startPosition : startPositions){
+//                Collection <ChessMove> tmpMoves = validMoves(startPosition);
+//                moves.addAll(tmpMoves);
+//            }
+            Collection <ChessMove> moves = getAllMoves(teamColor);
 
             if(moves.isEmpty()){
                 return true;
@@ -180,6 +181,16 @@ public class ChessGame {
         }
 
     }
+    public Collection <ChessMove> getAllMoves(TeamColor teamColor){
+        Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
+        Collection <ChessMove> moves = new ArrayList<>();
+
+        for (ChessPosition startPosition : startPositions){
+            Collection <ChessMove> tmpMoves = validMoves(startPosition);
+            moves.addAll(tmpMoves);
+        }
+        return moves;
+    }
 
     /**
      * Determines if the given team is in stalemate, which here is defined as having
@@ -189,14 +200,16 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-//        basically checkmate but the king isnt in check
+//        basically checkmate but the king isn't in check
         if (!isInCheck(teamColor)){
-            Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
-            Collection <ChessMove> moves = new ArrayList<>();
-            for (ChessPosition startPosition : startPositions){
-                Collection <ChessMove> tmpMoves = validMoves(startPosition);
-                moves.addAll(tmpMoves);
-            }
+//            Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
+//            Collection <ChessMove> moves = new ArrayList<>();
+//
+//            for (ChessPosition startPosition : startPositions){
+//                Collection <ChessMove> tmpMoves = validMoves(startPosition);
+//                moves.addAll(tmpMoves);
+//            }
+            Collection <ChessMove> moves = getAllMoves(teamColor);
 
             if(moves.isEmpty()){
                 return true;
