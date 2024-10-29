@@ -5,15 +5,10 @@ import java.util.Collection;
 
 public class RookMovesCalculator extends MovesCalculator{
     private Collection<ChessMove> possibleMoves;
-    private ChessPosition startPosition;
-    private ChessBoard board;
-    private ChessPiece piece;
 
     RookMovesCalculator(){}
     public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPiece piece, ChessPosition startPosition){
-        this.startPosition = startPosition;
-        this.board = board;
-        this.piece = piece;
+
         possibleMoves = new ArrayList<>();
 
         possibleMoves.addAll(calcMoves(1,0,startPosition,board,piece));

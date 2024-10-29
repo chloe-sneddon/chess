@@ -5,15 +5,9 @@ import java.util.Collection;
 
 public class BishopMovesCalculator extends MovesCalculator {
     private Collection<ChessMove> possibleMoves;
-    private ChessPosition startPosition;
-    private ChessBoard board;
-    private ChessPiece piece;
 
     BishopMovesCalculator() {}
     public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPiece piece, ChessPosition startPosition){
-        this.startPosition = startPosition;
-        this.board = board;
-        this.piece = piece;
         possibleMoves = new ArrayList<>();
 
         possibleMoves.addAll(calcMoves(1,1,startPosition,board,piece));
