@@ -1,11 +1,13 @@
 package server;
 
+import dataaccess.DataAccessException;
+import dataaccess.DatabaseManager;
 import handler.HandlerClass;
 import spark.*;
 
 public class Server {
 
-    private HandlerClass handler = new HandlerClass();
+    private final HandlerClass handler = new HandlerClass();
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
@@ -20,6 +22,7 @@ public class Server {
         Spark.put("/game",this::joinGame);
 
         Spark.awaitInitialization();
+
         return Spark.port();
     }
 
@@ -55,4 +58,5 @@ public class Server {
         Spark.stop();
         Spark.awaitStop();
     }
+
 }

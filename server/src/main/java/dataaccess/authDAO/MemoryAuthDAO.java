@@ -1,5 +1,6 @@
-package dataaccess;
+package dataaccess.authDAO;
 
+import dataaccess.DataAccessException;
 import model.AuthData;
 import java.util.HashMap;
 import java.util.UUID;
@@ -14,7 +15,7 @@ public class MemoryAuthDAO implements AuthDAO {
         allAuthData.put(authToken, authData);
     }
 
-    public AuthData getAuthData(String token) throws DataAccessException{
+    public AuthData getAuthData(String token) throws DataAccessException {
         if(allAuthData.get(token) == null){
             throw new DataAccessException("Error: unauthorized", 401);
         }

@@ -1,6 +1,7 @@
 package dataaccess;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class DatabaseManager {
@@ -33,10 +34,27 @@ public class DatabaseManager {
         }
     }
 
+     public static void configureDatabase() throws DataAccessException {
+        createDatabase();
+        try (var conn = DatabaseManager.getConnection()) {
+//            conn.setCatalog(DATABASE_NAME);
+            ArrayList<String[]> tables = SqlTables.allTables();
+            for(var table : tables){
+                for (var statement : table) {
+                    try (var preparedStatement = conn.prepareStatement(statement)) {
+                        preparedStatement.executeUpdate();
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()),500);
+        }
+    }
+
     /**
      * Creates the database if it does not already exist.
      */
-    static void createDatabase() throws DataAccessException {
+    private static void createDatabase() throws DataAccessException {
         try {
             var statement = "CREATE DATABASE IF NOT EXISTS " + DATABASE_NAME;
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
@@ -44,7 +62,8 @@ public class DatabaseManager {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
+//            TODO: check that 500 is the correct error
+            throw new DataAccessException("Unable to create DB: " + e.getMessage(),500);
         }
     }
 
@@ -60,13 +79,14 @@ public class DatabaseManager {
      * }
      * </code>
      */
-    static Connection getConnection() throws DataAccessException {
+    public static Connection getConnection() throws DataAccessException {
         try {
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
             conn.setCatalog(DATABASE_NAME);
             return conn;
         } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
+//            TODO: check that 500 is the correct error
+            throw new DataAccessException(e.getMessage(),500);
         }
     }
 }

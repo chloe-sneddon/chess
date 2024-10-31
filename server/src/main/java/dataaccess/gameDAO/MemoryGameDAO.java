@@ -1,6 +1,7 @@
-package dataaccess;
+package dataaccess.gameDAO;
 
 import chess.ChessGame;
+import dataaccess.DataAccessException;
 import model.GameData;
 import service.ServiceException;
 
@@ -31,7 +32,7 @@ public class MemoryGameDAO implements GameDAO {
         return gameId;
     }
 
-    public GameData getGameData(int gameID) throws DataAccessException{
+    public GameData getGameData(int gameID) throws DataAccessException {
         if(allGameData.isEmpty()){
             throw new DataAccessException("Error: bad request",400);
         }

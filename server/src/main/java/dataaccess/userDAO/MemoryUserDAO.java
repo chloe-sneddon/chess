@@ -1,12 +1,13 @@
-package dataaccess;
+package dataaccess.userDAO;
 
+import dataaccess.DataAccessException;
 import model.UserData;
 import java.util.HashMap;
 
 public class MemoryUserDAO implements UserDAO {
     private HashMap<String, UserData> allUserData = new HashMap <String, UserData>();
 
-    public String getPassword(String username) throws DataAccessException{
+    public String getPassword(String username) throws DataAccessException {
 //        Phase 4, Encode this step (get hash of password or something)
         if(allUserData.isEmpty()){
             throw new DataAccessException("Error: bad request",400);

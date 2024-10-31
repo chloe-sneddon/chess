@@ -146,6 +146,10 @@ public class HandlerClass {
 //        return null;
     }
 
+    public String createDB(Response res){
+        return null;
+    }
+
     private String wrapException(Exception e){
         return "{\"message\": \"" + e.getLocalizedMessage() + "\"}";
     }
