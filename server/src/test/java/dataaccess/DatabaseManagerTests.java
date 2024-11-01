@@ -1,5 +1,5 @@
-import dataaccess.DataAccessException;
-import dataaccess.DatabaseManager;
+package dataaccess;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
