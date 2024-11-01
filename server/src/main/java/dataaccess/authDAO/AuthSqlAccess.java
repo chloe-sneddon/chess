@@ -32,7 +32,7 @@ public class AuthSqlAccess implements AuthDAO {
 
     public void clear() throws DataAccessException {
             try (var conn = DatabaseManager.getConnection()){
-                String sqlClearDB = "TRUNCATE gameData";
+                String sqlClearDB = "TRUNCATE authData";
 
                 try(var preparedClear = conn.prepareStatement(sqlClearDB)){
                     preparedClear.executeUpdate();

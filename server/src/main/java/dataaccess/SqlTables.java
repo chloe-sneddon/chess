@@ -3,6 +3,7 @@ package dataaccess;
 import java.util.ArrayList;
 
 public class SqlTables {
+//    ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
     static private final String[] createUserTable = {
             """
         CREATE TABLE IF NOT EXISTS userData (
@@ -10,26 +11,25 @@ public class SqlTables {
         `password` VARCHAR(500) NOT NULL,
         `email` VARCHAR(300) NOT NULL,
         `json` TEXT DEFAULT NULL,
-        PRIMARY KEY (`username`),
+        PRIMARY KEY (username),
         INDEX(email),
         INDEX(password)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+        )
         """
     };
-
     static private final String[] createAuthTable = {
-            """
+        """
         CREATE TABLE IF NOT EXISTS authData (
         `authToken` VARCHAR(300) NOT NULL,
         `username` VARCHAR(300) NOT NULL,
-        `json` TEXT DEFAULT NULL,
-        PRIMARY KEY (`authToken`),
-        INDEX(authToken),
+        PRIMARY KEY (`username`),
+        INDEX(`authToken`),
         INDEX(username)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+        )
         """
     };
 
+//`json` TEXT DEFAULT NULL,
     static private final String[] createGameTable = {
             """
         CREATE TABLE IF NOT EXISTS gameData (
@@ -39,10 +39,10 @@ public class SqlTables {
         `gameName` VARCHAR(300) NOT NULL,
         `game` VARCHAR(500) NOT NULL,
         `json` TEXT DEFAULT NULL,
-        PRIMARY KEY (`authToken`),
-        INDEX(authToken),
-        INDEX(username)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+        INDEX(gameID),
+        INDEX(gameName),
+        INDEX(game)
+        )
         """
     };
 

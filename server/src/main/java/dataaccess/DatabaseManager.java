@@ -37,7 +37,6 @@ public class DatabaseManager {
      public static void configureDatabase() throws DataAccessException {
         createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
-//            conn.setCatalog(DATABASE_NAME);
             ArrayList<String[]> tables = SqlTables.allTables();
             for(var table : tables){
                 for (var statement : table) {
@@ -46,7 +45,8 @@ public class DatabaseManager {
                     }
                 }
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()),500);
         }
     }

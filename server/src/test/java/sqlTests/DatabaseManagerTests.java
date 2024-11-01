@@ -1,5 +1,6 @@
 package sqlTests;
 
+import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,13 +9,11 @@ import org.junit.jupiter.api.DisplayName;
 import service.GeneralService;
 
 public class DatabaseManagerTests {
-//    DatabaseManager dbMan = new DatabaseManager();
 
-    @BeforeEach
-    public void run() throws Exception {
-        GeneralService.clear();
-        DatabaseManager.clearTables();
-    }
+//    @BeforeEach
+//    public void run() throws Exception {
+////        GeneralService.clear();
+//    }
 
     static private final String[] insertExamples = {
         """
@@ -32,8 +31,14 @@ public class DatabaseManagerTests {
     @DisplayName("Initialize DB")
     public void initializeDB(){
 
-        try (var conn = DatabaseManager.getConnection()){
+        try{
             DatabaseManager.configureDatabase();
+        }
+        catch(DataAccessException e){
+            Assertions.fail(e.message());
+        }
+
+        try (var conn = DatabaseManager.getConnection()){
             for (var statement : insertExamples) {
                 try (var preparedStatement = conn.prepareStatement(statement)) {
                     preparedStatement.executeUpdate();

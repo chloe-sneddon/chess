@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public interface GameDAO {
 
-    void clear();
+    void clear() throws DataAccessException;
     int createGame(String gameName) throws ServiceException;
     GameData getGameData(int gameID) throws DataAccessException;
     ArrayList<GameData> getActiveGames();

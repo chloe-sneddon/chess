@@ -18,6 +18,7 @@ public class GeneralService {
     public final static UserDAO USRDATA = new MemoryUserDAO();
     public final static AuthDAO AUTHDATA = new MemoryAuthDAO();
     public final static GameDAO GAMEDATA = new MemoryGameDAO();
+
     public final static UserDAO USRSQL = new UserSqlAccess();
     public final static AuthDAO AUTHSQL = new AuthSqlAccess();
     public final static GameDAO GAMESQL = new GameSqlAccess();
@@ -28,10 +29,14 @@ public class GeneralService {
 
     public static GameDAO getGameDAO(){return GAMEDATA;}
 
-    public static void clear(){
+    public static void clear() throws DataAccessException{
         USRDATA.clear();
         AUTHDATA.clear();
         GAMEDATA.clear();
+
+        USRSQL.clear();
+        AUTHSQL.clear();
+        GAMESQL.clear();
     }
 
 //  throws error if not verified

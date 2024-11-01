@@ -1,5 +1,6 @@
 package service;
 
+import dataaccess.DataAccessException;
 import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,7 @@ public class TestSetUp {
     static GameService gameService = new GameService();
 
     @BeforeEach
-    public void run() {
+    public void run() throws DataAccessException{
         GeneralService.clear();
     }
 
