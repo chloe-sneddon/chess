@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import service.GeneralService;
-
 import java.sql.Connection;
 
 public class DatabaseManagerTests {
@@ -15,13 +14,10 @@ public class DatabaseManagerTests {
     @BeforeEach
     public void run() throws Exception {
         GeneralService.clear();
+        DatabaseManager.configureDatabase();
     }
 
-    static private final String [] insertExamples = {
-        """
-        INSERT INTO authData (username, authToken) VALUES ('Puddles', '123authToken');
-        """
-    };
+    static private final String insertExamples = "INSERT INTO authData (username, authToken) VALUES ('Puddles', '123authToken');";
 
     static private final String getToken = "Select * from authData;";
 
@@ -41,24 +37,16 @@ public class DatabaseManagerTests {
     @Test
     @DisplayName("Clear db")
     public void clearDB(){
-        try {
-            DatabaseManager.configureDatabase();
-        }
-        catch(Exception e){
-            Assertions.fail(e.getLocalizedMessage());
-        }
         try (var conn = DatabaseManager.getConnection()){
-
-            for (var statement : insertExamples) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
+            try (var preparedStatement = conn.prepareStatement(insertExamples)) {
+                preparedStatement.executeUpdate();
             }
             checkData(conn);
         }
         catch(Exception e){
             Assertions.fail("DB not initialized: %s%n " + e.getMessage());
         }
+
         try (var conn = DatabaseManager.getConnection()){
             GeneralService.clear();
             checkData(conn);
