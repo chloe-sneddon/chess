@@ -1,11 +1,11 @@
-package service;
-
 import dataaccess.DataAccessException;
 import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
+import service.GameService;
+import service.GeneralService;
 
-import static service.UserServiceTests.userService;
+import static UserServiceTests.userService;
 
 public class TestSetUp {
     static GameService gameService = new GameService();

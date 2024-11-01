@@ -1,5 +1,3 @@
-package sqlTests;
-
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import org.junit.jupiter.api.BeforeEach;
