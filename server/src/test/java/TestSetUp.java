@@ -4,11 +4,13 @@ import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import service.GameService;
 import service.GeneralService;
+import service.UserService;
 
-import static UserServiceTests.userService;
+//import static UserServiceTests.userService;
 
 public class TestSetUp {
     static GameService gameService = new GameService();
+    static UserService userService = new UserService();
 
     @BeforeEach
     public void run() throws DataAccessException{
