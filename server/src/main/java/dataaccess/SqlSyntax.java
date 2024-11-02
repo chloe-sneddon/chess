@@ -2,7 +2,7 @@ package dataaccess;
 
 public class SqlSyntax {
 //    AuthData
-    static public final String addAuthToken = "INSERT INTO authData (username, authToken) VALUES (?, ?);";
+    static public final String addAuthData = "INSERT INTO authData (username, authToken) VALUES (?, ?);";
     static public final String verifyToken = "select *from authData where binary authToken LIKE ?;";
     static public final String selectAllAuthData = "SELECT * from authData;";
     static public final String getUsernames = "SELECT username from authData;";

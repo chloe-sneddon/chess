@@ -1,21 +1,11 @@
 package dataaccess;
 
-import dataaccess.userDAO.UserSqlAccess;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import service.GeneralService;
-import java.sql.Connection;
-import java.util.ArrayList;
 
-public class DatabaseManagerTests {
-
-    @BeforeEach
-    public void run() throws Exception {
-        DatabaseManager.configureDatabase();
-        GeneralService.clear();
-    }
+public class SqlAuthDAOTests extends SqlTestFunctions{
 
     @Test
     @DisplayName("Initialize DB")
@@ -70,41 +60,12 @@ public class DatabaseManagerTests {
         }
     }
 
-    private void checkData(Connection conn) throws Exception {
-        ArrayList<String[]> requestExamples = SqlTestStatements.getSelectsAndExpected();
-        for(String[] dataGroup : requestExamples){
-            String actual = dataGroup[0];
-            String expected = dataGroup[1];
-
-            try (var actualToken = conn.prepareStatement(actual)) {
-                var rs = actualToken.executeQuery();
-                rs.next();
-                var result = rs.getString(1);
-
-                if(!(expected.equals(result))){
-                    throw new Exception("authToken not equal");
-                }
-            }
-        }
-    }
-
-    private void addData(Connection conn) throws Exception{
-        ArrayList<String> addExamples = SqlTestStatements.getAddExamples();
-        for(String insert : addExamples){
-            try (var preparedStatement = conn.prepareStatement(insert)) {
-                preparedStatement.executeUpdate();
-            }
-        }
-    }
-
     @Test
     @DisplayName("positive userExists")
     public void userExists(){
         try (var conn = DatabaseManager.getConnection()){
             addData(conn);
-            UserSqlAccess sql = new UserSqlAccess();
-            System.out.println("here :)");
-            Boolean b = sql.userExists("Puddles");
+            Boolean b = usrSql.userExists("Puddles");
             Assertions.assertEquals(true,b);
         }
         catch(Exception e){
@@ -115,15 +76,52 @@ public class DatabaseManagerTests {
     @Test
     @DisplayName("badUserExists")
     public void badUserExists(){
-        System.out.println("here");
         try{
-            GeneralService.clear();
-            UserSqlAccess sql = new UserSqlAccess();
-            Boolean b = sql.userExists("Puddles");
+            Boolean b = usrSql.userExists("Puddles");
             Assertions.assertEquals(false,b);
         }
         catch(Exception e){
             Assertions.fail(e.getLocalizedMessage());
         }
+    }
+
+    @Test
+    @DisplayName("AddAuthData")
+    public void addAuthData(){
+        try{
+            authSql.addAuthData("123authToken","Puddles");
+            String expectedToken = "123authToken";
+
+            try (var conn = DatabaseManager.getConnection()) {
+                String statement = "Select authToken from authData;";
+
+                try (var actualToken = conn.prepareStatement(statement)) {
+                    var rs = actualToken.executeQuery();
+                    rs.next();
+                    var result = rs.getString(1);
+
+                    if(!(expectedToken.equals(result))){
+                        throw new Exception("authToken not equal");
+                    }
+                }
+            }
+        }
+        catch(Exception e){
+            Assertions.fail("Unexpected Exception: " + e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Negative AddAuthData")
+    public void negAddAuthDta(){
+        try(var conn = DatabaseManager.getConnection()){
+            addData(conn);
+            authSql.addAuthData("123authToken","Puddles");
+            Assertions.fail("failed");
+        }
+        catch (Exception e){
+            System.out.println("Passed Failed Test");
+        }
+
     }
 }

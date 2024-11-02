@@ -6,15 +6,26 @@ import dataaccess.SqlSyntax;
 import model.AuthData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class AuthSqlAccess implements AuthDAO {
 
     public String createToken(){
-        return null;
+        return UUID.randomUUID().toString();
     }
 
-    public void addAuthData(String authToken, String username){
-
+    public void addAuthData(String authToken, String username) throws DataAccessException{
+        String addAuthData = SqlSyntax.addAuthData;
+        try (var conn = DatabaseManager.getConnection()){
+            try (var statement = conn.prepareStatement(addAuthData)) {
+                statement.setString(1,username);
+                statement.setString(2,authToken);
+                String b = statement.toString();
+                statement.executeUpdate();
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("Error: unauthorized", 401);
+        }
     }
 
     public AuthData getAuthData(String token) throws DataAccessException {
