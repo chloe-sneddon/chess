@@ -1,0 +1,52 @@
+Register:
+    Body: { "username":"", "password":"", "email":"" }
+    Response:{ "username":"", "authToken":"" }
+
+Login:
+    Body: { "username":"", "password":"" }
+    Response: { "username":"", "authToken":"" }
+
+Logout:
+    Header: authorization: <authToken>
+    Response: {}
+
+ListGames:
+    Header: authorization: <authToken>
+    Response: { "games": [{"gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""} ]}
+
+CreateGame:
+    Header: authorization: <authToken>
+    Body: { "gameName":"" }
+    Response: { "gameID": 1234 }
+
+JoinGame:
+    Header: authorization: <authToken>
+    Body: { "playerColor":"WHITE/BLACK", "gameID": 1234 }
+    Response: {}
+
+
+
+    INSERT INTO authData (username, authToken) VALUES ('Puddles', '123authToken');
+
+    Select authToken from authData;
+    Select username from authData;
+
+    INSERT INTO gameData (gameID, blackUsername, whiteUsername, gameName, game) VALUES (123, 'black', 'white','named_game','gameButSerialized');
+
+    Select gameID from gameData;
+    Select blackUsername from gameData;
+    Select whiteUsername from gameData;
+    Select gameName from gameData;
+    Select game from gameData;
+
+    INSERT INTO userData (username, password, email) VALUES ('Puddles', '123Pass#wordHas#', 'email@email.com');
+
+    Select username from userData;
+    Select password from userData;
+    Select email from userData;
+
+    INSERT INTO authData (username, authToken) VALUES ('Puddles', '123authToken');
+    INSERT INTO gameData (gameID, blackUsername, whiteUsername, gameName, game) VALUES (123, 'black', 'white','named_game','gameButSerialized');
+    INSERT INTO userData (username, password, email) VALUES ('Puddles', '123Pass#wordHas#', 'email@email.com');
+
+    DROP DATABASE chess

@@ -1,11 +1,12 @@
+package service;
+
 import dataaccess.DataAccessException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import service.GeneralService;
 
 
-public class GeneralServiceTests extends TestSetUp {
+public class GeneralServiceMemTests extends MemTestsSetUp {
 
     @Test
     @DisplayName("clear auth")

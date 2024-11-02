@@ -1,16 +1,16 @@
+package service;
+
 import dataaccess.DataAccessException;
 import dataaccess.gameDAO.GameDAO;
 import model.GameData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import service.GameService;
-import service.ServiceException;
 
 import java.util.ArrayList;
 //test because it is loading late
 
-public class GameServiceTests extends TestSetUp{
+public class GameServiceMemTests extends MemTestsSetUp {
 
     @Test
     @DisplayName("Normal createGame")

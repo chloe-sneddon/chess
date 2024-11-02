@@ -34,6 +34,10 @@ public class DatabaseManager {
         }
     }
 
+    public static String getDatabaseName(){
+        return DATABASE_NAME;
+    }
+
      public static void configureDatabase() throws DataAccessException {
         createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
@@ -61,8 +65,8 @@ public class DatabaseManager {
             try (var preparedStatement = conn.prepareStatement(statement)) {
                 preparedStatement.executeUpdate();
             }
-        } catch (SQLException e) {
-//            TODO: check that 500 is the correct error
+        }
+        catch (SQLException e) {
             throw new DataAccessException("Unable to create DB: " + e.getMessage(),500);
         }
     }

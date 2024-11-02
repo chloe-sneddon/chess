@@ -30,9 +30,9 @@ public class GeneralService {
     public static GameDAO getGameDAO(){return GAMEDATA;}
 
     public static void clear() throws DataAccessException{
-        USRDATA.clear();
-        AUTHDATA.clear();
-        GAMEDATA.clear();
+//        USRDATA.clear();
+//        AUTHDATA.clear();
+//        GAMEDATA.clear();
 
         USRSQL.clear();
         AUTHSQL.clear();
@@ -41,7 +41,8 @@ public class GeneralService {
 
 //  throws error if not verified
     public static void verifyToken(String authToken) throws DataAccessException{
-        AUTHDATA.getAuthData(authToken);
+//        AUTHDATA.getAuthData(authToken);
+        AUTHSQL.getAuthData(authToken);
     }
 
 }

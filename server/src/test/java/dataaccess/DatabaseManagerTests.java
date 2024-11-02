@@ -12,22 +12,37 @@ public class DatabaseManagerTests {
 
     @BeforeEach
     public void run() throws Exception {
-        GeneralService.clear();
         DatabaseManager.configureDatabase();
+        GeneralService.clear();
     }
-    
+
     @Test
     @DisplayName("Initialize DB")
     public void initializeDB(){
 
-        try (var conn = DatabaseManager.getConnection()){
-            GeneralService.clear();
+        try (var conn = DatabaseManager.getConnection()) {
+            String dbName = DatabaseManager.getDatabaseName();
+            String drop = "Drop Database " + dbName + ";";
+
+            try (var actualToken = conn.prepareStatement(drop)) {
+                actualToken.executeUpdate();
+                GeneralService.clear();
+                Assertions.fail("should have thrown a DataAccess error");
+            } catch (Exception e) {
+                System.out.println("Passed failure");
+            }
+        }
+        catch (Exception e){
+            Assertions.fail("unexpected loss of connection");
+        }
+        try (var conn = DatabaseManager.getConnection()) {
             DatabaseManager.configureDatabase();
+            GeneralService.clear();
             addData(conn);
             checkData(conn);
         }
         catch(Exception e){
-            Assertions.fail(e.getLocalizedMessage());
+            Assertions.fail("this exception " + e.getLocalizedMessage());
         }
     }
 
@@ -53,7 +68,7 @@ public class DatabaseManagerTests {
     }
 
     private void checkData(Connection conn) throws Exception {
-        ArrayList<String[]> requestExamples = sqlTestStatements.getSelectsAndExpected();
+        ArrayList<String[]> requestExamples = SqlTestStatements.getSelectsAndExpected();
         for(String[] dataGroup : requestExamples){
             String actual = dataGroup[0];
             String expected = dataGroup[1];
@@ -71,11 +86,12 @@ public class DatabaseManagerTests {
     }
 
     private void addData(Connection conn) throws Exception{
-        ArrayList<String> addExamples = sqlTestStatements.getAddExamples();
+        ArrayList<String> addExamples = SqlTestStatements.getAddExamples();
         for(String insert : addExamples){
             try (var preparedStatement = conn.prepareStatement(insert)) {
                 preparedStatement.executeUpdate();
             }
         }
     }
+
 }

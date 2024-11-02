@@ -2,7 +2,7 @@ package dataaccess;
 
 import java.util.ArrayList;
 
-public class sqlTestStatements {
+public class SqlTestStatements {
     static private final String insertAuthExamples = "INSERT INTO authData (username, authToken) VALUES ('Puddles', '123authToken');";
 
     static private final String getToken = "Select authToken from authData;";

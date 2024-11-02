@@ -1,14 +1,12 @@
+package service;
+
 import dataaccess.DataAccessException;
 import model.UserData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import service.ServiceException;
-import service.UserService;
 
-
-public class UserServiceTests extends TestSetUp {
-    static UserService userService = new UserService();
+public class UserServiceMemTests extends MemTestsSetUp {
 
     @Test
     @DisplayName("Normal Register User Test")
@@ -64,15 +62,10 @@ public class UserServiceTests extends TestSetUp {
 
     @Test
     @DisplayName("Normal Logout")
-    public void logout() {
-        try {
-//            var registerData = new UserData("usErName", "myPsw@rd", "email@email.com");
-//            var authData = userService.register(registerData);
-            var authToken = registerUser();
-            userService.logout(authToken);
-        } catch (Exception e) {
-            Assertions.fail();
-        }
+    public void logout() throws Exception{
+        var authToken = registerUser();
+        userService.logout(authToken);
+
     }
 
     @Test

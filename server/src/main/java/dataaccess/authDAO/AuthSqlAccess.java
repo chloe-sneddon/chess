@@ -2,6 +2,7 @@ package dataaccess.authDAO;
 
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
+import dataaccess.SqlSyntax;
 import model.AuthData;
 
 import java.sql.SQLException;
@@ -23,7 +24,21 @@ public class AuthSqlAccess implements AuthDAO {
     }
 
     public AuthData getAuthData(String token) throws DataAccessException {
-        return null;
+        String verifyToken = SqlSyntax.verifyToken;
+
+        try (var conn = DatabaseManager.getConnection()){
+            try (var actualToken = conn.prepareStatement(verifyToken)) {
+                var rs = actualToken.executeQuery();
+                rs.next();
+                var authToken = rs.getString(1);
+                var username = rs.getString(2);
+                AuthData allData = new AuthData(authToken,username);
+                return allData;
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("Error: unauthorized", 401);
+        }
+
     }
 
     public String getUsername(String token) throws DataAccessException{
