@@ -23,7 +23,8 @@ public class UserSqlAccess implements UserDAO {
                 statement.setString(1,username);
                 var rs = statement.executeQuery();
                 rs.next();
-                return rs.getBoolean(1);
+                rs.getString(1);
+                return true;
             }
         }
         catch (Exception e) {

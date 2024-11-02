@@ -103,18 +103,19 @@ public class DatabaseManagerTests {
         try (var conn = DatabaseManager.getConnection()){
             addData(conn);
             UserSqlAccess sql = new UserSqlAccess();
+            System.out.println("here :)");
             Boolean b = sql.userExists("Puddles");
             Assertions.assertEquals(true,b);
         }
         catch(Exception e){
             Assertions.fail(e.getLocalizedMessage());
         }
-
     }
 
     @Test
-    @DisplayName("negative userExists")
-    public void negUserExists(){
+    @DisplayName("badUserExists")
+    public void badUserExists(){
+        System.out.println("here");
         try{
             GeneralService.clear();
             UserSqlAccess sql = new UserSqlAccess();
@@ -124,7 +125,5 @@ public class DatabaseManagerTests {
         catch(Exception e){
             Assertions.fail(e.getLocalizedMessage());
         }
-
     }
-
 }
