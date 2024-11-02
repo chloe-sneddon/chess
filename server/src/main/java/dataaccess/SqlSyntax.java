@@ -4,8 +4,8 @@ public class SqlSyntax {
 //    AuthData
     static public final String addAuthData = "INSERT INTO authData (username, authToken) VALUES (?, ?);";
     static public final String verifyToken = "select *from authData where binary authToken LIKE ?;";
-    static public final String selectAllAuthData = "SELECT * from authData;";
-    static public final String getUsernames = "SELECT username from authData;";
+    static public final String getUsername = "SELECT username from authData WHERE authToken LIKE ?;";
+    static public final String deleteToken = "DELETE FROM authData WHERE authToken Like ?;";
 
 //    GameData
     static public final String insertToGameData = "INSERT INTO gameData (?, ?) VALUES (?, ?);";

@@ -4,6 +4,8 @@ import dataaccess.DataAccessException;
 import model.AuthData;
 import model.UserData;
 
+import java.util.UUID;
+
 /*
  * Performs User Service Duties
  */
@@ -27,7 +29,7 @@ public class UserService extends GeneralService{
 //      UserData storedData = new UserData(username,hash,email);
 //      USRSQL.insertUser(storedData); // delete the line below
         USRSQL.insertUser(usrData);
-        String token = AUTHSQL.createToken();
+        String token = UUID.randomUUID().toString();
         AUTHSQL.addAuthData(token,usrData.username());
         return AUTHSQL.getAuthData(token);
 
@@ -49,7 +51,7 @@ public class UserService extends GeneralService{
         }
 
         verifyPassword(usrData.username(),usrData.password());
-        var token = AUTHDATA.createToken();
+        var token = UUID.randomUUID().toString();
         AUTHDATA.addAuthData(token,usrData.username());
         return AUTHDATA.getAuthData(token);
 

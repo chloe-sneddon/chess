@@ -61,31 +61,6 @@ public class SqlAuthDAOTests extends SqlTestFunctions{
     }
 
     @Test
-    @DisplayName("positive userExists")
-    public void userExists(){
-        try (var conn = DatabaseManager.getConnection()){
-            addData(conn);
-            Boolean b = usrSql.userExists("Puddles");
-            Assertions.assertEquals(true,b);
-        }
-        catch(Exception e){
-            Assertions.fail(e.getLocalizedMessage());
-        }
-    }
-
-    @Test
-    @DisplayName("badUserExists")
-    public void badUserExists(){
-        try{
-            Boolean b = usrSql.userExists("Puddles");
-            Assertions.assertEquals(false,b);
-        }
-        catch(Exception e){
-            Assertions.fail(e.getLocalizedMessage());
-        }
-    }
-
-    @Test
     @DisplayName("AddAuthData")
     public void addAuthData(){
         try{
@@ -123,5 +98,50 @@ public class SqlAuthDAOTests extends SqlTestFunctions{
             System.out.println("Passed Failed Test");
         }
 
+    }
+
+    @Test
+    @DisplayName("Get Username from AuthToken")
+    public void getUsername(){
+        try(var conn = DatabaseManager.getConnection()) {
+            addData(conn);
+            String expected = "Puddles";
+            String token = "123authToken";
+            String actual = authSql.getUsername(token);
+            Assertions.assertEquals(expected,actual);
+        } catch (Exception e) {
+            Assertions.fail("Unexpected error: " + e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Bad Get Username from authToken")
+    public void negGetUsername(){
+        try{
+            String token = "123authToken";
+            authSql.getUsername(token);
+            Assertions.fail("Expected error");
+        } catch (Exception e) {
+            System.out.println("Passed failed test");
+        }
+    }
+
+    @Test
+    @DisplayName("Delete Token positive and negative test")
+    public void deleteToken(){
+        try(var conn = DatabaseManager.getConnection()){
+            addData(conn);
+            authSql.deleteToken("123authToken");
+        }
+        catch(Exception e){
+            Assertions.fail(e.getLocalizedMessage());
+        }
+        try{
+            authSql.getUsername("123authToken");
+            Assertions.fail("expected thrown error");
+        }
+        catch(Exception e){
+            System.out.println("Correct Thrown Exception");
+        }
     }
 }
