@@ -8,6 +8,7 @@ public class SqlSyntax {
     static public final String deleteToken = "DELETE FROM authData WHERE authToken Like ?;";
 
 //    GameData
+    static public final String createGame = "INSERT INTO gameData (gameID, gameName, game) VALUES (?,?,?);";
     static public final String insertToGameData = "INSERT INTO gameData (?, ?) VALUES (?, ?);";
     static public final String selectAllGameData = "SELECT * from gameData;";
     static public final String getWhiteUsernames = "SELECT whiteUsername from gameData;";

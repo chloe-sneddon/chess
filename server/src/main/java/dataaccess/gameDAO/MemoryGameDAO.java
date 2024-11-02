@@ -14,10 +14,10 @@ public class MemoryGameDAO implements GameDAO {
 
     public void clear() { allGameData.clear(); }
 
-    public int createGame(String gameName) throws ServiceException {
+    public int createGame(String gameName) throws DataAccessException {
 
         if((gameName == null)){
-            throw new ServiceException("Error: no provided gameName",500);
+            throw new DataAccessException("Error: no provided gameName",500);
         }
 
         var gameId = createGameID();

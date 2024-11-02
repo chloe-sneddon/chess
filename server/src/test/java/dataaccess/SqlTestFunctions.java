@@ -1,6 +1,7 @@
 package dataaccess;
 
 import dataaccess.authDAO.AuthSqlAccess;
+import dataaccess.gameDAO.GameSqlAccess;
 import dataaccess.userDAO.UserSqlAccess;
 import org.junit.jupiter.api.BeforeEach;
 import service.GeneralService;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 public class SqlTestFunctions {
     public AuthSqlAccess authSql = new AuthSqlAccess();
     public UserSqlAccess usrSql = new UserSqlAccess();
+    public GameSqlAccess gameSql = new GameSqlAccess();
 
     @BeforeEach
     public void run() throws Exception {

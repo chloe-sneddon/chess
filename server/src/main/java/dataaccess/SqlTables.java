@@ -37,11 +37,9 @@ public class SqlTables {
         `blackUsername` VARCHAR(300) DEFAULT NULL,
         `whiteUsername` VARCHAR(300) DEFAULT NULL,
         `gameName` VARCHAR(300) NOT NULL,
-        `game` VARCHAR(500) NOT NULL,
-        `json` TEXT DEFAULT NULL,
+        `game` TEXT NOT NULL,
         INDEX(gameID),
-        INDEX(gameName),
-        INDEX(game)
+        INDEX(gameName)
         )
         """
     };

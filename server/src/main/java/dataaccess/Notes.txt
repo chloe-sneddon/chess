@@ -52,3 +52,12 @@ INSERT INTO userData (username, password, email) VALUES ('Puddles', '123Pass#wor
 DROP DATABASE chess
 
 
+getTeamTurn
+setTeamTurn
+validMoves
+makeMove
+isInCheck
+isInCheckmate
+isInStalemate
+setBoard
+getBoard
