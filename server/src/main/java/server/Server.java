@@ -13,6 +13,13 @@ public class Server {
         Spark.port(desiredPort);
         Spark.staticFiles.location("web");
 
+        try{
+            DatabaseManager.configureDatabase();
+        }
+        catch (Throwable ex) {
+            System.out.printf("Unable to start server: %s%n", ex.getMessage());
+        }
+
         Spark.post("/user", this::createUser);
         Spark.post("/session", this::login);
         Spark.delete("/db", this::clear);

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import service.GeneralService;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 public class DatabaseManagerTests {
 
@@ -14,21 +15,19 @@ public class DatabaseManagerTests {
         GeneralService.clear();
         DatabaseManager.configureDatabase();
     }
-
-    static private final String insertExamples = "INSERT INTO authData (username, authToken) VALUES ('Puddles', '123authToken');";
-
-    static private final String getToken = "Select * from authData;";
-
-    static private final String getUsername = "Select username from authData;";
-
+    
     @Test
     @DisplayName("Initialize DB")
     public void initializeDB(){
-        try{
+
+        try (var conn = DatabaseManager.getConnection()){
+            GeneralService.clear();
             DatabaseManager.configureDatabase();
+            addData(conn);
+            checkData(conn);
         }
-        catch(DataAccessException e){
-            Assertions.fail(e.message());
+        catch(Exception e){
+            Assertions.fail(e.getLocalizedMessage());
         }
     }
 
@@ -36,9 +35,7 @@ public class DatabaseManagerTests {
     @DisplayName("Clear db")
     public void clearDB(){
         try (var conn = DatabaseManager.getConnection()){
-            try (var preparedStatement = conn.prepareStatement(insertExamples)) {
-                preparedStatement.executeUpdate();
-            }
+            addData(conn);
             checkData(conn);
         }
         catch(Exception e){
@@ -55,26 +52,29 @@ public class DatabaseManagerTests {
         }
     }
 
-    private void checkData(Connection conn) throws Exception{
-        String actual;
-        try (var actualUsername = conn.prepareStatement(getToken)) {
-            var rs = actualUsername.executeQuery();
-            rs.next();
-            actual = rs.getString(1);
-            String expectedToken = "123authToken";
+    private void checkData(Connection conn) throws Exception {
+        ArrayList<String[]> requestExamples = sqlTestStatements.getSelectsAndExpected();
+        for(String[] dataGroup : requestExamples){
+            String actual = dataGroup[0];
+            String expected = dataGroup[1];
 
-            if(!(expectedToken.equals(actual))){
-                throw new Exception("authToken not equal");
+            try (var actualToken = conn.prepareStatement(actual)) {
+                var rs = actualToken.executeQuery();
+                rs.next();
+                var result = rs.getString(1);
+
+                if(!(expected.equals(result))){
+                    throw new Exception("authToken not equal");
+                }
             }
         }
-        try (var actualUsername = conn.prepareStatement(getUsername)) {
-            var rs = actualUsername.executeQuery();
-            rs.next();
-            actual = rs.getString(1);
-            String expectedUser = "Puddles";
+    }
 
-            if(!(expectedUser.equals(actual))){
-                throw new Exception("authToken not equal");
+    private void addData(Connection conn) throws Exception{
+        ArrayList<String> addExamples = sqlTestStatements.getAddExamples();
+        for(String insert : addExamples){
+            try (var preparedStatement = conn.prepareStatement(insert)) {
+                preparedStatement.executeUpdate();
             }
         }
     }

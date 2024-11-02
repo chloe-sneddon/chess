@@ -2,6 +2,7 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
+import dataaccess.DatabaseManager;
 import model.GameData;
 import model.UserData;
 import service.UserService;
@@ -146,12 +147,8 @@ public class HandlerClass {
 //        return null;
     }
 
-    public String createDB(Response res){
-        return null;
-    }
 
     private String wrapException(Exception e){
         return "{\"message\": \"" + e.getLocalizedMessage() + "\"}";
     }
-
 }
