@@ -1,5 +1,6 @@
 package dataaccess;
 
+import dataaccess.userDAO.UserSqlAccess;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
@@ -26,18 +27,20 @@ public class DatabaseManagerTests {
 
             try (var actualToken = conn.prepareStatement(drop)) {
                 actualToken.executeUpdate();
-                GeneralService.clear();
-                Assertions.fail("should have thrown a DataAccess error");
             } catch (Exception e) {
-                System.out.println("Passed failure");
+                Assertions.fail(e.getLocalizedMessage());
             }
         }
         catch (Exception e){
             Assertions.fail("unexpected loss of connection");
         }
-        try (var conn = DatabaseManager.getConnection()) {
+        try{
             DatabaseManager.configureDatabase();
-            GeneralService.clear();
+        }
+        catch(Exception e){
+            Assertions.fail("Database not configured: " + e.getLocalizedMessage());
+        }
+        try (var conn = DatabaseManager.getConnection()) {
             addData(conn);
             checkData(conn);
         }
@@ -92,6 +95,36 @@ public class DatabaseManagerTests {
                 preparedStatement.executeUpdate();
             }
         }
+    }
+
+    @Test
+    @DisplayName("positive userExists")
+    public void userExists(){
+        try (var conn = DatabaseManager.getConnection()){
+            addData(conn);
+            UserSqlAccess sql = new UserSqlAccess();
+            Boolean b = sql.userExists("Puddles");
+            Assertions.assertEquals(true,b);
+        }
+        catch(Exception e){
+            Assertions.fail(e.getLocalizedMessage());
+        }
+
+    }
+
+    @Test
+    @DisplayName("negative userExists")
+    public void negUserExists(){
+        try{
+            GeneralService.clear();
+            UserSqlAccess sql = new UserSqlAccess();
+            Boolean b = sql.userExists("Puddles");
+            Assertions.assertEquals(false,b);
+        }
+        catch(Exception e){
+            Assertions.fail(e.getLocalizedMessage());
+        }
+
     }
 
 }

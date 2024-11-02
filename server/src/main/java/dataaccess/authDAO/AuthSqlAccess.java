@@ -4,16 +4,10 @@ import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import dataaccess.SqlSyntax;
 import model.AuthData;
-
 import java.sql.SQLException;
-import dataaccess.DatabaseManager;
-
-import java.sql.*;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class AuthSqlAccess implements AuthDAO {
-    DatabaseManager dbInfo = new DatabaseManager();
 
     public String createToken(){
         return null;
@@ -27,8 +21,9 @@ public class AuthSqlAccess implements AuthDAO {
         String verifyToken = SqlSyntax.verifyToken;
 
         try (var conn = DatabaseManager.getConnection()){
-            try (var actualToken = conn.prepareStatement(verifyToken)) {
-                var rs = actualToken.executeQuery();
+            try (var statement = conn.prepareStatement(verifyToken)) {
+                statement.setString(1,token);
+                var rs = statement.executeQuery();
                 rs.next();
                 var authToken = rs.getString(1);
                 var username = rs.getString(2);

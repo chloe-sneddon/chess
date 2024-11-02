@@ -14,5 +14,7 @@ public class SqlSyntax {
 
 //    UserData
     static public final String register = "INSERT INTO userData (username, password, email) VALUES ('Puddles', '123Pass#wordHas#', 'email@email.com');";
+    static public final String verifyUsername = "SELECT *from userData where binary username LIKE ?;";
+//    static public final String verifyUsername = "SELECT CASE WHEN EXISTS (SELECT * FROM userData WHERE ?) THEN 1 ELSE 0 END AS result;";
 
 }
