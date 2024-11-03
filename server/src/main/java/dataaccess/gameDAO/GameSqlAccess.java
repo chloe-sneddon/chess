@@ -52,8 +52,61 @@ public class GameSqlAccess implements GameDAO{
         return gameId;
     }
 
-    public GameData getGameData(int gameID) throws DataAccessException{return null;}
-    public ArrayList<GameData> getActiveGames(){return null;}
+    public GameData getGameData(int gameID) throws DataAccessException{
+        String getGameData = SqlSyntax.getGameData;
+        try(var conn = DatabaseManager.getConnection()){
+            try(var statement = conn.prepareStatement(getGameData)) {
+                statement.setInt(1,gameID);
+                var rs = statement.executeQuery();
+                rs.next();
+                gameID = rs.getInt(1);
+                String blkUser =  rs.getString(2);
+                String whtUser =  rs.getString(3);
+                String gameName =  rs.getString(4);
+                String jasonGame =  rs.getString(5);
+
+                ChessGame game = gmSerializer.deserializeGame(jasonGame);
+
+                GameData returnVar = new GameData(gameID,whtUser,blkUser,gameName,game);
+
+                return returnVar;
+            }
+        }
+        catch (Exception e) {
+            throw new DataAccessException(e.getLocalizedMessage(),500);
+        }
+    }
+
+    public ArrayList<GameData> getActiveGames() throws DataAccessException{
+
+        ArrayList<GameData> activeGames = new ArrayList<>();
+        String getActiveGames = SqlSyntax.getActiveGames;
+
+        try(var conn = DatabaseManager.getConnection()){
+            try(var statement = conn.prepareStatement(getActiveGames)){
+                var rs = statement.executeQuery();
+
+                while(rs.next()){
+
+                    int gameID = rs.getInt(1);
+                    String blkUser =  rs.getString(2);
+                    String whtUser =  rs.getString(3);
+                    String gameName =  rs.getString(4);
+                    String jasonGame =  rs.getString(5);
+                    ChessGame game = gmSerializer.deserializeGame(jasonGame);
+
+                    GameData tmp = new GameData(gameID,whtUser,blkUser,gameName,game);
+                    activeGames.add(tmp);
+                }
+
+            }
+            return activeGames;
+        }
+        catch (Exception e) {
+            throw new DataAccessException(e.getLocalizedMessage(),500);
+        }
+    }
+
     public String getUser(int gameID, String playerColor) throws DataAccessException{return null;}
     public void joinGame(int gameID, String playerColor, String username) throws DataAccessException{}
 }

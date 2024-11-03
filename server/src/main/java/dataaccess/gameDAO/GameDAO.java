@@ -13,7 +13,7 @@ public interface GameDAO {
     void clear() throws DataAccessException;
     int createGame(String gameName) throws DataAccessException;
     GameData getGameData(int gameID) throws DataAccessException;
-    ArrayList<GameData> getActiveGames();
+    ArrayList<GameData> getActiveGames() throws DataAccessException;
     String getUser(int gameID, String playerColor) throws DataAccessException;
     void joinGame(int gameID, String playerColor, String username) throws DataAccessException;
 

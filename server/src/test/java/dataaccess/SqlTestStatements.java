@@ -12,7 +12,35 @@ public class SqlTestStatements {
     static private final String expectedAuthUsername = "Puddles";
 
     //    gameData
-    static private final String insertGameExamples = "INSERT INTO gameData (gameID, blackUsername, whiteUsername, gameName, game) VALUES (123, 'black', 'white','named_game','gameButSerialized');";
+    static private final String insertGameExamples = "INSERT INTO gameData (gameID, blackUsername, whiteUsername, gameName, game) " +
+            "VALUES (123, 'black', 'white','named_game','{\"board\":{\"board\":[[{\"pieceColor\":\"WHITE\",\"pieceType\":\"ROOK\"}," +
+            "{\"pieceColor\":\"WHITE\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"BISHOP\"},{\"pieceColor\":\"WHITE\",\"pieceType\":" +
+            "\"QUEEN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"KING\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"BISHOP\"},{\"pieceColor\":\"WHITE\"," +
+            "\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"ROOK\"}],[{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":" +
+            "\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\"" +
+            ":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":" +
+            "\"WHITE\",\"pieceType\":\"PAWN\"}],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null," +
+            "null],[null,null,null,null,null,null,null,null],[{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"}]," +
+            "[{\"pieceColor\":\"BLACK\",\"pieceType\":\"ROOK\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"BISHOP\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"QUEEN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"KING\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"BISHOP\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"ROOK\"}]]},\"teamTurn\":\"WHITE\"}\n');";
+
+    static public final String insertGameTemp = "INSERT INTO gameData (gameID, gameName, game) " +
+            "VALUES (?, ?,'{\"board\":{\"board\":[[{\"pieceColor\":\"WHITE\",\"pieceType\":\"ROOK\"}," +
+            "{\"pieceColor\":\"WHITE\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"BISHOP\"},{\"pieceColor\":\"WHITE\",\"pieceType\":" +
+            "\"QUEEN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"KING\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"BISHOP\"},{\"pieceColor\":\"WHITE\"," +
+            "\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"ROOK\"}],[{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":" +
+            "\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\"" +
+            ":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":" +
+            "\"WHITE\",\"pieceType\":\"PAWN\"}],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null," +
+            "null],[null,null,null,null,null,null,null,null],[{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"}]," +
+            "[{\"pieceColor\":\"BLACK\",\"pieceType\":\"ROOK\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"BISHOP\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"QUEEN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"KING\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"BISHOP\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"ROOK\"}]]},\"teamTurn\":\"WHITE\"}\n');";
 
     static private final String getGameID = "Select gameID from gameData;";
     static private final String expectedGameID = "123";

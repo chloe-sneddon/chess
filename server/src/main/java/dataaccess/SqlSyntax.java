@@ -3,15 +3,16 @@ package dataaccess;
 public class SqlSyntax {
 //    AuthData
     static public final String addAuthData = "INSERT INTO authData (username, authToken) VALUES (?, ?);";
-    static public final String verifyToken = "select *from authData where binary authToken LIKE ?;";
+    static public final String verifyToken = "SELECT *from authData WHERE binary authToken LIKE ?;";
     static public final String getUsername = "SELECT username from authData WHERE authToken LIKE ?;";
     static public final String deleteToken = "DELETE FROM authData WHERE authToken Like ?;";
 
 //    GameData
     static public final String createGame = "INSERT INTO gameData (gameID, gameName, game) VALUES (?,?,?);";
-    static public final String insertToGameData = "INSERT INTO gameData (?, ?) VALUES (?, ?);";
-    static public final String selectAllGameData = "SELECT * from gameData;";
-    static public final String getWhiteUsernames = "SELECT whiteUsername from gameData;";
+    static public final String getGameData = "SELECT * from gameData WHERE gameID LIKE ?;";
+    static public final String getActiveGames = "SELECT * from gameData;";
+
+
 
 //    UserData
     static public final String register = "INSERT INTO userData (username, password, email) VALUES ('Puddles', '123Pass#wordHas#', 'email@email.com');";
