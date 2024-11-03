@@ -14,7 +14,6 @@ public class AuthSqlAccess implements AuthDAO {
             try (var statement = conn.prepareStatement(addAuthData)) {
                 statement.setString(1,username);
                 statement.setString(2,authToken);
-                String b = statement.toString();
                 statement.executeUpdate();
             }
         } catch (Exception e) {
@@ -41,7 +40,7 @@ public class AuthSqlAccess implements AuthDAO {
     }
 
     public String getUsername(String token) throws DataAccessException{
-        String getUsername = SqlSyntax.getUsername;
+        String getUsername = SqlSyntax.getUsrInAuth;
 
         try (var conn = DatabaseManager.getConnection()){
             try (var statement = conn.prepareStatement(getUsername)) {

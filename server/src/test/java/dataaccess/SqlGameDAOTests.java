@@ -1,13 +1,10 @@
 package dataaccess;
 
-import chess.ChessGame;
-import dataaccess.gameDAO.GameSqlAccess;
-import dataaccess.gameDAO.GameUpdate;
 import model.GameData;
+import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 
 public class SqlGameDAOTests extends SqlTestFunctions{
@@ -84,4 +81,72 @@ public class SqlGameDAOTests extends SqlTestFunctions{
 
     }
 
+    @Test
+    @DisplayName("negative get active games")
+    public void negGetGames(){
+        try{
+            ArrayList<GameData> actual = gameSql.getActiveGames();
+            int expected = 0;
+            Assertions.assertEquals(expected,actual.size());
+        } catch (DataAccessException e) {
+            Assertions.fail("Expected Error");
+        }
+    }
+
+    @Test
+    @DisplayName("Join Game")
+    public void joinGame(){
+        try(var conn = DatabaseManager.getConnection()){
+            addData(conn);
+            gameSql.joinGame(123,"WHITE","firstUsrname");
+            gameSql.joinGame(123,"BLACK","usernameSecond");
+            ArrayList<GameData> activeGames = gameSql.getActiveGames();
+            GameData game = activeGames.get(0);
+            Assertions.assertEquals("firstUsrname",game.whiteUsername());
+            Assertions.assertEquals("usernameSecond",game.blackUsername());
+        }
+        catch(Exception e){
+            Assertions.fail("Unexpected error: "+ e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Negative join game")
+    public void negJoin(){
+        try{
+            gameSql.joinGame(123,"WHITE","firstUsrname");
+            Assertions.fail("expected error thrown");
+        }
+        catch(Exception e){
+            System.out.println("Passed thrown exception");
+        }
+    }
+
+    @Test
+    @DisplayName("insert user")
+    public void insertUser(){
+        try{
+            UserData data = new UserData("Puddles", "123Pass#wordHas#", "email@email.com");
+            usrSql.insertUser(data);
+            String pw = usrSql.getPassword("Puddles");
+            Assertions.assertEquals("123Pass#wordHas#",pw);
+        }
+        catch (DataAccessException e) {
+            Assertions.fail("Unexpected error: " + e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("negative insert user")
+    public void negInsertUser(){
+        try(var conn = DatabaseManager.getConnection()){
+            addData(conn);
+            UserData data = new UserData("Puddles", "123Pass#wordHas#", "email@email.com");
+            usrSql.insertUser(data);
+            Assertions.fail("expected failed error");
+        }
+        catch (Exception e) {
+            System.out.println("Passed thrown error");
+        }
+    }
 }

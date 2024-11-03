@@ -10,8 +10,7 @@ public class SqlTables {
         `username` VARCHAR(256) NOT NULL,
         `password` VARCHAR(500) NOT NULL,
         `email` VARCHAR(300) NOT NULL,
-        `json` TEXT DEFAULT NULL,
-        PRIMARY KEY (username),
+        PRIMARY KEY (`username`),
         INDEX(email),
         INDEX(password)
         )
@@ -22,7 +21,7 @@ public class SqlTables {
         CREATE TABLE IF NOT EXISTS authData (
         `authToken` VARCHAR(300) NOT NULL,
         `username` VARCHAR(300) NOT NULL,
-        PRIMARY KEY (`username`),
+        PRIMARY KEY (`authToken`),
         INDEX(`authToken`),
         INDEX(username)
         )

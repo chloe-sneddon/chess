@@ -42,6 +42,7 @@ public class SqlAuthDAOTests extends SqlTestFunctions{
     @Test
     @DisplayName("Clear db")
     public void clearDB(){
+
         try (var conn = DatabaseManager.getConnection()){
             addData(conn);
             checkData(conn);

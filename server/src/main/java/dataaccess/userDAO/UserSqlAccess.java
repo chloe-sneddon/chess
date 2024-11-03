@@ -3,19 +3,45 @@ package dataaccess.userDAO;
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import dataaccess.SqlSyntax;
-import model.AuthData;
 import model.UserData;
 
 import java.sql.SQLException;
 
 public class UserSqlAccess implements UserDAO {
-    public String getPassword(String username) throws DataAccessException{return null;}
+
+    public String getPassword(String username) throws DataAccessException{
+        String getPW = SqlSyntax.getPW;
+        try(var conn = DatabaseManager.getConnection()){
+            try (var statement = conn.prepareStatement(getPW)) {
+                statement.setString(1, username);
+                var rs = statement.executeQuery();
+                rs.next();
+                return rs.getString(1);
+            }
+        }
+        catch (Exception e) {
+            throw new DataAccessException("Error: bad request",400);
+        }
+    }
 
     public void insertUser(UserData u) throws DataAccessException{
         String username = u.username();
-        String email = u.email();
         String password = u.password();
+        String email = u.password();
+        String insertUser = SqlSyntax.insertUser;
+
+        try(var conn = DatabaseManager.getConnection()){
+            try (var statement = conn.prepareStatement(insertUser)) {
+                statement.setString(1,username);
+                statement.setString(2,password);
+                statement.setString(3,email);
+                statement.executeUpdate();
+            }
+        } catch (Exception e) {
+            throw new DataAccessException(e.getLocalizedMessage(),500);
+        }
     }
+
     public boolean userExists(String username){
         String verifyUsername = SqlSyntax.verifyUsername;
         try (var conn = DatabaseManager.getConnection()){

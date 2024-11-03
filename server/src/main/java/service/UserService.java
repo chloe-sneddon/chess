@@ -10,10 +10,6 @@ import java.util.UUID;
  * Performs User Service Duties
  */
 public class UserService extends GeneralService{
-//    public final static UserDAO USRSQL = new UserSqlAccess();
-//    public final static AuthDAO AUTHSQL = new AuthSqlAccess();
-//    public final static GameDAO GAMESQL = new GameSqlAccess();
-//    UUID.randomUUID().toString();
 
     public static AuthData register(UserData usrData) throws ServiceException, DataAccessException {
 
@@ -26,8 +22,9 @@ public class UserService extends GeneralService{
         if (USRDATA.userExists(usrData.username())){
             throw new ServiceException("Error: already taken",403);
         }
+
         GeneralService.USRDATA.insertUser(usrData);
-        String token = UUID.randomUUID().toString();;
+        String token = UUID.randomUUID().toString();
         AUTHDATA.addAuthData(token,usrData.username());
         return AUTHDATA.getAuthData(token);
     }
@@ -63,6 +60,5 @@ public class UserService extends GeneralService{
             throw new ServiceException("Error: user does not exist",401);
         }
     }
-
 
 }

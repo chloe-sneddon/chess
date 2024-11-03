@@ -5,7 +5,6 @@ import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import dataaccess.SqlSyntax;
 import model.GameData;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -73,7 +72,7 @@ public class GameSqlAccess implements GameDAO{
             }
         }
         catch (Exception e) {
-            throw new DataAccessException(e.getLocalizedMessage(),500);
+            throw new DataAccessException("Error: bad request", 400);
         }
     }
 
@@ -135,5 +134,30 @@ public class GameSqlAccess implements GameDAO{
         }
 
     }
-    public void joinGame(int gameID, String playerColor, String username) throws DataAccessException{}
+
+    public void joinGame(int gameID, String playerColor, String username) throws DataAccessException{
+        getGameData(gameID);
+        String updatePlr;
+
+        if(playerColor.equals("WHITE")){
+            updatePlr = SqlSyntax.updateWhtPlayer;
+        }
+        else if(playerColor.equals("BLACK")){
+            updatePlr = SqlSyntax.updateBlkPlayer;
+        }
+        else{
+            throw new DataAccessException("Error: bad request", 400);
+        }
+
+        try(var conn = DatabaseManager.getConnection()){
+            try(var statement = conn.prepareStatement(updatePlr)) {
+                statement.setString(1,username);
+                statement.setInt(2,gameID);
+                statement.executeUpdate();
+            }
+        }
+        catch (Exception e) {
+            throw new DataAccessException("execute player update broke", 500);
+        }
+    }
 }

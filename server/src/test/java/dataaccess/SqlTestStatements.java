@@ -42,8 +42,23 @@ public class SqlTestStatements {
             "{\"pieceColor\":\"BLACK\",\"pieceType\":\"QUEEN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"KING\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"BISHOP\"}," +
             "{\"pieceColor\":\"BLACK\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"ROOK\"}]]},\"teamTurn\":\"WHITE\"}\n');";
 
+    static public final String jsonBoard =
+            "'{\"board\":{\"board\":[[{\"pieceColor\":\"WHITE\",\"pieceType\":\"ROOK\"}," +
+            "{\"pieceColor\":\"WHITE\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"BISHOP\"},{\"pieceColor\":\"WHITE\",\"pieceType\":" +
+            "\"QUEEN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"KING\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"BISHOP\"},{\"pieceColor\":\"WHITE\"," +
+            "\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"ROOK\"}],[{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":" +
+            "\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\"" +
+            ":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"WHITE\",\"pieceType\":\"PAWN\"},{\"pieceColor\":" +
+            "\"WHITE\",\"pieceType\":\"PAWN\"}],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null," +
+            "null],[null,null,null,null,null,null,null,null],[{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"PAWN\"}]," +
+            "[{\"pieceColor\":\"BLACK\",\"pieceType\":\"ROOK\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"BISHOP\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"QUEEN\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"KING\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"BISHOP\"}," +
+            "{\"pieceColor\":\"BLACK\",\"pieceType\":\"KNIGHT\"},{\"pieceColor\":\"BLACK\",\"pieceType\":\"ROOK\"}]]},\"teamTurn\":\"WHITE\"}\n');";
+
     static private final String getGameID = "Select gameID from gameData;";
-    static private final String expectedGameID = "123";
+    static public final String expectedGameID = "123";
 
     static private final String getBlackUsername = "Select blackUsername from gameData;";
     static private final String expectedBlackUsername = "black";
@@ -55,7 +70,7 @@ public class SqlTestStatements {
     static private final String expectedGameName = "named_game";
 
     static private final String getGame = "Select game from gameData;";
-    static private final String expectedGame = "gameButSerialized";
+//    static private final String expectedGame = "gameButSerialized";
 
 
     //    userData
@@ -79,7 +94,6 @@ public class SqlTestStatements {
         String[]  blackUser = {getBlackUsername,expectedBlackUsername};
         String[]  whiteUser = {getWhiteUsername,expectedWhiteUsername};
         String[]  gameName = {getGameName,expectedGameName};
-        String[]  game = {getGame,expectedGame};
         String[]  userUsername = {getUserUsername,expectedUserUsername};
         String[]  hashedPW = {getHashedPW,expectedHashedPW};
         String[]  email = {getEmail,expectedEmail};
@@ -90,7 +104,6 @@ public class SqlTestStatements {
         tmp.add(blackUser);
         tmp.add(whiteUser);
         tmp.add(gameName);
-        tmp.add(game);
         tmp.add(userUsername);
         tmp.add(hashedPW);
         tmp.add(email);
