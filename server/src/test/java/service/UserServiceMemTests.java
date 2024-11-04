@@ -104,8 +104,7 @@ public class UserServiceMemTests extends MemTestsSetUp {
         }
         catch (DataAccessException e){
             DataAccessException expected = new DataAccessException("Error: unauthorized",401);
-            Assertions.assertEquals(expected.message(),e.message());
-            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+            dataAccessAssertion(e,expected);
         }
         catch (Exception e) {
             Assertions.fail(e.getLocalizedMessage());

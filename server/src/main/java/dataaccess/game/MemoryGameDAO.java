@@ -41,21 +41,10 @@ public class MemoryGameDAO implements GameDAO {
     public String getUser(int gameID, String playerColor) throws DataAccessException {
         var targetGame = getGameData(gameID);
 
-        if((targetGame == null)|(playerColor == null)){
-            throw new DataAccessException("Error: bad request", 400);
-        }
-        
-        if (playerColor.equals("WHITE")) {
+        if ((playerColor.equals("WHITE"))|(playerColor.equals("BLACK"))) {
             String username = targetGame.whiteUsername();
             if ((username == null)) {
                 throw new DataAccessException("Error: no white user", 500);
-            }
-            return username;
-        }
-        else if (playerColor.equals("BLACK")) {
-            String username = targetGame.blackUsername();
-            if (username == null) {
-                throw new DataAccessException("Error: no black user", 500);
             }
             return username;
         }
