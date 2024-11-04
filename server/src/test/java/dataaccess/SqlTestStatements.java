@@ -12,7 +12,6 @@ public class SqlTestStatements {
     static private final String EXPECTED_AUTH_USERNAME = "Puddles";
 
     //    gameData
-
     static private final String INSERT_GAME_EXAMPLES = """
             INSERT INTO gameData (gameID, blackUsername, whiteUsername, gameName, game)
             VALUES (123, 'black', 'white','named_game','{\"board\":{\"board\":[[{\"pieceColor\":\"WHITE\",
