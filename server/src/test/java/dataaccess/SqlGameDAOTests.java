@@ -63,7 +63,7 @@ public class SqlGameDAOTests extends SqlTestFunctions{
     public void activeGames(){
         try(var conn = DatabaseManager.getConnection()){
             addData(conn);
-            String newGame = SqlTestStatements.insertGameTemp;
+            String newGame = SqlTestStatements.INSERT_GAME_TEMP;
             String[] gameNames = {"first","second","Third"};
             for (int i = 0; i < 3; i++){
                 try(var statement = conn.prepareStatement(newGame)){

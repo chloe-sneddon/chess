@@ -1,4 +1,4 @@
-package dataaccess.authDAO;
+package dataaccess.auth;
 
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class AuthSqlAccess implements AuthDAO {
 
     public void addAuthData(String authToken, String username) throws DataAccessException{
-        String addAuthData = SqlSyntax.addAuthData;
+        String addAuthData = SqlSyntax.ADD_AUTH_DATA;
         try (var conn = DatabaseManager.getConnection()){
             try (var statement = conn.prepareStatement(addAuthData)) {
                 statement.setString(1,username);
@@ -22,7 +22,7 @@ public class AuthSqlAccess implements AuthDAO {
     }
 
     public AuthData getAuthData(String token) throws DataAccessException {
-        String verifyToken = SqlSyntax.verifyToken;
+        String verifyToken = SqlSyntax.VERIFY_TOKEN;
 
         try (var conn = DatabaseManager.getConnection()){
             try (var statement = conn.prepareStatement(verifyToken)) {
@@ -40,7 +40,7 @@ public class AuthSqlAccess implements AuthDAO {
     }
 
     public String getUsername(String token) throws DataAccessException{
-        String getUsername = SqlSyntax.getUsrInAuth;
+        String getUsername = SqlSyntax.GET_USR_IN_AUTH;
 
         try (var conn = DatabaseManager.getConnection()){
             try (var statement = conn.prepareStatement(getUsername)) {
@@ -68,7 +68,7 @@ public class AuthSqlAccess implements AuthDAO {
     }
 
     public void deleteToken(String authToken) throws DataAccessException{
-        String deleteToken = SqlSyntax.deleteToken;
+        String deleteToken = SqlSyntax.DELETE_TOKEN;
         try(var conn = DatabaseManager.getConnection()){
             try (var statement = conn.prepareStatement(deleteToken)) {
                 statement.setString(1,authToken);

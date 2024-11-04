@@ -1,7 +1,7 @@
 package service;
 
 import dataaccess.DataAccessException;
-import dataaccess.gameDAO.GameDAO;
+import dataaccess.game.GameDAO;
 import model.GameData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;

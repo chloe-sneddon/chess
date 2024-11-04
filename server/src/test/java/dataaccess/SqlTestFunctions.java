@@ -1,8 +1,8 @@
 package dataaccess;
 
-import dataaccess.authDAO.AuthSqlAccess;
-import dataaccess.gameDAO.GameSqlAccess;
-import dataaccess.userDAO.UserSqlAccess;
+import dataaccess.auth.AuthSqlAccess;
+import dataaccess.game.GameSqlAccess;
+import dataaccess.user.UserSqlAccess;
 import org.junit.jupiter.api.BeforeEach;
 import service.GeneralService;
 import java.sql.Connection;

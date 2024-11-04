@@ -1,4 +1,4 @@
-package dataaccess.gameDAO;
+package dataaccess.game;
 
 import chess.ChessGame;
 import dataaccess.DataAccessException;
@@ -29,7 +29,7 @@ public class GameSqlAccess implements GameDAO{
         int gameID = createGameID();
         ChessGame game = new ChessGame();
         String jsonGame = gmSerializer.serialize(game);
-        String createGame = SqlSyntax.createGame;
+        String createGame = SqlSyntax.CREATE_GAME;
 
         try(var conn = DatabaseManager.getConnection()){
             try(var statement = conn.prepareStatement(createGame)) {
@@ -52,7 +52,7 @@ public class GameSqlAccess implements GameDAO{
     }
 
     public GameData getGameData(int gameID) throws DataAccessException{
-        String getGameData = SqlSyntax.getGameData;
+        String getGameData = SqlSyntax.GET_GAME_DATA;
         try(var conn = DatabaseManager.getConnection()){
             try(var statement = conn.prepareStatement(getGameData)) {
                 statement.setInt(1,gameID);
@@ -79,7 +79,7 @@ public class GameSqlAccess implements GameDAO{
     public ArrayList<GameData> getActiveGames() throws DataAccessException{
 
         ArrayList<GameData> activeGames = new ArrayList<>();
-        String getActiveGames = SqlSyntax.getActiveGames;
+        String getActiveGames = SqlSyntax.GET_ACTIVE_GAMES;
 
         try(var conn = DatabaseManager.getConnection()){
             try(var statement = conn.prepareStatement(getActiveGames)){
@@ -140,10 +140,10 @@ public class GameSqlAccess implements GameDAO{
         String updatePlr;
 
         if(playerColor.equals("WHITE")){
-            updatePlr = SqlSyntax.updateWhtPlayer;
+            updatePlr = SqlSyntax.UPDATE_WHT_PLAYER;
         }
         else if(playerColor.equals("BLACK")){
-            updatePlr = SqlSyntax.updateBlkPlayer;
+            updatePlr = SqlSyntax.UPDATE_BLK_PLAYER;
         }
         else{
             throw new DataAccessException("Error: bad request", 400);

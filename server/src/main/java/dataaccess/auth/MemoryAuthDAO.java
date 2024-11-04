@@ -1,9 +1,8 @@
-package dataaccess.authDAO;
+package dataaccess.auth;
 
 import dataaccess.DataAccessException;
 import model.AuthData;
 import java.util.HashMap;
-import java.util.UUID;
 
 public class MemoryAuthDAO implements AuthDAO {
     private HashMap<String, AuthData> allAuthData = new HashMap <String, AuthData>();

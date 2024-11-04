@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SqlTables {
 //    ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-    static private final String[] createUserTable = {
+    static private final String[] CREATE_USER_TABLE = {
             """
         CREATE TABLE IF NOT EXISTS userData (
         `username` VARCHAR(256) NOT NULL,
@@ -16,7 +16,7 @@ public class SqlTables {
         )
         """
     };
-    static private final String[] createAuthTable = {
+    static private final String[] CREATE_AUTH_TABLE = {
         """
         CREATE TABLE IF NOT EXISTS authData (
         `authToken` VARCHAR(300) NOT NULL,
@@ -29,7 +29,7 @@ public class SqlTables {
     };
 
 //`json` TEXT DEFAULT NULL,
-    static private final String[] createGameTable = {
+    static private final String[] CREATE_GAME_TABLE = {
             """
         CREATE TABLE IF NOT EXISTS gameData (
         `gameID` INT NOT NULL,
@@ -45,9 +45,9 @@ public class SqlTables {
 
     public static ArrayList<String[]> allTables(){
         ArrayList <String[]> tables = new ArrayList<>();
-        tables.add(createUserTable);
-        tables.add(createAuthTable);
-        tables.add(createGameTable);
+        tables.add(CREATE_USER_TABLE);
+        tables.add(CREATE_AUTH_TABLE);
+        tables.add(CREATE_GAME_TABLE);
         return tables;
     }
 }

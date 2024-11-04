@@ -67,11 +67,5 @@ public class UserService extends GeneralService{
     private static String hashPW(String text){
         return BCrypt.hashpw(text, BCrypt.gensalt());
     }
-//    boolean verifyUser(String username, String providedClearTextPassword) {
-//        // read the previously hashed password from the database
-//        var hashedPassword = readHashedPasswordFromDatabase(username);
-//
-//        return BCrypt.checkpw(providedClearTextPassword, hashedPassword);
-//    }
 
 }

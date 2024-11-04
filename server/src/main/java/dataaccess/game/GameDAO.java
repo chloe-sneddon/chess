@@ -1,8 +1,8 @@
-package dataaccess.gameDAO;
+package dataaccess.game;
 
 import dataaccess.DataAccessException;
 import model.GameData;
-import service.ServiceException;
+
 import java.util.ArrayList;
 
 /*

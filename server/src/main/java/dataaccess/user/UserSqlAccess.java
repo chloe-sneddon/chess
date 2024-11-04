@@ -1,4 +1,4 @@
-package dataaccess.userDAO;
+package dataaccess.user;
 
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class UserSqlAccess implements UserDAO {
 
     public String getPassword(String username) throws DataAccessException{
-        String getPW = SqlSyntax.getPW;
+        String getPW = SqlSyntax.GET_PW;
         try(var conn = DatabaseManager.getConnection()){
             try (var statement = conn.prepareStatement(getPW)) {
                 statement.setString(1, username);
@@ -28,7 +28,7 @@ public class UserSqlAccess implements UserDAO {
         String username = u.username();
         String password = u.password();
         String email = u.password();
-        String insertUser = SqlSyntax.insertUser;
+        String insertUser = SqlSyntax.INSERT_USER;
 
         try(var conn = DatabaseManager.getConnection()){
             try (var statement = conn.prepareStatement(insertUser)) {
@@ -43,7 +43,7 @@ public class UserSqlAccess implements UserDAO {
     }
 
     public boolean userExists(String username){
-        String verifyUsername = SqlSyntax.verifyUsername;
+        String verifyUsername = SqlSyntax.VERIFY_USERNAME;
         try (var conn = DatabaseManager.getConnection()){
             try (var statement = conn.prepareStatement(verifyUsername)) {
                 statement.setString(1,username);
