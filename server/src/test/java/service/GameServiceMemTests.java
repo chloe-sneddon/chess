@@ -104,6 +104,7 @@ public class GameServiceMemTests extends MemTestsSetUp {
     @Test
     @DisplayName("Bad request joinGame")
     public void badJoinGame(){
+        DataAccessException expected = new DataAccessException("Error: bad request",400);
         try{
             String token = registerUser();
             int expectedGameID = gameSetUp(token);
@@ -114,14 +115,11 @@ public class GameServiceMemTests extends MemTestsSetUp {
             gameMem.getUser(expectedGameID,"WHITE");
         }
         catch (DataAccessException e) {
-            DataAccessException expected = new DataAccessException("Error: bad request",400);
-            Assertions.assertEquals(expected.message(),e.message());
-            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+            dataAccessAssertion(e,expected);
         }
         catch (ServiceException e){
-            ServiceException expected = new ServiceException("Error: bad request",400);
-            Assertions.assertEquals(expected.message(),e.message());
-            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+            DataAccessException d = new DataAccessException(e.message,e.errorCode);
+            dataAccessAssertion(d,expected);
         }
         catch (Exception e){
             Assertions.fail(e.getLocalizedMessage());
@@ -145,9 +143,9 @@ public class GameServiceMemTests extends MemTestsSetUp {
             Assertions.fail(e.message());
         }
         catch (ServiceException e){
-            ServiceException expected = new ServiceException("Error: already taken",403);
-            Assertions.assertEquals(expected.message(),e.message());
-            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+            DataAccessException expected = new DataAccessException("Error: already taken",403);
+            DataAccessException actual = new DataAccessException(e.message,e.errorCode);
+            dataAccessAssertion(actual,expected);
         }
         catch (Exception e){
             Assertions.fail(e.getLocalizedMessage());

@@ -45,8 +45,7 @@ public class GeneralServiceMemTests extends MemTestsSetUp {
         }
         catch(DataAccessException e){
             DataAccessException expected = new DataAccessException("Error: bad request",400);
-            Assertions.assertEquals(expected.message(),e.message());
-            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+            dataAccessAssertion(e,expected);
         }
         catch (Exception e){
             Assertions.fail(e.getLocalizedMessage());
@@ -67,8 +66,7 @@ public class GeneralServiceMemTests extends MemTestsSetUp {
         }
         catch(DataAccessException e){
             DataAccessException expected = new DataAccessException("Error: bad request",400);
-            Assertions.assertEquals(expected.message(),e.message());
-            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+            dataAccessAssertion(e,expected);
         }
         catch (Exception e){
             Assertions.fail(e.getLocalizedMessage());
@@ -97,8 +95,7 @@ public class GeneralServiceMemTests extends MemTestsSetUp {
         }
         catch(DataAccessException e){
             DataAccessException expected =  new DataAccessException("Error: unauthorized", 401);
-            Assertions.assertEquals(expected.message(),e.message());
-            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+            dataAccessAssertion(e,expected);
         }
         catch(Exception e){
             Assertions.fail(e.getLocalizedMessage());

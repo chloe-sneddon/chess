@@ -37,9 +37,9 @@ public class UserServiceMemTests extends MemTestsSetUp {
             Assertions.fail(e.message());
         }
         catch(ServiceException e){
-            ServiceException expected =  new ServiceException("Error: already taken",403);
-            Assertions.assertEquals(expected.message(),e.message());
-            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+            DataAccessException expected =  new DataAccessException("Error: already taken",403);
+            DataAccessException actual = new DataAccessException(e.message,e.errorCode);
+            dataAccessAssertion(actual,expected);
         }
         catch (Exception e) {
             Assertions.fail(e.getLocalizedMessage());
@@ -85,9 +85,9 @@ public class UserServiceMemTests extends MemTestsSetUp {
            Assertions.fail(e.message());
         }
         catch (ServiceException e){
-            ServiceException expected = new ServiceException("Error: unauthorized",401);
-            Assertions.assertEquals(expected.message(),e.message());
-            Assertions.assertEquals(expected.statusCode(),e.statusCode());
+            DataAccessException expected =  new DataAccessException("Error: unauthorized",401);
+            DataAccessException actual = new DataAccessException(e.message,e.errorCode);
+            dataAccessAssertion(actual,expected);
         }
         catch(Exception e){
             Assertions.fail(e.getLocalizedMessage());

@@ -4,6 +4,7 @@ import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import model.GameData;
 import model.UserData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
 //import static UserServiceTests.userService;
@@ -28,6 +29,11 @@ public class MemTestsSetUp {
         GameData gmDataInput = new GameData(0,null,null,"gameNAmed",null);
         var gameData = gameService.createGame(authToken,gmDataInput);
         return gameData.gameID();
+    }
+
+    public void dataAccessAssertion(DataAccessException e, DataAccessException expected){
+        Assertions.assertEquals(expected.message(),e.message());
+        Assertions.assertEquals(expected.statusCode(),e.statusCode());
     }
 
 }
