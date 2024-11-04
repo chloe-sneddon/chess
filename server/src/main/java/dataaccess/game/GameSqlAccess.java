@@ -109,10 +109,14 @@ public class GameSqlAccess implements GameDAO{
     public String getUser(int gameID, String playerColor) throws DataAccessException{
         var targetGame = getGameData(gameID);
 
+        if((targetGame == null)|(playerColor == null)){
+            throw new DataAccessException("Error: bad request", 400);
+        }
+
         if (playerColor.equals("WHITE")) {
             String username = targetGame.whiteUsername();
             if ((username == null)) {
-                throw new DataAccessException("Error: no user", 500);
+                throw new DataAccessException("Error: no white user", 500);
             }
             return username;
         }
@@ -128,7 +132,6 @@ public class GameSqlAccess implements GameDAO{
         else{
             throw new DataAccessException("Error: bad request", 400);
         }
-
     }
 
     public void joinGame(int gameID, String playerColor, String username) throws DataAccessException{

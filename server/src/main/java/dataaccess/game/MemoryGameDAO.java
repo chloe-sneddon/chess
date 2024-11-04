@@ -44,6 +44,7 @@ public class MemoryGameDAO implements GameDAO {
         if((targetGame == null)|(playerColor == null)){
             throw new DataAccessException("Error: bad request", 400);
         }
+        
         if (playerColor.equals("WHITE")) {
             String username = targetGame.whiteUsername();
             if ((username == null)) {
