@@ -84,7 +84,8 @@ static public final String INSERT_GAME_TEMP = """
     static private final String EXPECTED_GAME_NAME = "named_game";
 
     //    userData
-    static private final String INSERT_USER_EXAMPLES = "INSERT INTO userData (username, password, email) VALUES ('Puddles', '123Pass#wordHas#', 'email@email.com');";
+    static private final String INSERT_USER_EXAMPLES = "INSERT INTO userData (username, password, email) VALUES "
+            +"('Puddles', '123Pass#wordHas#', 'email@email.com');";
 
     static private final String GET_USER_USERNAME = "Select username from userData;";
     static private final String EXPECTED_USER_USERNAME = "Puddles";
