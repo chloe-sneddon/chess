@@ -3,6 +3,7 @@ package service;
 import dataaccess.DataAccessException;
 import model.AuthData;
 import model.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.UUID;
 
@@ -22,8 +23,10 @@ public class UserService extends GeneralService{
         if (USRDATA.userExists(usrData.username())){
             throw new ServiceException("Error: already taken",403);
         }
+        String pw = hashPW(usrData.password());
+        UserData storedData = new UserData(usrData.username(), pw,usrData.email());
 
-        GeneralService.USRDATA.insertUser(usrData);
+        GeneralService.USRDATA.insertUser(storedData);
         String token = UUID.randomUUID().toString();
         AUTHDATA.addAuthData(token,usrData.username());
         return AUTHDATA.getAuthData(token);
@@ -52,7 +55,7 @@ public class UserService extends GeneralService{
     public static void verifyPassword(String username, String password) throws ServiceException,DataAccessException{
 
         if(GeneralService.USRDATA.userExists(username)){
-            if(!(password.equals(GeneralService.USRDATA.getPassword(username)))){
+            if(!(BCrypt.checkpw(password, GeneralService.USRDATA.getPassword(username)))){
                 throw new ServiceException("Error: unauthorized",401);
             }
         }
@@ -60,5 +63,15 @@ public class UserService extends GeneralService{
             throw new ServiceException("Error: user does not exist",401);
         }
     }
+
+    private static String hashPW(String text){
+        return BCrypt.hashpw(text, BCrypt.gensalt());
+    }
+//    boolean verifyUser(String username, String providedClearTextPassword) {
+//        // read the previously hashed password from the database
+//        var hashedPassword = readHashedPasswordFromDatabase(username);
+//
+//        return BCrypt.checkpw(providedClearTextPassword, hashedPassword);
+//    }
 
 }

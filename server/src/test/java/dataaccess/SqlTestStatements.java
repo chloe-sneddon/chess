@@ -69,18 +69,12 @@ public class SqlTestStatements {
     static private final String getGameName = "Select gameName from gameData;";
     static private final String expectedGameName = "named_game";
 
-    static private final String getGame = "Select game from gameData;";
-//    static private final String expectedGame = "gameButSerialized";
-
-
     //    userData
     static private final String insertUserExamples = "INSERT INTO userData (username, password, email) VALUES ('Puddles', '123Pass#wordHas#', 'email@email.com');";
 
     static private final String getUserUsername = "Select username from userData;";
     static private final String expectedUserUsername = "Puddles";
 
-    static private final String getHashedPW = "Select password from userData;";
-    static private final String expectedHashedPW = "123Pass#wordHas#";
 
     static private final String getEmail = "Select email from userData;";
     static private final String expectedEmail = "email@email.com";
@@ -95,7 +89,6 @@ public class SqlTestStatements {
         String[]  whiteUser = {getWhiteUsername,expectedWhiteUsername};
         String[]  gameName = {getGameName,expectedGameName};
         String[]  userUsername = {getUserUsername,expectedUserUsername};
-        String[]  hashedPW = {getHashedPW,expectedHashedPW};
         String[]  email = {getEmail,expectedEmail};
 
         tmp.add(authToken);
@@ -105,9 +98,7 @@ public class SqlTestStatements {
         tmp.add(whiteUser);
         tmp.add(gameName);
         tmp.add(userUsername);
-        tmp.add(hashedPW);
         tmp.add(email);
-
         return tmp;
     }
 
