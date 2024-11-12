@@ -30,19 +30,23 @@ public class ServerFacade {
         return makeRequest(httpMeth,path,usrdta, AuthData.class);
     }
 
+    public GameData createGame(String gameName) throws ResponseException{
+        var path = "/game";
+        var httpMeth = "POST";
+        return makeRequest(httpMeth,path,gameName, GameData.class);
+    }
+
     private <T> T makeRequest(String httpMethod, String path, Object request, Class<T> responseClass) throws ResponseException{
         try{
             URL url = (new URI(serverUrl+path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(httpMethod);
-//            must have if there is a request body
             http.setDoOutput(true);
 
             writeBody(request, http);
             http.connect();
             throwIfNotSuccessful(http);
             return readBody(http, responseClass);
-
         }
         catch (Exception e){
             throw new ResponseException(500, e.getMessage());
@@ -61,8 +65,17 @@ public class ServerFacade {
 
     private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
         var status = http.getResponseCode();
-        if (status/100 == 2) {
-            throw new ResponseException(status, "failure: " + status);
+        if (status == 400) {
+            throw new ResponseException(status, "Error: bad request");
+        }
+        else if (status == 401) {
+            throw new ResponseException(status, "Error: unauthorized");
+        }
+        else if (status == 403) {
+            throw new ResponseException(status, "Error: already taken");
+        }
+         else if (status/100 != 2) {
+            throw new ResponseException(status, "Failure");
         }
     }
 

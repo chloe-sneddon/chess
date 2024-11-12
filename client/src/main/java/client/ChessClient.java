@@ -7,13 +7,11 @@ import java.util.Arrays;
 public class ChessClient {
     private final ServerFacade server;
     private final String serverUrl;
-    private final NotificationHandler notificationHandler;
     private State state = State.SIGNEDOUT;
 
     ChessClient(String serverURL, NotificationHandler notificationHandler){
         server = new ServerFacade(serverURL);
         this.serverUrl = serverURL;
-        this.notificationHandler = notificationHandler;
     }
 
     public String eval(String input) {
@@ -23,9 +21,20 @@ public class ChessClient {
             cmd = cmd.toLowerCase();
             var params = Arrays.copyOfRange(tokens, 1, tokens.length);
 //            TODO: fix this so that commands can only be called during a specific state (pre login, post login, etc)
+
             return switch (cmd) {
+//                prelogin
                 case "login" -> signIn(params);
                 case "register" -> register(params);
+                case "quit" -> "quit";
+//                postlogin
+                case "create"-> createGame(params);
+                case "list"-> listGames(params);
+                case "play"-> playGames(params);
+                case "observe" -> observeGame(params);
+                case "logout" -> logout(params);
+//                in Game
+                case "redraw" -> redraw();
                 default -> help();
             };
         }
@@ -35,6 +44,10 @@ public class ChessClient {
     }
 
     public String register(String... params) throws ResponseException{
+        if(state != State.SIGNEDOUT){
+            throw new ResponseException(500, "You are already logged in");
+        }
+
         if (params.length >= 1) {
             String username = params[0];
             String password = params[1];
@@ -47,6 +60,9 @@ public class ChessClient {
     }
 
     public String signIn(String... params) throws ResponseException {
+        if(state != State.SIGNEDOUT){
+            throw new ResponseException(500, "You are already logged in");
+        }
         if (params.length >= 1) {
 
             String username = params[0];
@@ -57,6 +73,52 @@ public class ChessClient {
             return String.format("You signed in as %s.", username) + "\n\n" + help();
         }
         throw new ResponseException(400, "Expected: <Username> <Password>");
+    }
+
+    public String createGame(String... params) throws ResponseException{
+        if(state != State.SIGNEDIN){
+            throw new ResponseException(500, "Not a valid command");
+        }
+        if (params.length >= 1) {
+
+            String gameName = params[0];
+            server.createGame(gameName);
+            state = State.SIGNEDIN;
+
+            return String.format("Game %s. created", gameName) + "\n\n" + help();
+        }
+        throw new ResponseException(400, "Expected: <Username> <Password>");
+    }
+
+    public String listGames(String... params) throws ResponseException{
+        if(state != State.SIGNEDIN){
+            throw new ResponseException(500, "Not a valid command");
+        }
+        return "null";
+    }
+    public String playGames(String... params) throws ResponseException{
+        if(state != State.SIGNEDIN){
+            throw new ResponseException(500, "Not a valid command");
+        }
+        return "null";
+    }
+    public String observeGame(String... params) throws ResponseException{
+        if(state != State.SIGNEDIN){
+            throw new ResponseException(500, "Not a valid command");
+        }
+        return "null";
+    }
+    public String logout(String... params) throws ResponseException{
+        if(state != State.SIGNEDIN){
+            throw new ResponseException(500, "Not a valid command");
+        }
+        return "null";
+    }
+    public String redraw()throws ResponseException{
+        if(state != State.INGAME){
+            throw new ResponseException(500, "Not a valid command");
+        }
+        return null;
     }
 
     public String help() {
@@ -79,10 +141,10 @@ public class ChessClient {
                         
                         |              COMMAND                   |        EXPLANATION
                         ------------------------------------------------------------------------------
-                        | create <NAME>                          |  create a chess game
-                        | join <GAMEID> [BLACK|WHITE]            |  join a game as a specific color
+                        | create <GAME_NAME>                     |  create a chess game
+                        | join <GAME_ID> [BLACK|WHITE]           |  join a game as a specific color
                         | list                                   |  list active games
-                        | observe <GAMEID>                       |  observe active game
+                        | observe <GAME_ID>                      |  observe active game
                         | logout                                 |  logout of session
                         | quit                                   |  quit playing chess
                         | help                                   |  display possible commands

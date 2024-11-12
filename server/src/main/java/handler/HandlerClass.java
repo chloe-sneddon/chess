@@ -149,6 +149,6 @@ public class HandlerClass {
 
 
     private String wrapException(Exception e){
-        return "{\"message\": \"" + e.getLocalizedMessage() + "\"}";
+        return "{\"message\": \"" + e.getMessage() + "\"}";
     }
 }
