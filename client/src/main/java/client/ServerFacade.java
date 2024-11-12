@@ -24,7 +24,7 @@ public class ServerFacade {
     }
 
     public AuthData login(String username, String password) throws ResponseException{
-        var path = "/user";
+        var path = "/session";
         var httpMeth = "POST";
         UserData usrdta = new UserData(username,password, null);
         return makeRequest(httpMeth,path,usrdta, AuthData.class);
