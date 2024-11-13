@@ -116,8 +116,22 @@ public class ServerFacadeTests {
             sf.createGame("gameOne");
             sf.createGame("gameTwo");
             var list = sf.listGames();
-            var size = 2;
-            Assertions.assertEquals(size,list.size());
+            var expected = 2;
+            Assertions.assertEquals(expected,list.size());
+        }
+        catch (Exception e) {
+            Assertions.fail("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("empty list Games")
+    public void listGamesBad(){
+        try{
+            sf.register("userOne","passwordOne","email");
+            var list = sf.listGames();
+            var expected = 0;
+            Assertions.assertEquals(expected,list.size());
         }
         catch (Exception e) {
             Assertions.fail("Unexpected error: " + e.getMessage());
