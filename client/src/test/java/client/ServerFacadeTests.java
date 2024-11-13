@@ -83,4 +83,29 @@ public class ServerFacadeTests {
         }
     }
 
+    @Test
+    @DisplayName("Create game")
+    public void createGame(){
+        try{
+            sf.register("userOne","passwordOne","email");
+            sf.createGame("gameOne");
+        }
+        catch (ResponseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    @DisplayName("Bad Create game")
+    public void createGameBad(){
+        try{
+            sf.createGame("gameOne");
+            Assertions.fail("Expected error");
+        }
+        catch (ResponseException e) {
+            String expected = "Error: unauthorized";
+            Assertions.assertEquals(expected,e.getMessage());
+        }
+    }
+
 }

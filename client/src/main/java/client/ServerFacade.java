@@ -11,16 +11,21 @@ import java.net.*;
 
 public class ServerFacade {
     private final String serverUrl;
+    private String token;
 
     public ServerFacade(String url){
         serverUrl = url;
+        token = null;
     }
 
-    public AuthData register(String username, String password, String email) throws ResponseException{
+    public void register(String username, String password, String email) throws ResponseException{
         var path = "/user";
         var httpMeth = "POST";
+
         UserData usrdta = new UserData(username, password, email);
-        return makeRequest(httpMeth,path,usrdta, AuthData.class);
+        AuthData dta = makeRequest(httpMeth,path,usrdta, AuthData.class);
+
+        token = dta.authToken();
     }
 
     public AuthData login(String username, String password) throws ResponseException{
@@ -33,13 +38,15 @@ public class ServerFacade {
     public GameData createGame(String gameName) throws ResponseException{
         var path = "/game";
         var httpMeth = "POST";
-        return makeRequest(httpMeth,path,gameName, GameData.class);
+        GameData gmDta = new GameData(0,null,null,gameName,null);
+        return makeRequest(httpMeth,path,gmDta, GameData.class);
     }
 
     private <T> T makeRequest(String httpMethod, String path, Object request, Class<T> responseClass) throws ResponseException{
         try{
             URL url = (new URI(serverUrl+path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestProperty("authorization", token);
             http.setRequestMethod(httpMethod);
             http.setDoOutput(true);
 

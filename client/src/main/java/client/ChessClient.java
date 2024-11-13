@@ -64,12 +64,10 @@ public class ChessClient {
             throw new ResponseException(500, "You are already logged in");
         }
         if (params.length >= 1) {
-
             String username = params[0];
             String password = params[1];
             server.login(username,password);
             state = State.SIGNEDIN;
-
             return String.format("You signed in as %s.", username) + "\n\n" + help();
         }
         throw new ResponseException(400, "Expected: <Username> <Password>");
@@ -80,11 +78,9 @@ public class ChessClient {
             throw new ResponseException(500, "Not a valid command");
         }
         if (params.length >= 1) {
-
             String gameName = params[0];
             server.createGame(gameName);
             state = State.SIGNEDIN;
-
             return String.format("Game %s. created", gameName) + "\n\n" + help();
         }
         throw new ResponseException(400, "Expected: <Username> <Password>");

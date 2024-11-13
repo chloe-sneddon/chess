@@ -2,7 +2,6 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import dataaccess.DatabaseManager;
 import model.GameData;
 import model.UserData;
 import service.UserService;
