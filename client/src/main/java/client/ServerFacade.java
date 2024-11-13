@@ -5,9 +5,11 @@ import model.UserData;
 import model.GameData;
 
 import com.google.gson.Gson;
+import model.response.ListGamesResponse;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 public class ServerFacade {
     private final String serverUrl;
@@ -40,6 +42,12 @@ public class ServerFacade {
         var httpMeth = "POST";
         GameData gmDta = new GameData(0,null,null,gameName,null);
         return makeRequest(httpMeth,path,gmDta, GameData.class);
+    }
+    public ArrayList<GameData> listGames() throws ResponseException {
+        var path = "/game";
+        var httpMeth = "GET";
+        return makeRequest(httpMeth,path,null,ListGamesResponse.class).games();
+
     }
 
     private <T> T makeRequest(String httpMethod, String path, Object request, Class<T> responseClass) throws ResponseException{

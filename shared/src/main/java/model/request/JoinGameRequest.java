@@ -1,4 +1,4 @@
-package request;
+package model.request;
 /*
  * Class Model for JoinGame Request
  */

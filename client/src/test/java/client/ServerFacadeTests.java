@@ -108,4 +108,20 @@ public class ServerFacadeTests {
         }
     }
 
+    @Test
+    @DisplayName("List Games")
+    public void listGames(){
+        try{
+            sf.register("userOne","passwordOne","email");
+            sf.createGame("gameOne");
+            sf.createGame("gameTwo");
+            var list = sf.listGames();
+            var size = 2;
+            Assertions.assertEquals(size,list.size());
+        }
+        catch (Exception e) {
+            Assertions.fail("Unexpected error: " + e.getMessage());
+        }
+    }
+
 }

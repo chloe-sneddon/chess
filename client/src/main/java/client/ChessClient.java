@@ -29,7 +29,7 @@ public class ChessClient {
                 case "quit" -> "quit";
 //                postlogin
                 case "create"-> createGame(params);
-                case "list"-> listGames(params);
+                case "list"-> listGames();
                 case "play"-> playGames(params);
                 case "observe" -> observeGame(params);
                 case "logout" -> logout(params);
@@ -80,17 +80,17 @@ public class ChessClient {
         if (params.length >= 1) {
             String gameName = params[0];
             server.createGame(gameName);
-            state = State.SIGNEDIN;
             return String.format("Game %s. created", gameName) + "\n\n" + help();
         }
         throw new ResponseException(400, "Expected: <Username> <Password>");
     }
 
-    public String listGames(String... params) throws ResponseException{
+    public String listGames() throws ResponseException{
         if(state != State.SIGNEDIN){
             throw new ResponseException(500, "Not a valid command");
         }
-        return "null";
+        var gameList = server.listGames();
+        return String.format("Games: %s.",gameList) + "\n\n" + help();
     }
     public String playGames(String... params) throws ResponseException{
         if(state != State.SIGNEDIN){
