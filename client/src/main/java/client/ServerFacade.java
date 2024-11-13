@@ -5,6 +5,7 @@ import model.UserData;
 import model.GameData;
 
 import com.google.gson.Gson;
+import model.request.JoinGameRequest;
 import model.response.ListGamesResponse;
 
 import java.io.*;
@@ -48,6 +49,12 @@ public class ServerFacade {
         var httpMeth = "GET";
         return makeRequest(httpMeth,path,null,ListGamesResponse.class).games();
 
+    }
+    public void joinGame(int gameID, String playerColor) throws ResponseException{
+        var path = "/game";
+        var httpMeth = "PUT";
+        JoinGameRequest dta = new JoinGameRequest(playerColor,gameID);
+        makeRequest(httpMeth,path,dta,null);
     }
 
     private <T> T makeRequest(String httpMethod, String path, Object request, Class<T> responseClass) throws ResponseException{

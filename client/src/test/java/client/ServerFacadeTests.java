@@ -15,7 +15,7 @@ public class ServerFacadeTests {
         server = new Server();
         var port = server.run(0);
         System.out.println("Started test HTTP server on " + port);
-        var serverUrl = "http://localhost:"+port;
+        var serverUrl = "http://localhost:" + port;
         sf = new ServerFacade(serverUrl);
     }
 
@@ -135,6 +135,35 @@ public class ServerFacadeTests {
         }
         catch (Exception e) {
             Assertions.fail("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("join game")
+    public void joinGame(){
+        try{
+            sf.register("userOne","passwordOne","email");
+            sf.createGame("gameOne");
+            var list = sf.listGames();
+            var gameID = list.get(0).gameID();
+            sf.joinGame(gameID, "WHITE");
+        }
+        catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("bad join game")
+    public void joinGameBad(){
+        try{
+            sf.register("userOne","passwordOne","email");
+            sf.joinGame(12, "WHITE");
+            Assertions.fail("Expected a thrown error");
+        }
+        catch (Exception e) {
+            var expected = "Error: bad request";
+            Assertions.assertEquals(expected,e.getMessage());
         }
     }
 

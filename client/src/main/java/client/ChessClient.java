@@ -30,7 +30,7 @@ public class ChessClient {
 //                postlogin
                 case "create"-> createGame(params);
                 case "list"-> listGames();
-                case "play"-> playGames(params);
+                case "join"-> joinGame(params);
                 case "observe" -> observeGame(params);
                 case "logout" -> logout(params);
 //                in Game
@@ -92,24 +92,39 @@ public class ChessClient {
         var gameList = server.listGames();
         return String.format("Games: %s.",gameList) + "\n\n" + help();
     }
-    public String playGames(String... params) throws ResponseException{
+
+    public String joinGame(String... params) throws ResponseException{
         if(state != State.SIGNEDIN){
             throw new ResponseException(500, "Not a valid command");
         }
+//        http join game
+        if (params.length > 0){
+            var gameID = Integer.parseInt(params[0]);
+            var playerColor = params[1];
+            server.joinGame(gameID,playerColor);
+        }
+
+        state = State.INGAME;
+//        update state
+//        renderbord
         return "null";
     }
+
     public String observeGame(String... params) throws ResponseException{
         if(state != State.SIGNEDIN){
             throw new ResponseException(500, "Not a valid command");
         }
+//        renderboard(); this is temporary for this phase
         return "null";
     }
+
     public String logout(String... params) throws ResponseException{
         if(state != State.SIGNEDIN){
             throw new ResponseException(500, "Not a valid command");
         }
         return "null";
     }
+
     public String redraw()throws ResponseException{
         if(state != State.INGAME){
             throw new ResponseException(500, "Not a valid command");
