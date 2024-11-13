@@ -57,6 +57,13 @@ public class ServerFacade {
         makeRequest(httpMeth,path,dta,null);
     }
 
+    public void logout() throws ResponseException{
+        var path = "/session";
+        var httpMeth = "DELETE";
+        makeRequest(httpMeth,path,null,null);
+        token = null;
+    }
+
     private <T> T makeRequest(String httpMethod, String path, Object request, Class<T> responseClass) throws ResponseException{
         try{
             URL url = (new URI(serverUrl+path)).toURL();

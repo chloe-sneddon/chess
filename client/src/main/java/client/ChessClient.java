@@ -105,16 +105,15 @@ public class ChessClient {
         }
 
         state = State.INGAME;
-//        update state
-//        renderbord
-        return "null";
+//        TODO: render board
+        return "Game Joined!";
     }
 
     public String observeGame(String... params) throws ResponseException{
         if(state != State.SIGNEDIN){
             throw new ResponseException(500, "Not a valid command");
         }
-//        renderboard(); this is temporary for this phase
+//        renderboard(); this is temporary for phase 5
         return "null";
     }
 
@@ -122,7 +121,9 @@ public class ChessClient {
         if(state != State.SIGNEDIN){
             throw new ResponseException(500, "Not a valid command");
         }
-        return "null";
+        server.logout();
+        state = State.SIGNEDOUT;
+        return null;
     }
 
     public String redraw()throws ResponseException{

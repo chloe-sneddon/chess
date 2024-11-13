@@ -167,4 +167,32 @@ public class ServerFacadeTests {
         }
     }
 
+    @Test
+    @DisplayName("logout")
+    public void logout(){
+        try{
+            sf.register("userOne","passwordOne","email");
+            sf.logout();
+            sf.createGame("random");
+            Assertions.fail("Expected an error");
+        }
+        catch (Exception e) {
+            var expected = "Error: unauthorized";
+            Assertions.assertEquals(expected,e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("logout Bad")
+    public void logoutBad(){
+        try{
+            sf.logout();
+            Assertions.fail("Expected an error");
+        }
+        catch (Exception e) {
+            var expected = "Error: unauthorized";
+            Assertions.assertEquals(expected,e.getMessage());
+        }
+    }
+
 }
