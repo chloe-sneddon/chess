@@ -1,13 +1,18 @@
 package client;
 
 import client.websocket.NotificationHandler;
+import ui.RenderBoard;
 
 import java.util.Arrays;
+
+import static ui.EscapeSequences.ERASE_SCREEN;
+import static ui.EscapeSequences.SET_TEXT_BOLD;
 
 public class ChessClient {
     private final ServerFacade server;
     private final String serverUrl;
     private State state = State.SIGNEDOUT;
+    private RenderBoard gameBoard;
 
     ChessClient(String serverURL, NotificationHandler notificationHandler){
         server = new ServerFacade(serverURL);
@@ -48,7 +53,7 @@ public class ChessClient {
             throw new ResponseException(500, "You are already logged in");
         }
 
-        if (params.length >= 1) {
+        if (params.length == 3) {
             String username = params[0];
             String password = params[1];
             String email = params[2];
@@ -63,7 +68,7 @@ public class ChessClient {
         if(state != State.SIGNEDOUT){
             throw new ResponseException(500, "You are already logged in");
         }
-        if (params.length >= 1) {
+        if (params.length == 2) {
             String username = params[0];
             String password = params[1];
             server.login(username,password);
@@ -77,10 +82,10 @@ public class ChessClient {
         if(state != State.SIGNEDIN){
             throw new ResponseException(500, "Not a valid command");
         }
-        if (params.length >= 1) {
+        if (params.length == 1) {
             String gameName = params[0];
             server.createGame(gameName);
-            return String.format("Game %s. created", gameName) + "\n\n" + help();
+            return String.format("Game %s created", gameName) + "\n\n" + help();
         }
         throw new ResponseException(400, "Expected: <Username> <Password>");
     }
@@ -90,7 +95,19 @@ public class ChessClient {
             throw new ResponseException(500, "Not a valid command");
         }
         var gameList = server.listGames();
-        return String.format("Games: %s.",gameList) + "\n\n" + help();
+        String returnVal = "Games ";
+        for(int i = 0; i<gameList.size();i++){
+            var game = gameList.get(i);
+            String gameID = "Game ID:                  " + game.gameID();
+            String gameName = "Game Name:                " + game.gameName();
+            String white = "White player Username:    " + game.whiteUsername();
+            String black = "Black player Username:    " + game.blackUsername();
+
+            returnVal += "\n_________________________________\n"
+                    + gameID + "\n" + gameName
+                    + "\n" + white + "\n" + black;
+        }
+        return returnVal + "\n\n";
     }
 
     public String joinGame(String... params) throws ResponseException{
@@ -98,7 +115,7 @@ public class ChessClient {
             throw new ResponseException(500, "Not a valid command");
         }
 //        http join game
-        if (params.length > 0){
+        if (params.length == 2){
             var gameID = Integer.parseInt(params[0]);
             var playerColor = params[1];
             server.joinGame(gameID,playerColor);
@@ -106,6 +123,9 @@ public class ChessClient {
 
         state = State.INGAME;
 //        TODO: render board
+        System.out.print(ERASE_SCREEN);
+        gameBoard = new RenderBoard();
+        gameBoard.run();
         return "Game Joined!";
     }
 
@@ -123,7 +143,7 @@ public class ChessClient {
         }
         server.logout();
         state = State.SIGNEDOUT;
-        return null;
+        return help();
     }
 
     public String redraw()throws ResponseException{

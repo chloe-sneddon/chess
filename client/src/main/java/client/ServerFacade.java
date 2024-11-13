@@ -31,24 +31,24 @@ public class ServerFacade {
         token = dta.authToken();
     }
 
-    public AuthData login(String username, String password) throws ResponseException{
+    public void login(String username, String password) throws ResponseException{
         var path = "/session";
         var httpMeth = "POST";
         UserData usrdta = new UserData(username,password, null);
-        return makeRequest(httpMeth,path,usrdta, AuthData.class);
+        var dta = makeRequest(httpMeth,path,usrdta, AuthData.class);
+        token = dta.authToken();
     }
 
-    public GameData createGame(String gameName) throws ResponseException{
+    public void createGame(String gameName) throws ResponseException{
         var path = "/game";
         var httpMeth = "POST";
         GameData gmDta = new GameData(0,null,null,gameName,null);
-        return makeRequest(httpMeth,path,gmDta, GameData.class);
+        makeRequest(httpMeth,path,gmDta, GameData.class);
     }
     public ArrayList<GameData> listGames() throws ResponseException {
         var path = "/game";
         var httpMeth = "GET";
         return makeRequest(httpMeth,path,null,ListGamesResponse.class).games();
-
     }
     public void joinGame(int gameID, String playerColor) throws ResponseException{
         var path = "/game";
