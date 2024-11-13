@@ -23,17 +23,17 @@ public class ChessClient {
 //            TODO: fix this so that commands can only be called during a specific state (pre login, post login, etc)
 
             return switch (cmd) {
-//                prelogin
+//                pre-login
                 case "login" -> signIn(params);
                 case "register" -> register(params);
                 case "quit" -> "quit";
-//                postlogin
+//                post-login
                 case "create"-> createGame(params);
                 case "list"-> listGames();
                 case "join"-> joinGame(params);
                 case "observe" -> observeGame(params);
-                case "logout" -> logout(params);
-//                in Game
+                case "logout" -> logout();
+//                in-Game
                 case "redraw" -> redraw();
                 default -> help();
             };
@@ -117,7 +117,7 @@ public class ChessClient {
         return "null";
     }
 
-    public String logout(String... params) throws ResponseException{
+    public String logout() throws ResponseException{
         if(state != State.SIGNEDIN){
             throw new ResponseException(500, "Not a valid command");
         }
