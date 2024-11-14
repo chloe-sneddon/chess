@@ -41,6 +41,7 @@ public class ChessClient {
 //                in-Game
                 case "redraw" -> redraw();
                 default -> help();
+                case "back" -> back();
             };
         }
         catch (ResponseException e) {
@@ -85,7 +86,7 @@ public class ChessClient {
         if (params.length == 1) {
             String gameName = params[0];
             server.createGame(gameName);
-            return String.format("Game %s created", gameName) + "\n\n" + help();
+            return String.format("Game %s created", gameName) + "\n\n";
         }
         throw new ResponseException(400, "Expected: <Username> <Password>");
     }
@@ -119,22 +120,25 @@ public class ChessClient {
             var gameID = Integer.parseInt(params[0]);
             var playerColor = params[1];
             server.joinGame(gameID,playerColor);
+            state = State.INGAME;
+            System.out.print(ERASE_SCREEN);
+            gameBoard = new RenderBoard();
+            gameBoard.run(playerColor);
+            return "Game Joined!";
         }
-
-        state = State.INGAME;
-//        TODO: render board
-        System.out.print(ERASE_SCREEN);
-        gameBoard = new RenderBoard();
-        gameBoard.run();
-        return "Game Joined!";
+        throw new ResponseException(500, "Not a valid command");
     }
 
     public String observeGame(String... params) throws ResponseException{
         if(state != State.SIGNEDIN){
             throw new ResponseException(500, "Not a valid command");
         }
-//        renderboard(); this is temporary for phase 5
-        return "null";
+        if(params.length == 1){
+            gameBoard = new RenderBoard();
+            gameBoard.run("WHITE");
+            return "";
+        }
+        throw new ResponseException(500, "Not a valid command");
     }
 
     public String logout() throws ResponseException{
@@ -195,5 +199,17 @@ public class ChessClient {
             default:
                 return "Error: unauthorized";
         }
+    }
+    public String back() throws ResponseException{
+        if(state == State.SIGNEDOUT){
+            throw new ResponseException(500, "Not a valid command");
+        }
+        else if(state == State.SIGNEDIN){
+            state = State.SIGNEDOUT;
+        }
+        else if(state == State.INGAME){
+            state = State.SIGNEDIN;
+        }
+        return help();
     }
 }
