@@ -88,7 +88,7 @@ public class ChessClient {
             server.createGame(gameName);
             return String.format("Game %s created", gameName) + "\n\n";
         }
-        throw new ResponseException(400, "Expected: <Username> <Password>");
+        throw new ResponseException(400, "Not a valid command");
     }
 
     public String listGames() throws ResponseException{
@@ -117,14 +117,19 @@ public class ChessClient {
         }
 //        http join game
         if (params.length == 2){
-            var gameID = Integer.parseInt(params[0]);
-            var playerColor = params[1];
-            server.joinGame(gameID,playerColor);
-            state = State.INGAME;
-            System.out.print(ERASE_SCREEN);
-            gameBoard = new RenderBoard();
-            gameBoard.run(playerColor);
-            return "Game Joined!";
+            try {
+                var gameID = Integer.parseInt(params[0]);
+
+                var playerColor = params[1];
+                server.joinGame(gameID, playerColor);
+                state = State.INGAME;
+                System.out.print(ERASE_SCREEN);
+                gameBoard = new RenderBoard();
+                gameBoard.run(playerColor);
+                return "Game Joined!";
+            } catch (Exception e) {
+                throw new ResponseException(500, "Expected: <GAME_ID> [BLACK|WHITE]");
+            }
         }
         throw new ResponseException(500, "Not a valid command");
     }
