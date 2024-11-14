@@ -60,9 +60,9 @@ public class RenderBoard {
     }
 
     private static void drawBoard(PrintStream out) {
-        String[] rowHeaders = {" 1 "," 2 "," 3 "," 4 "," 5 "," 6 "," 7 "," 8 "};
+        String[] rowHeaders = { " 8 ", " 7 ", " 6 "," 5 "," 4 "," 3 "," 2 "," 1 "};
         if (playerColor.equals("BLACK")){
-            rowHeaders = new String[]{ " 8 ", " 7 ", " 6 "," 5 "," 4 "," 3 "," 2 "," 1 "};
+            rowHeaders = new String[]{" 1 "," 2 "," 3 "," 4 "," 5 "," 6 "," 7 "," 8 "};
         }
 //        default is drawing for a white board
         String squareColor = "BLACK";

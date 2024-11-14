@@ -39,11 +39,11 @@ public class ServerFacade {
         token = dta.authToken();
     }
 
-    public void createGame(String gameName) throws ResponseException{
+    public GameData createGame(String gameName) throws ResponseException{
         var path = "/game";
         var httpMeth = "POST";
         GameData gmDta = new GameData(0,null,null,gameName,null);
-        makeRequest(httpMeth,path,gmDta, GameData.class);
+        return makeRequest(httpMeth,path,gmDta, GameData.class);
     }
     public ArrayList<GameData> listGames() throws ResponseException {
         var path = "/game";

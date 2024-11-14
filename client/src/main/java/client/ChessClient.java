@@ -3,20 +3,28 @@ package client;
 import client.websocket.NotificationHandler;
 import ui.RenderBoard;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static ui.EscapeSequences.ERASE_SCREEN;
 import static ui.EscapeSequences.SET_TEXT_BOLD;
 
 public class ChessClient {
     private final ServerFacade server;
-    private final String serverUrl;
     private State state = State.SIGNEDOUT;
     private RenderBoard gameBoard;
+//     Game num for user view, GameID as stored in Server
+    private HashMap<Integer, Integer> idFromServer;
+    private HashMap<Integer,Integer> idFromUser;
+    private int numGames;
 
     ChessClient(String serverURL, NotificationHandler notificationHandler){
         server = new ServerFacade(serverURL);
-        this.serverUrl = serverURL;
+        idFromServer = new HashMap<Integer, Integer>();
+        idFromUser = new HashMap<Integer, Integer>();
+        numGames = 1;
     }
 
     public String eval(String input) {
@@ -85,7 +93,12 @@ public class ChessClient {
         }
         if (params.length == 1) {
             String gameName = params[0];
-            server.createGame(gameName);
+
+            var game = server.createGame(gameName);
+            idFromServer.put(game.gameID(),numGames);
+            idFromUser.put(numGames,game.gameID());
+            numGames++;
+
             return String.format("Game %s created", gameName) + "\n\n";
         }
         throw new ResponseException(400, "Not a valid command");
@@ -99,7 +112,13 @@ public class ChessClient {
         String returnVal = "Games ";
         for(int i = 0; i<gameList.size();i++){
             var game = gameList.get(i);
-            String gameID = "Game ID:                  " + game.gameID();
+            var userID = idFromServer.get(game.gameID());
+            if( userID == null){
+                idFromServer.put(game.gameID(),numGames);
+                idFromUser.put(numGames,game.gameID());
+                numGames++;
+            }
+            String gameID = "Game ID:                  " + idFromServer.get(game.gameID());
             String gameName = "Game Name:                " + game.gameName();
             String white = "White player Username:    " + game.whiteUsername();
             String black = "Black player Username:    " + game.blackUsername();
@@ -118,12 +137,15 @@ public class ChessClient {
 //        http join game
         if (params.length == 2){
             try {
-                var gameID = Integer.parseInt(params[0]);
-
+                var i = Integer.parseInt(params[0]);
+                var gameID = idFromUser.get(i);
                 var playerColor = params[1];
+
                 server.joinGame(gameID, playerColor);
+
                 state = State.INGAME;
                 System.out.print(ERASE_SCREEN);
+
                 gameBoard = new RenderBoard();
                 gameBoard.run(playerColor);
                 return "Game Joined!";
