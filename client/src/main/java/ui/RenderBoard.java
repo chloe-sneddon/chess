@@ -1,6 +1,7 @@
 package ui;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import chess.ChessBoard;
 import chess.ChessGame;
@@ -13,13 +14,15 @@ public class RenderBoard {
     // Board dimensions.
     private static final int BOARD_WIDTH = 8;
     private static final int SQUARE_SIZE_IN_PADDED_CHARS = 7;
-    private static final int LINE_WIDTH_IN_PADDED_CHARS = 1;
     private static ChessBoard board = new ChessBoard();
+    private static String playerColor;
 
-//    public static void run(String[] args){
-    public void run(String playerColor) {
+
+    public void run(String playerCol) {
 //        note: can erase after phase 5
         board.resetBoard();
+
+        playerColor = playerCol;
 
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         out.print(ERASE_SCREEN);
@@ -45,6 +48,11 @@ public class RenderBoard {
 
     public static void drawHeaders(PrintStream out){
         String[] colHeaders = { EMPTY, " A ", " B ", " C "," D "," E "," F "," G "," H "};
+
+        if (playerColor.equals("BLACK")){
+            colHeaders = new String[]{EMPTY, " H ", " G ", " F "," E "," D "," C "," B "," A "};
+        }
+
         out.print(SET_TEXT_COLOR_BLUE);
         for (int i = 0; i <= BOARD_WIDTH; ++i) {
             drawSquare(out,"HEADER",colHeaders[i]);
@@ -53,6 +61,9 @@ public class RenderBoard {
 
     private static void drawBoard(PrintStream out) {
         String[] rowHeaders = {" 1 "," 2 "," 3 "," 4 "," 5 "," 6 "," 7 "," 8 "};
+        if (playerColor.equals("BLACK")){
+            rowHeaders = new String[]{ " 8 ", " 7 ", " 6 "," 5 "," 4 "," 3 "," 2 "," 1 "};
+        }
 //        default is drawing for a white board
         String squareColor = "BLACK";
         var currentBoard = board.getBoard();
@@ -130,15 +141,21 @@ public class RenderBoard {
     }
 
     public static String getPieceString (PrintStream out,int rowPrint, int colPrint){
-//        no piece there
-        int row = 7 - rowPrint;
+        int row = rowPrint;
         int col = colPrint;
 
-        ChessPiece piece = board.getBoard()[row][col];
+        if (playerColor.equals("BLACK")){
+            col = 7 - colPrint;
+        }
+        else{
+            row = 7 - rowPrint;
+        }
 
+        ChessPiece piece = board.getBoard()[row][col];
         if (piece == null){
             return EMPTY;
         }
+
 //        white
         ChessPiece.PieceType type = piece.getPieceType();
 
