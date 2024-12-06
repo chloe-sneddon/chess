@@ -2,25 +2,28 @@ package ui;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Objects;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessPiece;
+import chess.*;
 
 import static ui.EscapeSequences.*;
 
 
 public class RenderBoard {
     // Board dimensions.
-    private static final int BOARD_WIDTH = 8;
-    private static final int SQUARE_SIZE_IN_PADDED_CHARS = 7;
-    private static ChessBoard board = new ChessBoard();
-    private static String playerColor;
+    public static final int BOARD_WIDTH = 8;
+    public static final int SQUARE_SIZE_IN_PADDED_CHARS = 7;
+    public static ChessBoard board;
+    public static String playerColor;
+    public static ChessGame game;
 
 
     public void run(String playerCol) {
 //        note: can erase after phase 5
-        board.resetBoard();
+        game = new ChessGame();
+        board = game.getBoard();
 
         playerColor = playerCol;
 
@@ -59,7 +62,7 @@ public class RenderBoard {
         }
     }
 
-    private static void drawBoard(PrintStream out) {
+    public static void drawBoard(PrintStream out) {
         String[] rowHeaders = { " 8 ", " 7 ", " 6 "," 5 "," 4 "," 3 "," 2 "," 1 "};
         if (playerColor.equals("BLACK")){
             rowHeaders = new String[]{" 1 "," 2 "," 3 "," 4 "," 5 "," 6 "," 7 "," 8 "};
@@ -113,7 +116,7 @@ public class RenderBoard {
 
     public static void drawSquare(PrintStream out, String bgColor, String printVal){
         out.print(SET_TEXT_BOLD);
-        if(bgColor == "WHITE"){
+        if(Objects.equals(bgColor, "WHITE")){
             out.print(SET_BG_COLOR_WHITE);
         }
         else if (bgColor == "BLACK"){
@@ -131,7 +134,7 @@ public class RenderBoard {
         for (int i = 0; i < BOARD_WIDTH; i++){
             drawSquare(out,startColor,EMPTY);
 //            alternate
-            if (startColor == "WHITE"){
+            if (Objects.equals(startColor, "WHITE")){
                 startColor = "BLACK";
             }
             else{
@@ -184,5 +187,9 @@ public class RenderBoard {
                 case null -> EMPTY;
             };
         }
+    }
+
+    public void updateBoard(ChessBoard chessBoard){
+        game.setBoard(chessBoard);
     }
 }

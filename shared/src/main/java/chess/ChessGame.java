@@ -174,6 +174,7 @@ public class ChessGame {
         }
 
     }
+
     public Collection <ChessMove> getAllMoves(TeamColor teamColor){
         Collection <ChessPosition> startPositions = board.getTeamPositions(teamColor);
         Collection <ChessMove> moves = new ArrayList<>();

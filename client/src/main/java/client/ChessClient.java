@@ -48,8 +48,13 @@ public class ChessClient {
                 case "logout" -> logout();
 //                in-Game
                 case "redraw" -> redraw();
-                default -> help();
+                case "resign" -> back();
+                case "leave" -> back();
                 case "back" -> back();
+                case "move" -> back();
+                case "highlight" -> back(); 
+
+                default -> help();
             };
         }
         catch (ResponseException e) {
@@ -218,8 +223,13 @@ public class ChessClient {
                 return """
                 
                         |              COMMAND                   |        EXPLANATION
-                        ------------------------------------------------------------------------------
+                        -----------------------------------------------------------------------------
                         | help                                   |  display possible commands
+                        | redraw                                 |  redraw chess board
+                        | leave                                  |  leave game
+                        | move <START POSITION> <END POSITION>   |  make move on board
+                        | resign                                 |  forfeit game
+                        | highlight <CHESS POSITION>             |  highlight legal moves of piece
                 
                         """;
 
