@@ -1,4 +1,4 @@
 package exception;
 
-public class ResponseException {
+public class ResponseException extends Exception {
 }
