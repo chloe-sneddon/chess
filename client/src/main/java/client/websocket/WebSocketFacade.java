@@ -18,7 +18,7 @@ public class WebSocketFacade extends Endpoint {
     Session session;
     private NotificationHandler notificationHandler;
 
-    WebSocketFacade(String url, NotificationHandler notificationHandler) throws ResponseException {
+    public WebSocketFacade(String url, NotificationHandler notificationHandler) throws ResponseException {
         try{
             url = url.replace("http","ws");  // replaces http with websocket redirect
             URI socketURI = new URI(url + "/ws");
@@ -27,13 +27,6 @@ public class WebSocketFacade extends Endpoint {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this,socketURI);
 
-//            set message handler
-//            this.session.addMessageHandler(new MessageHandler() {
-//                @Override
-//                public int hashCode() {
-//                    return super.hashCode();
-//                }
-//            });
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
                 @Override
                 public void onMessage(String message) {
@@ -41,8 +34,6 @@ public class WebSocketFacade extends Endpoint {
                     notificationHandler.notify(notification);
                 }
             });
-//            this.session.addMessageHandler(newMessageHandler.Whole<String>())
-
         }
         catch(Exception e){
             throw new ResponseException(500, e.getMessage());
@@ -68,6 +59,8 @@ public class WebSocketFacade extends Endpoint {
             var tmp = new JoinGameCommand(UserGameCommand.CommandType.CONNECT,authToken,gameID,playerColor);
             String msg = serializer.toJson(tmp);
             this.session.getBasicRemote().sendText(msg);
+//            TODO: remove out
+            System.out.print("Connect Done !!!");
         }
         catch(IOException e){
             throw new ResponseException(500, e.getMessage());

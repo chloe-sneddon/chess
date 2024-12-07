@@ -69,7 +69,7 @@ public class WebSocketHandler {
         }
         catch (Exception e) {
             notification = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
-            returnVal = "FIXME: an error occurred -> CONNECT.WEBSOCKETHANDLER";
+            returnVal = "ERROR: an error occurred -> CONNECT.WEBSOCKETHANDLER";
         }
 
         String msg = serializer.toJson(new JoinGameMessage(notification.getServerMessageType(),returnVal));

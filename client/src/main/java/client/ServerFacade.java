@@ -20,6 +20,9 @@ public class ServerFacade {
         serverUrl = url;
         token = null;
     }
+    public String getToken(){
+        return token;
+    }
 
     public void register(String username, String password, String email) throws ResponseException{
         var path = "/user";

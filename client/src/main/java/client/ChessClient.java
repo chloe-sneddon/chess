@@ -1,6 +1,7 @@
 package client;
 
 import client.websocket.NotificationHandler;
+import client.websocket.WebSocketFacade;
 import ui.RenderBoard;
 
 import java.util.ArrayList;
@@ -15,12 +16,17 @@ public class ChessClient {
     private final ServerFacade server;
     private State state = State.SIGNEDOUT;
     private RenderBoard gameBoard;
+    private WebSocketFacade ws;
+    final private String serverUrl;
+    final private NotificationHandler notificationHandler;
 //     Game num for user view, GameID as stored in Server
     private HashMap<Integer, Integer> idFromServer;
     private HashMap<Integer,Integer> idFromUser;
     private int numGames;
 
     ChessClient(String serverURL, NotificationHandler notificationHandler){
+        this.serverUrl = serverURL;
+        this.notificationHandler = notificationHandler;
         server = new ServerFacade(serverURL);
         idFromServer = new HashMap<Integer, Integer>();
         idFromUser = new HashMap<Integer, Integer>();
@@ -153,6 +159,10 @@ public class ChessClient {
 
                 gameBoard = new RenderBoard();
                 gameBoard.run(playerColor);
+
+//              TODO: WEBSOCKET CALL HERE!!
+                ws = new WebSocketFacade(serverUrl, notificationHandler);
+                ws.connect(playerColor,server.getToken(),gameID);
                 return "Game Joined!";
             } catch (Exception e) {
                 throw new ResponseException(500, "Expected: <GAME_ID> [BLACK|WHITE]");
@@ -166,6 +176,7 @@ public class ChessClient {
             throw new ResponseException(500, "Not a valid command");
         }
         if(params.length == 1){
+//            TODO: WEBSOCKET GOES HERE AND CAN DELETE NEW RENDERBOARD CALL
             gameBoard = new RenderBoard();
             gameBoard.run("WHITE");
             return "";
