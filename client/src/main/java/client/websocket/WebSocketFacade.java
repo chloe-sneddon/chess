@@ -19,13 +19,13 @@ public class WebSocketFacade extends Endpoint {
     Session session;
     private NotificationHandler notificationHandler;
 
-    public static void main(String[] args) throws Exception {
-        var ws = new WebSocketFacade();
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter a message you want to echo");
-        while (true) ws.send(scanner.nextLine());
-    }
+//    public static void main(String[] args) throws Exception {
+//        var ws = new WebSocketFacade();
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.println("Enter a message you want to echo");
+//        while (true) ws.send(scanner.nextLine());
+//    }
 
     public WebSocketFacade(String url, NotificationHandler notificationHandler) throws ResponseException {
         try{
@@ -68,13 +68,12 @@ public class WebSocketFacade extends Endpoint {
             var tmp = new JoinGameCommand(UserGameCommand.CommandType.CONNECT,authToken,gameID,playerColor);
             String msg = serializer.toJson(tmp);
             this.session.getBasicRemote().sendText(msg);
-//            TODO: remove out
-            System.out.print("Connect Done !!!");
         }
         catch(IOException e){
             throw new ResponseException(500, e.getMessage());
         }
     }
+
 //    connect()
 //    makeMove()
 //    leaveGame()
@@ -90,4 +89,5 @@ public class WebSocketFacade extends Endpoint {
 //      1.deserialize message
 //      2. call gameHandler to process
 //    }
+
 }

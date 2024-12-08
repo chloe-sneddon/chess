@@ -3,15 +3,20 @@ package server;
 import dataaccess.DataAccessException;
 import dataaccess.DatabaseManager;
 import handler.HandlerClass;
+import server.websocket.WebSocketHandler;
 import spark.*;
+import spark.Spark;
 
 public class Server {
 
     private final HandlerClass handler = new HandlerClass();
+    private final WebSocketHandler wbHandler = new WebSocketHandler();
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
         Spark.staticFiles.location("web");
+
+        Spark.webSocket("/ws", wbHandler);
 
         try{
             DatabaseManager.configureDatabase();
@@ -27,12 +32,18 @@ public class Server {
         Spark.post("/game",this::createGame);
         Spark.get("/game",this::listGame);
         Spark.put("/game",this::joinGame);
+        Spark.post("/ws",this::webSocket);
 
         Spark.awaitInitialization();
 
         return Spark.port();
     }
 
+    private String webSocket(Request req, Response res){
+//        wbHandler.
+        System.out.print("webSocket Connection Made");
+        return "test";
+    }
     private String createUser(Request req, Response res){
         return handler.createUser(req,res);
     }
