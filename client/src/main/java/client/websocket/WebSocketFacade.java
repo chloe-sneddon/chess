@@ -3,10 +3,11 @@ package client.websocket;
 import client.GameHandler;
 import client.ResponseException;
 import com.google.gson.Gson;
+import org.eclipse.jetty.util.Scanner;
 import websocket.commands.JoinGameCommand;
 import websocket.commands.UserGameCommand;
+import websocket.messages.ServerMessage;
 
-import javax.management.Notification;
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
@@ -17,6 +18,14 @@ public class WebSocketFacade extends Endpoint {
     private final Gson serializer = new Gson();
     Session session;
     private NotificationHandler notificationHandler;
+
+    public static void main(String[] args) throws Exception {
+        var ws = new WebSocketFacade();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter a message you want to echo");
+        while (true) ws.send(scanner.nextLine());
+    }
 
     public WebSocketFacade(String url, NotificationHandler notificationHandler) throws ResponseException {
         try{
@@ -30,7 +39,7 @@ public class WebSocketFacade extends Endpoint {
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
                 @Override
                 public void onMessage(String message) {
-                    Notification notification = new Gson().fromJson(message, Notification.class);
+                    ServerMessage notification = new Gson().fromJson(message, ServerMessage.class);
                     notificationHandler.notify(notification);
                 }
             });
