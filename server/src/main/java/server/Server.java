@@ -32,7 +32,7 @@ public class Server {
         Spark.post("/game",this::createGame);
         Spark.get("/game",this::listGame);
         Spark.put("/game",this::joinGame);
-        Spark.post("/ws",this::webSocket);
+//        Spark.post("/ws",this::webSocket);
 
         Spark.awaitInitialization();
 
