@@ -157,10 +157,10 @@ public class ChessClient {
                 state = State.INGAME;
                 System.out.print(ERASE_SCREEN);
 
+//              TODO: WEBSOCKET CALL HERE!!
                 gameBoard = new RenderBoard();
                 gameBoard.run(playerColor);
 
-//              TODO: WEBSOCKET CALL HERE!!
                 ws = new WebSocketFacade(serverUrl, notificationHandler);
                 ws.connect(playerColor,server.getToken(),gameID);
                 return "Game Joined!";

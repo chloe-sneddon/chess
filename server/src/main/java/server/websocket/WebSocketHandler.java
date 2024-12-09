@@ -23,20 +23,21 @@ public class WebSocketHandler {
     private final WebsocketSessions connections = new WebsocketSessions();
     private final Gson serializer = new Gson();
 
-//    @OnWebSocketConnect
-//    public void onConnect(Session session){
-////        connections.g
-//    }
-//
-//    @OnWebSocketClose
-//    public void onClose(Session session){
-//
-//    }
-//
-//    @OnWebSocketError
-//    public void onError(Throwable throwable){
-//
-//    }
+    @OnWebSocketConnect
+    public void onConnect(Session session){
+//        connections.g
+        System.out.println("onConnect");
+    }
+
+    @OnWebSocketClose
+    public void onClose(Session session){
+        System.out.println("onClose");
+    }
+
+    @OnWebSocketError
+    public void onError(Throwable throwable){
+        System.out.println("onError");
+    }
 
     @OnWebSocketMessage
     public void onMessage(Session session, String message) throws IOException {

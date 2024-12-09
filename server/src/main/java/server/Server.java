@@ -41,6 +41,7 @@ public class Server {
 
     private String webSocket(Request req, Response res){
 //        wbHandler.
+//        wbHandler.onMessage(session,req);
         System.out.print("webSocket Connection Made");
         return "test";
     }
